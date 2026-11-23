@@ -115,10 +115,6 @@
 .stw-screen {
   z-index: 1;
 }
-/* The stage is measured but the word boxes are not in yet: the first view waits, so it never jumps. */
-.stw[data-framing="waiting"] .stw-screen {
-  opacity: 0;
-}
 .stw-shot {
   position: absolute;
   left: 0;

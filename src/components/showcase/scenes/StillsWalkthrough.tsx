@@ -13,13 +13,14 @@
  * finds the window that shows them whole, readable, filling the stage. A new framing on the same still is a
  * camera move (the picture travels and zooms, 700 ms); a new still crossfades. The film ends on a replay control.
  *
- * No script / reduced motion: `ssrStill` and its step, no cursor, no overlay; stills still change
- * on their cues under reduced motion, without fades or travel. Only the shown still is in the first
- * HTML; the rest mount when the tab first plays.
+ * No script: the film's first cue (its still and step 1), no cursor, no overlay. The tab opens on that same picture
+ * with the first dot lit, so the film starts from it and never fades in from another page. Reduced motion steps
+ * through the stills on their cues without fades or travel. Only the first still is in the first HTML; the rest
+ * mount when the tab first plays.
  *
  * Every still has a words manifest beside it that the privacy probe reads (spec §7.2 #18).
  */
-import { useEffect, useMemo, useRef, useState, type ComponentType, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type ComponentType, type CSSProperties } from "react";
 import type { CursorTarget, Still } from "@/data/showcase/types";
 import type { Rect, WalkCue, WalkData } from "@/data/showcase/scenes/duffer-cc";
 import type { FluidSceneProps } from "./HgCoiScene";
@@ -27,6 +28,9 @@ import { closeOpts, frameClose, frameView, viewPlan, wantsClose, withLines, CARD
 import "./stills.css";
 
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
+const noSubscribe = () => () => {};
+/** False in the server HTML (and while it hydrates), true in the browser: the no-script picture is never hidden. */
+const useInBrowser = () => useSyncExternalStore(noSubscribe, () => true, () => false);
 
 /** The cue in force at t: the last one that has started. */
 function cueAt(cues: readonly WalkCue[], t: number) {
@@ -36,8 +40,9 @@ function cueAt(cues: readonly WalkCue[], t: number) {
 }
 
 /** The step clock: restarts from 0 each time the tab is shown; wakes only at cue boundaries. */
-function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
-  const ssrCue = Math.max(0, data.cues.findIndex((c) => c.still === data.ssrStill));
+function useWalkClock(active: boolean, reduced: boolean, data: WalkData, ready: boolean) {
+  // The resting (no-script) picture IS the film's first cue: the opening can never show another page or dot.
+  const ssrCue = 0;
   const [cue, setCue] = useState(ssrCue);
   const [paused, setPaused] = useState(false);
   const [started, setStarted] = useState(false);
@@ -60,9 +65,15 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
     setCue(0);
     setSeq((s) => s + 1);
   }, [active, ssrCue]);
+  // The film's clock starts when its first view is on the stage (framing it can take a moment on a slow device).
+  useEffect(() => {
+    if (!active || !ready) return;
+    offset.current = 0;
+    t0.current = performance.now();
+  }, [active, ready]);
 
   useEffect(() => {
-    if (!active || paused || ended) return;
+    if (!active || !ready || paused || ended) return;
     const now = offset.current + (performance.now() - t0.current);
     const next = data.cues.find((c) => c.at > now);
     // No cue left: the film rests on its last one until totalMs, then it is over.
@@ -71,7 +82,7 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
       next ? next.at - now + 4 : Math.max(0, data.totalMs - now),
     );
     return () => window.clearTimeout(id);
-  }, [active, paused, ended, cue, seq, data.cues, data.totalMs]);
+  }, [active, ready, paused, ended, cue, seq, data.cues, data.totalMs]);
 
   const jump = (i: number) => {
     offset.current = data.cues[i].at;
@@ -97,13 +108,23 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
     } else setPaused(true);
   };
   // Reduced motion still steps through the stills on their cues; it just never animates.
-  return { cue: active ? cue : ssrCue, started, paused, ended, firstPlay: seq <= 1, jump, toggle, reduced };
+  return { cue: active ? cue : ssrCue, started, paused, ended, jump, toggle, reduced };
 }
 
 /** The stage's content box in px, once it is laid out (null before: the plain fitted layout). */
 function useBox() {
   const ref = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<{ w: number; h: number } | null>(null);
+  // Measured before the first paint too (a ResizeObserver reports a frame or more later), so the opening picture is
+  // laid out from the first frame the tab shows.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const cs = getComputedStyle(el);
+    const w = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const h = el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    if (w > 0 && h > 0) setBox((b) => b ?? { w, h });
+  }, []);
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof ResizeObserver === "undefined") return;
@@ -193,13 +214,25 @@ const unionOf = (rs: readonly Rect[]) => {
   return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
 };
 
-export function StillsWalkthrough({ data, variant, active, reduced, onCaption, onHold, scene }: FluidSceneProps & { data: WalkData; scene: string }) {
+/** The film as a phone plays it: `phoneSkip` cues left out, the later ones (and the end) sooner. */
+function forPhone(data: WalkData): WalkData {
+  const k = data.phoneSkip;
+  if (!k) return data;
+  const span = k.to - k.from;
+  const cues = data.cues.filter((c) => c.at < k.from || c.at >= k.to).map((c) => (c.at >= k.to ? { ...c, at: c.at - span } : c));
+  return { ...data, cues, totalMs: data.totalMs - span };
+}
+
+export function StillsWalkthrough({ data: film, variant, active, reduced, onCaption, onHold, scene }: FluidSceneProps & { data: WalkData; scene: string }) {
   const phone = variant === "phone";
+  const data = useMemo(() => (phone ? forPhone(film) : film), [film, phone]);
   // Which picture the sheet shows: the phone crop, or (no narrow layout) the desk still framed.
   const pic = (st: Still) => (phone && !data.phoneUsesDesk ? st.phone : st.desk);
   const framed = !phone || Boolean(data.phoneUsesDesk);
   const { ref: stageRef, box } = useBox();
-  const clock = useWalkClock(active, reduced, data);
+  // Set once the first framed view is on the stage (or at once where nothing is framed): the clock waits for it.
+  const [firstShown, setFirstShown] = useState(false);
+  const clock = useWalkClock(active, reduced, data, firstShown);
   const srcs = useMemo(() => data.stills.map((st) => pic(st).src), [data.stills, phone]); // eslint-disable-line react-hooks/exhaustive-deps
   const at = useDecodedCue(clock.cue, clock.started, (i) => srcs[data.cues[i].still], srcs);
   const cue = data.cues[at];
@@ -223,7 +256,28 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   // Framing needs the stage's size and the words' boxes; until both are in, the plain fitted layout (and, once
   // the stage is measured, the screen waits invisibly for the boxes so the first view does not jump).
   const boxes = useWordBoxes(data.stills, srcs, active && framed);
-  const framing = framed && box && boxes ? boxes : null;
+  // The framing search blocks the page while it runs (up to ~1 s for a first close view on a slow device): it starts
+  // only once the opening picture (preRoll, below) has painted, its still decoded, so what stays on the stage meanwhile
+  // is that picture and not an empty card.
+  const [canFrame, setCanFrame] = useState(false);
+  const firstSrc = srcs[data.cues[0].still];
+  useEffect(() => {
+    if (!box || !active || canFrame) return;
+    let live = true;
+    let id = 0;
+    decodeStill(firstSrc).then(() => {
+      if (!live) return;
+      id = requestAnimationFrame(() => {
+        id = requestAnimationFrame(() => live && setCanFrame(true));
+      });
+    });
+    return () => {
+      live = false;
+      cancelAnimationFrame(id);
+    };
+  }, [Boolean(box), active, canFrame, firstSrc]); // eslint-disable-line react-hooks/exhaustive-deps
+  const framing = framed && box && boxes && canFrame ? boxes : null;
+  const inBrowser = useInBrowser();
   const cache = useMemo(() => new Map<string, Frame & { set?: number }>(), [box?.w, box?.h, boxes, close]); // eslint-disable-line react-hooks/exhaustive-deps
   const frameOf = (key: string): (Frame & { set?: number }) | null => {
     const v: PlanView | undefined = plan.views.get(key);
@@ -244,6 +298,8 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
     const p = pic(data.stills[still]);
     return { width: `${p.width}px`, height: `${p.height}px`, transform: `translate(${(-f.x0 * f.s).toFixed(2)}px, ${(-f.y0 * f.s).toFixed(2)}px) scale(${f.s.toFixed(4)})` };
   };
+  // Only the shown view (and the one fading out) is framed, when it is shown: the opening view never waits on the
+  // framing of every later still (each search can take a few hundred ms), and none runs under a moving pointer.
   // Each still sits at its own view while it is shown, and waits (invisible) at the view it will open on next, so a
   // new still fades in already framed and only a new framing of the shown still moves.
   const prev = at > 0 ? data.cues[at - 1].still : -1;
@@ -256,7 +312,35 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
     return plan.keys[data.cues.findIndex((c) => c.still === still)];
   };
   const curView = plan.views.get(curKey);
-  const curFrame = frameOf(curKey);
+  const realFrame = frameOf(curKey);
+  useEffect(() => {
+    setFirstShown(active && (!framed || Boolean(realFrame)));
+  }, [active, framed, Boolean(realFrame)]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Until the first view is framed (its word boxes loading, its search running), the card already shows the first
+  // still: the page's whole height, centred on what the view will show (its smallest unit set, which every larger one
+  // holds). The camera then pushes in to the framed view. Never an empty stage, never another page, no dissolve.
+  const waiting = framed && inBrowser && !realFrame;
+  const preRoll = ((): Frame | null => {
+    if (!waiting || !box) return null;
+    const p = pic(data.stills[cur]);
+    const u = close && curView?.sets ? unionOf(curView.sets[curView.sets.length - 1]) : curView?.cam ?? { x: 0, y: 0, w: p.width, h: p.height };
+    const s = Math.max(box.w / p.width, box.h / p.height);
+    const vw = box.w / s;
+    const vh = box.h / s;
+    const x0 = Math.min(Math.max(0, u.x + u.w / 2 - vw / 2), p.width - vw);
+    const y0 = Math.min(Math.max(0, u.y + u.h / 2 - vh / 2), p.height - vh);
+    return { s, x0, y0, cardW: box.w, cardH: box.h, cuts: 0 };
+  })();
+  const curFrame: (Frame & { set?: number }) | null = realFrame ?? preRoll;
+  // The push in from the opening picture is a camera move (for the move's length after the framed view arrives).
+  const [preRolled, setPreRolled] = useState(false);
+  useEffect(() => {
+    if (preRoll) return setPreRolled(true);
+    if (!preRolled) return;
+    const id = window.setTimeout(() => setPreRolled(false), 900);
+    return () => window.clearTimeout(id);
+  }, [Boolean(preRoll), preRolled]); // eslint-disable-line react-hooks/exhaustive-deps
+  const pushIn = preRolled && !preRoll;
   const set = curFrame?.set ?? 0;
   const units = close && curView?.sets ? curView.sets[Math.min(set, curView.sets.length - 1)] : null;
   const focus = units ? unionOf(units) : curView?.cam ?? { x: 0, y: 0, w: pic(data.stills[cur]).width, h: pic(data.stills[cur]).height };
@@ -268,8 +352,8 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
     const id = requestAnimationFrame(() => requestAnimationFrame(() => setArmed(true)));
     return () => cancelAnimationFrame(id);
   }, [Boolean(curFrame), box?.w, box?.h]); // eslint-disable-line react-hooks/exhaustive-deps
-  // The tab opens on its no-script picture and goes straight to the film's first view: no crossfade from the one to the other.
-  const fade = reduced || (clock.firstPlay && at === 0) ? 0 : cue.fadeMs ?? 280;
+  // (The no-script picture is the film's first view, so nothing crossfades at the opening.)
+  const fade = reduced ? 0 : cue.fadeMs ?? 280;
   const hold = () => onHold?.();
 
   // The firstStep of each step: where a dot jumps to.
@@ -285,9 +369,9 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
       data-close={close ? "" : undefined}
       data-units={units ? JSON.stringify(units.map((r) => [r.x, r.y, r.w, r.h])) : undefined}
       data-solids={framed && data.solids?.[data.stills[cur].id] ? JSON.stringify(data.solids[data.stills[cur].id].map((r) => [r.x, r.y, r.w, r.h])) : undefined}
-      data-framing={framed && box && !boxes ? "waiting" : undefined}
-      data-armed={armed && motion ? "" : undefined}
-      data-cam={prev === cur ? "move" : undefined}
+      data-framing={waiting ? "waiting" : undefined}
+      data-armed={(armed || pushIn) && motion ? "" : undefined}
+      data-cam={prev === cur || pushIn ? "move" : undefined}
       style={{ "--stw-fade": `${fade}ms` } as CSSProperties}>
       <div className="stw-stage" ref={stageRef}>
         {/* A window shorter than the stage is a card; the rest of the stage is a soft blur of the same picture, not a bar. */}
@@ -301,7 +385,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
         ) : null}
         <div className={`stw-screen${framed ? " stw-screen--framed" : ""}`} style={curFrame ? { width: `${curFrame.cardW}px`, height: `${curFrame.cardH}px` } : undefined}>
           {mounted.map((st) => (
-            <Shot key={st} still={data.stills[st]} pic={pic(data.stills[st])} on={st === cur} frame={style(st, frameOf(keyFor(st)))} />
+            <Shot key={st} still={data.stills[st]} pic={pic(data.stills[st])} on={st === cur} frame={style(st, st === cur ? curFrame : st === prev ? frameOf(keyFor(st)) : cache.get(keyFor(st)) ?? null)} />
           ))}
           {/* One layer framed like the shown view: the cursor lives here so it TRAVELS between targets and stills. */}
           {motion ? (
