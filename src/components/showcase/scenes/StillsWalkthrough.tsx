@@ -139,6 +139,44 @@ function useWordBoxes(stills: readonly Still[], srcs: readonly string[], enabled
   return boxes;
 }
 
+/** Each still's bytes, decoded once per page (a failed decode resolves too, so a broken still cannot stop the film). */
+const decodes = new Map<string, Promise<void>>();
+function decodeStill(src: string): Promise<void> {
+  let p = decodes.get(src);
+  if (!p) {
+    const im = new Image();
+    im.decoding = "async";
+    im.src = src;
+    p = im.decode().catch(() => undefined);
+    decodes.set(src, p);
+  }
+  return p;
+}
+
+/**
+ * The cue the film shows: the clock's cue once its still is decoded, else the cue it showed before. On a slow
+ * connection the next still may not have arrived when its step comes; switching to it would put a blank stage up
+ * (the picture is transparent until it paints), so the previous view stays until the still can paint, as
+ * HgVendorScene holds its certificate back.
+ */
+function useDecodedCue(cue: number, started: boolean, srcOf: (i: number) => string, srcs: readonly string[]) {
+  const [ready, setReady] = useState<ReadonlySet<string>>(() => new Set());
+  useEffect(() => {
+    if (!started) return;
+    let live = true;
+    for (const src of new Set(srcs)) decodeStill(src).then(() => live && setReady((r) => (r.has(src) ? r : new Set(r).add(src))));
+    return () => {
+      live = false;
+    };
+  }, [started, srcs]);
+  const [shown, setShown] = useState(cue);
+  const ok = !started || ready.has(srcOf(cue));
+  useEffect(() => {
+    if (ok) setShown(cue);
+  }, [ok, cue]);
+  return ok ? cue : shown;
+}
+
 /** The pointer in force at cue i and the cue that set it (the click ring replays per setting cue). */
 function cursorAt(cues: readonly WalkCue[], i: number, close: boolean, set: number): { c: CursorTarget; from: number } | null {
   for (let k = i; k >= 0; k--) {
@@ -162,7 +200,9 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   const framed = !phone || Boolean(data.phoneUsesDesk);
   const { ref: stageRef, box } = useBox();
   const clock = useWalkClock(active, reduced, data);
-  const cue = data.cues[clock.cue];
+  const srcs = useMemo(() => data.stills.map((st) => pic(st).src), [data.stills, phone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const at = useDecodedCue(clock.cue, clock.started, (i) => srcs[data.cues[i].still], srcs);
+  const cue = data.cues[at];
   const cur = cue.still;
   const step = cue.step;
   const motion = active && !reduced;
@@ -177,12 +217,11 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   // Close views (whole units) on a phone, a portrait stage, or one too small for the desk framing to read.
   const close = framed && (box ? wantsClose(phone, box.w, box.h) : phone);
   const plan = useMemo(() => viewPlan(data.cues, close), [data.cues, close]);
-  const curKey = plan.keys[clock.cue];
+  const curKey = plan.keys[at];
   // Stills mount once the tab first plays; before that only the shown one is in the page.
   const mounted = clock.started ? [...new Set(data.cues.map((c) => c.still))] : [cur];
   // Framing needs the stage's size and the words' boxes; until both are in, the plain fitted layout (and, once
   // the stage is measured, the screen waits invisibly for the boxes so the first view does not jump).
-  const srcs = useMemo(() => data.stills.map((st) => pic(st).src), [data.stills, phone]); // eslint-disable-line react-hooks/exhaustive-deps
   const boxes = useWordBoxes(data.stills, srcs, active && framed);
   const framing = framed && box && boxes ? boxes : null;
   const cache = useMemo(() => new Map<string, Frame & { set?: number }>(), [box?.w, box?.h, boxes, close]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -207,13 +246,13 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   };
   // Each still sits at its own view while it is shown, and waits (invisible) at the view it will open on next, so a
   // new still fades in already framed and only a new framing of the shown still moves.
-  const prev = clock.cue > 0 ? data.cues[clock.cue - 1].still : -1;
+  const prev = at > 0 ? data.cues[at - 1].still : -1;
   const keyFor = (still: number) => {
     if (still === cur) return curKey;
     // The still that just faded out keeps its framing while it fades.
-    if (still === prev) for (let k = clock.cue; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
-    for (let k = clock.cue + 1; k < data.cues.length; k++) if (data.cues[k].still === still) return plan.keys[k];
-    for (let k = clock.cue; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
+    if (still === prev) for (let k = at; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
+    for (let k = at + 1; k < data.cues.length; k++) if (data.cues[k].still === still) return plan.keys[k];
+    for (let k = at; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
     return plan.keys[data.cues.findIndex((c) => c.still === still)];
   };
   const curView = plan.views.get(curKey);
@@ -221,7 +260,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   const set = curFrame?.set ?? 0;
   const units = close && curView?.sets ? curView.sets[Math.min(set, curView.sets.length - 1)] : null;
   const focus = units ? unionOf(units) : curView?.cam ?? { x: 0, y: 0, w: pic(data.stills[cur]).width, h: pic(data.stills[cur]).height };
-  const cursor = motion ? cursorAt(data.cues, clock.cue, close, set) : null;
+  const cursor = motion ? cursorAt(data.cues, at, close, set) : null;
   // The camera moves only once the first framed view has painted (not from the plain layout into it).
   const [armed, setArmed] = useState(false);
   useEffect(() => {
@@ -230,7 +269,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
     return () => cancelAnimationFrame(id);
   }, [Boolean(curFrame), box?.w, box?.h]); // eslint-disable-line react-hooks/exhaustive-deps
   // The tab opens on its no-script picture and goes straight to the film's first view: no crossfade from the one to the other.
-  const fade = reduced || (clock.firstPlay && clock.cue === 0) ? 0 : cue.fadeMs ?? 280;
+  const fade = reduced || (clock.firstPlay && at === 0) ? 0 : cue.fadeMs ?? 280;
   const hold = () => onHold?.();
 
   // The firstStep of each step: where a dot jumps to.
@@ -267,8 +306,8 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
           {/* One layer framed like the shown view: the cursor lives here so it TRAVELS between targets and stills. */}
           {motion ? (
             <div className="stw-layer" style={{ aspectRatio: `${pic(data.stills[cur]).width} / ${pic(data.stills[cur]).height}`, ...style(cur, curFrame) }}>
-              <Overlays data={data} cueIndex={clock.cue} still={cur} phone={phone && !data.phoneUsesDesk} />
-              {cursor && data.cues[clock.cue].overlay !== "pin-drag" ? <Cursor c={cursor.c} size={pic(data.stills[cur])} ring={cursor.from} /> : null}
+              <Overlays data={data} cueIndex={at} still={cur} phone={phone && !data.phoneUsesDesk} />
+              {cursor && data.cues[at].overlay !== "pin-drag" ? <Cursor c={cursor.c} size={pic(data.stills[cur])} ring={cursor.from} /> : null}
             </div>
           ) : null}
         </div>
