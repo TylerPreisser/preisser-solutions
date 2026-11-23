@@ -1144,12 +1144,24 @@
 @media (min-width: 769px) and (max-width: 899px) {
   .mc-sheet .mc-card__cap,
   .mc-sheet .mc-tile__title,
-  .mc-sheet .mc-dial__label,
-  .mc-sheet .mc-pill__text {
-    font-size: 17.5px;
+  .mc-sheet .mc-dial__label {
+    font-size: 18px;
   }
   .mc-sheet .mc-dial__value {
-    font-size: 18px;
+    font-size: 19px;
+  }
+}
+/* The keyword pills are a fixed 160 units wide, so their text is sized to leave a
+   little air inside them as well as reaching 11px: 17.2 units is 11.03px at a
+   769px stage, 16.4 units is 11.2px from 821px. */
+@media (min-width: 769px) and (max-width: 820px) {
+  .mc-sheet .mc-pill__text {
+    font-size: 17.2px;
+  }
+}
+@media (min-width: 821px) and (max-width: 899px) {
+  .mc-sheet .mc-pill__text {
+    font-size: 16.4px;
   }
 }
 
@@ -1161,4 +1173,25 @@
 }
 [data-theme="dark"] .mc-sheet .mc-logo--mail {
   stroke: #c9d3df;
+}
+
+/* While the timeline is about to be built the stage's drawing is not painted (see
+   `pending` in marcommand-live.tsx): only the box and its shimmer show, so the
+   finished frame never flashes before the opening frame. */
+.mc-sheet__stagewrap[data-pending] .mc-stage__svg,
+.mc-sheet__stagewrap[data-pending] .mc-elara-anchor {
+  visibility: hidden;
+}
+
+/* Phone-composition widths up to 768px: the stage sits on the heading's left edge
+   (it was centred under a left-aligned heading at 768) and its box, with the pause
+   gutter, is capped at the stage's own width so the button stays at the stage's
+   right corner. */
+@media (max-width: 768px) {
+  .mc-sheet .mc-stage {
+    margin-inline: 0;
+  }
+  .mc-sheet .mc-live__stage-card {
+    max-width: 430px;
+  }
 }

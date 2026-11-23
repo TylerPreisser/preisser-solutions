@@ -363,7 +363,12 @@ for (const s of pick("1440x900", "820x1180", "402x874", "320x568")) for (const t
 
 // ---------------------------------------------------------------------------------------- A7
 // Every label of the stage: at least 12 CSS px at 1200px wide and up, at least 11 everywhere else.
-for (const s of pick("1920x1080", "1440x900", "1280x800", "1024x768", "820x1180", "768x1024", "402x874", "320x568")) {
+const EXTRA_WIDTHS = [
+  { name: "769x1024", w: 769, h: 1024 },
+  { name: "899x1024", w: 899, h: 1024 },
+  { name: "834x1194", w: 834, h: 1194 },
+];
+for (const s of [...pick("1920x1080", "1440x900", "1280x800", "1024x768", "820x1180", "768x1024", "402x874", "320x568"), EXTRA_WIDTHS[0], EXTRA_WIDTHS[1]]) {
   await check(`A7 every stage label is at least ${s.w >= 1200 ? 12 : 11}px ${s.name}`, ctxFor(s), async (page) => {
     await boxes(page);
     const r = await page.evaluate(() => {
@@ -409,7 +414,7 @@ async function overlapScan(page, samples, gap = 1500) {
   return hits;
 }
 
-for (const s of pick("1440x900", "820x1180", "402x874", "320x568")) {
+for (const s of [...pick("1440x900", "820x1180", "402x874", "320x568"), EXTRA_WIDTHS[0], EXTRA_WIDTHS[1]]) {
   await check(`A7b no stage label overlaps another label or a dial ${s.name}`, ctxFor(s), async (page) => {
     await boxes(page);
     await scrollStageIntoView(page);
@@ -837,6 +842,137 @@ for (const s of pick("1440x900", "402x874")) {
     assert.ok(r.tk >= 3, `TikTok note contrast ${r.tk.toFixed(2)}:1`);
     assert.ok(r.ml >= 3, `mail envelope contrast ${r.ml.toFixed(2)}:1`);
   }, { theme: "dark" });
+}
+
+// ---------------------------------------------------------------------------------------- WebKit first frame
+// WebKit only (it stands in for the owner's iPhone): when card five opens, the stage must never paint its
+// FINISHED state ($2,850, 40 mi on the phone layout, the heat pump keyword) before the loop has reached it.
+const FLASH_SAMPLER = (durationMs) => new Promise((done) => {
+  const out = [];
+  const t0 = performance.now();
+  let land = null;
+  const tick = (now) => {
+    const t = now - t0;
+    const panel = document.querySelector(".ps-dialog-panel");
+    const svg = panel && panel.querySelector(".mc-sheet .mc-stage svg");
+    if (svg) {
+      if (land === null) land = t;
+      const g = [...svg.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+      const painted = (el) => {
+        if (!el || getComputedStyle(svg).visibility === "hidden" || getComputedStyle(el).visibility === "hidden") return false;
+        let o = 1;
+        for (let n = el; n && n !== svg.parentElement; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity);
+        return o > 0.5;
+      };
+      const val = (id) => { const el = g.querySelector(`[data-mc-value$="-${id}"]`); return el && painted(el) ? el.textContent.trim() : null; };
+      const pill = g.querySelector('[data-mc-pill$="kw-new"] text');
+      out.push({ t, budget: val("budget"), radius: val("radius"), pill: pill && painted(pill) ? "heat pump" : null });
+    }
+    if (t < durationMs) requestAnimationFrame(tick);
+    else done({ samples: out, land });
+  };
+  requestAnimationFrame(tick);
+});
+function flashFailures({ samples, land }) {
+  assert.ok(land !== null, "the stage never appeared");
+  return samples.filter((x) => x.t - land <= 1500 && (x.budget === "$2,850" || x.radius === "40 mi" || x.pill));
+}
+for (const s of [SIZES[7], SIZES[1]]) {
+  await check(`first frame ${s.name} webkit: on opening card five the stage never paints its finished state`, ctxFor(s), async (page) => {
+    const sampling = page.evaluate(FLASH_SAMPLER, 3500);
+    await openSheet(page);
+    const bad = flashFailures(await sampling);
+    assert.equal(bad.length, 0, `${bad.length} frames painted the finished state, first at ${bad[0]?.t.toFixed(0)}ms: ${JSON.stringify(bad[0])}`);
+  }, { noOpen: true, engine: "webkit" });
+}
+await check("first frame 402x874 webkit: five opens in a row on one page load (2nd and 3rd are reuse), none paints the finished state", ctxFor(SIZES[7]), async (page) => {
+  for (let i = 1; i <= 5; i++) {
+    const sampling = page.evaluate(FLASH_SAMPLER, 3500);
+    await openSheet(page);
+    const bad = flashFailures(await sampling);
+    assert.equal(bad.length, 0, `open ${i}: ${bad.length} frames painted the finished state, first ${JSON.stringify(bad[0])}`);
+    await page.keyboard.press("Escape");
+    await page.waitForSelector(".ps-dialog-panel", { state: "detached", timeout: 5000 });
+    await page.waitForTimeout(400);
+  }
+}, { noOpen: true, engine: "webkit" });
+await check("first frame 402x874 webkit: after a delayed stage chunk (2.5s) the stage still never paints its finished state", ctxFor(SIZES[7]), async (page) => {
+  const sampling = page.evaluate(FLASH_SAMPLER, 7000);
+  await openSheet(page);
+  const bad = flashFailures(await sampling);
+  assert.equal(bad.length, 0, `${bad.length} frames painted the finished state after the chunk landed, first ${JSON.stringify(bad[0])}`);
+}, { noOpen: true, engine: "webkit", before: delayStage(2500) });
+
+// ---------------------------------------------------------------------------------------- landscape phones
+// On a phone on its side the sheet drops its picture (it was cropped to fragments in a 96px strip) and the
+// title leads, for all five cards.
+for (const s of [SIZES[SIZES.length - 1], { name: "844x390", w: 844, h: 390, phone: true }]) {
+  await check(`landscape ${s.name}: all five sheets drop the picture, the title leads, the close button clears the title`, ctxFor(s), async (page) => {
+    for (let i = 0; i < 5; i++) {
+      await page.evaluate((idx) => {
+        const b = document.querySelectorAll("#services button.ps-bento-card")[idx];
+        b.scrollIntoView({ block: "center", behavior: "instant" });
+        b.click();
+      }, i);
+      await page.waitForSelector(".ps-dialog-panel.ps-dialog-panel--open", { timeout: 8000 });
+      await page.waitForTimeout(900);
+      const r = await page.evaluate(() => {
+        const panel = document.querySelector(".ps-dialog-panel");
+        const vis = panel.querySelector(".ps-dialog-visual").getBoundingClientRect();
+        const titleEl = panel.querySelector(".ps-dialog-title");
+        const rg = document.createRange();
+        rg.selectNodeContents(titleEl); // the words' own extent, not the full-width block
+        const title = rg.getBoundingClientRect();
+        const close = panel.querySelector("button[aria-label^='Close']").getBoundingClientRect();
+        const p = panel.getBoundingClientRect();
+        return {
+          visH: vis.height, titleTop: title.top - p.top, ch: panel.clientHeight,
+          clash: Math.min(title.right, close.right) - Math.max(title.left, close.left) > 1 && Math.min(title.bottom, close.bottom) - Math.max(title.top, close.top) > 1,
+        };
+      });
+      assert.ok(r.visH <= 1, `card ${i + 1}: the picture is still ${r.visH.toFixed(0)}px tall`);
+      assert.ok(r.titleTop >= 0 && r.titleTop <= 110, `card ${i + 1}: the title starts ${r.titleTop.toFixed(0)}px down`);
+      assert.ok(!r.clash, `card ${i + 1}: the close button overlaps the title`);
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".ps-dialog-panel", { state: "detached", timeout: 5000 });
+      await page.waitForTimeout(300);
+    }
+  }, { noOpen: true });
+}
+
+// ---------------------------------------------------------------------------------------- pills and alignment
+for (const s of [...pick("1440x900", "1024x768", "820x1180"), ...EXTRA_WIDTHS, SIZES[7], SIZES[13]]) {
+  await check(`pill text fits inside its pill with 1.5px each side ${s.name}`, ctxFor(s), async (page) => {
+    await boxes(page);
+    const r = await page.evaluate(() => {
+      const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+      const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+      const bad = [];
+      for (const pill of g.querySelectorAll(".mc-pill")) {
+        const box = pill.querySelector(".mc-pill__box").getBoundingClientRect();
+        const text = pill.querySelector(".mc-pill__text").getBoundingClientRect();
+        if (pill.classList.contains("mc-pill--new")) continue; // enters sliding and scaling; same class and size at rest
+        if (box.width < 5 || text.width < 1) continue;
+        const slack = Math.min(text.left - box.left, box.right - text.right);
+        if (slack < 1.5 && box.width > text.width * 0.5) bad.push(`${pill.textContent.trim()} slack ${slack.toFixed(1)}`);
+      }
+      return bad;
+    });
+    assert.equal(r.length, 0, `pill text touches its edge: ${r.join(", ")}`);
+  });
+}
+for (const s of [pick("768x1024")[0], pick("820x1180")[0], EXTRA_WIDTHS[2]]) {
+  await check(`alignment ${s.name}: the stage and the heading share one left edge (narrow) or the stage spans the sheet (wide)`, ctxFor(s), async (page) => {
+    const r = await page.evaluate(() => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      const h4 = [...panel.querySelectorAll("h4")].find((h) => h.textContent === "MarCommand").getBoundingClientRect();
+      const stage = panel.querySelector(".mc-sheet .mc-stage").getBoundingClientRect();
+      const p = panel.getBoundingClientRect();
+      return { h4: h4.left, stage: stage.left, panel: p.left, stageW: stage.width, panelW: panel.clientWidth };
+    });
+    if (s.w <= 768) assert.ok(Math.abs(r.stage - r.h4) <= 1, `stage left ${r.stage.toFixed(1)} vs heading left ${r.h4.toFixed(1)}`);
+    else assert.ok(Math.abs(r.stage - r.panel) <= 1 && Math.abs(r.stageW - r.panelW) <= 1.5, `wide stage ${r.stage.toFixed(1)} w ${r.stageW.toFixed(1)} vs sheet ${r.panel.toFixed(1)} w ${r.panelW}`);
+  });
 }
 
 await browser.close();

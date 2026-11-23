@@ -7231,12 +7231,17 @@ body:has(.ps-contact2-hero) .ps-header-blur {
   --color-danger: #FF6B81;
 }
 
-/* A phone on its side (about 400px tall): the sheet's picture shrinks so what is
-   under it, MarCommand in card 5, is on the first screen instead of two screens
-   down. Every card's sheet shares this, so the five stay one family. */
+/* A phone on its side (about 400px tall): the sheet drops its picture and the title
+   leads, for all five cards. A 96px strip cropped the pictures to fragments (half a
+   search box, a cut robot), and anything shorter than the picture cannot show a
+   whole one; the picture is decoration (aria-hidden), the card face already shows it.
+   What is under the title, MarCommand in card 5, is then on the first screen. */
 @media (max-height: 500px) and (orientation: landscape) {
   .ps-dialog-panel .ps-dialog-visual {
-    height: 96px !important;
-    min-height: 96px !important;
+    display: none !important;
+  }
+  .ps-dialog-panel .ps-dialog-content {
+    margin-top: 0 !important;
+    padding-top: 22px !important;
   }
 }

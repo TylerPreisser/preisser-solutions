@@ -139,6 +139,24 @@ export function MarCommandStage() {
    */
   const [motion, setMotion] = useState(false);
   const [paused, setPaused] = useState(false);
+  /**
+   * The markup ships in its FINISHED state (reduced motion and Data Saver
+   * visitors get exactly that). For everyone else the timeline is built a
+   * moment after mount, and until then the finished frame would be PAINTED and
+   * then cut to the opening frame with no transition (seen on WebKit: 350 to
+   * 870ms of "$2,850 / 40 mi" every time the card opened). So while a timeline
+   * is going to be built, the stage's drawing is kept out of the paint (the
+   * stage box and its shimmer stay), and it is shown only after the timeline
+   * has wound the drawing to its first frame. Anything that means no timeline
+   * (reduced motion, Data Saver, GSAP failing, no sprite) shows the finished
+   * frame at once, as before.
+   */
+  const [pending, setPending] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+    const c = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    return !c?.saveData;
+  });
 
   const toggleRef = useRef<(() => void) | null>(null);
 
@@ -180,7 +198,10 @@ export function MarCommandStage() {
 
         const anchor = q<HTMLElement>(".mc-elara-anchor");
         const sprite = q<HTMLElement>(".mc-elara");
-        if (!anchor || !sprite) return;
+        if (!anchor || !sprite) {
+          setPending(false);
+          return;
+        }
 
         const setFrame = (n: number) =>
           sprite.style.setProperty("--mc-frame", String(n));
@@ -1407,7 +1428,17 @@ export function MarCommandStage() {
         const register = (variant: Variant) => {
           const tl = build(variant);
           active = tl;
+          /* Run the t=0 callbacks now, not on the first tick of play(). They put
+             the readouts and the lit card back to their OPENING values; the
+             markup ships finished, and a timeline held paused (stage below the
+             fold, or the first frame after it is shown) would otherwise leave
+             "$2,850 / 40 mi" on screen. Forward a hair across 0 with events on,
+             then back to 0 with them off. */
+          tl.time(0.001, false);
+          tl.time(0, true);
           setMotion(true);
+          // The first frame is already set (the timeline is built at t=0): show it.
+          setPending(false);
 
           // The gate (inView) is owned by the observer below, which outlives a
           // composition switch; a fresh timeline starts paused until it says so.
@@ -1484,6 +1515,7 @@ export function MarCommandStage() {
         };
       })
       .catch((err) => {
+        setPending(false);
         // Never drop silently. The markup is already in its end state, so a
         // failed chunk leaves a correct still rather than an invisible section
         // — which is the defect in marcommand-callout.tsx:29, where the missing
@@ -1501,7 +1533,7 @@ export function MarCommandStage() {
   }, []);
 
   return (
-    <div ref={rootRef} className="mc-sheet__stagewrap">
+    <div ref={rootRef} className="mc-sheet__stagewrap" data-pending={pending ? "" : undefined}>
         <div className="mc-live__stage-card mc-sheet__stage">
           {/*
             >> THE FUNNEL IS REMOVED, ON THE OWNER'S INSTRUCTION: "remove this
@@ -1523,7 +1555,7 @@ export function MarCommandStage() {
             same way `RevenueVisual` is kept in `card-visuals.tsx`. Do
             not re-wire it without asking him.
           */}
-          <div className="mc-stage">
+          <div className={pending ? "mc-stage mc-stage--loading" : "mc-stage"}>
             <MarCommandLiveStage />
 
             {/* Elara is an overlay div, not an SVG node, so he can be sized in
