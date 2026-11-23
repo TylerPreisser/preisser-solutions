@@ -3861,115 +3861,22 @@ ul, ol {
   color: var(--color-text-dark-muted-text);
 }
 
-.ps-footer-signup {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 280px;
-}
-
-.ps-footer-signup-heading {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 0.02em;
-}
-
-/* wrap is the safety net, not the fix. If the button and a usable input ever
-   stop fitting on one line, the button drops to a second row instead of being
-   clipped away by the mobile overflow-x guard. */
-.ps-footer-signup-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* The newsletter field's visible label (SC 3.3.2 — the placeholder used to be
-   the only thing naming it, and a placeholder vanishes as soon as you type).
-   `flex-basis:100%` drops it onto its own row above the input+button pair.
-   Colours are the SAME pair .ps-footer-signup-heading already uses, so the
-   label sits in the established footer hierarchy rather than introducing a
-   third tone: sampled 9.22:1 on the dark footer and 7.19:1 on the light one. */
-.ps-footer-signup-label {
-  flex-basis: 100%;
-  margin: 0 0 2px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1.4;
-  color: rgba(255,255,255,0.7);
-}
-
-/* THE FIX.
-
-   `flex: 1` is `flex: 1 1 0%`, so this input is supposed to shrink to fit. It
-   could not, because a flex item's default `min-width: auto` floors it at its
-   intrinsic minimum, and for an <input> that floor is the engine's own default
-   field size. Measured at one viewport: 207px on chromium, 246px on firefox,
-   261px on WebKit. At 320, 360 and 375x667 the row then exceeded its container
-   and the Subscribe button was clipped out of existence by the
-   `overflow-x: hidden` guard on the six mobile sections.
-
-   `min-width: 0` releases that automatic floor so `flex: 1` can do what it
-   already said. It is engine independent, which matters because the engine
-   dependent intrinsic sizing is the whole cause: any fixed width chosen to suit
-   one engine would still break another. Nothing here is a magic number. */
-.ps-footer-signup-input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  font-size: 0.875rem;
-  outline: none;
-  transition: border-color 200ms ease;
-}
-
-/* 0.35 sampled 3.12:1 against the composited field — rgb(104,112,123) glyph on
-   rgb(24,36,53), which is the input's own rgba(255,255,255,0.06) over the
-   #0A1628 footer. Note the DECLARED value is not measurable here: a
-   half-transparent colour on a half-transparent background computes to a
-   meaningless 1.00:1, so this was set from rendered pixels. 0.5 samples
-   4.99:1 and still reads as secondary against the field's solid #fff text. */
-.ps-footer-signup-input::placeholder {
-  color: rgba(255,255,255,0.5);
-}
-
-.ps-footer-signup-input:focus {
-  border-color: var(--color-primary);
-}
-
-.ps-footer-signup-btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  background: var(--color-primary-strong);
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background 200ms ease;
-  white-space: nowrap;
-}
-
-.ps-footer-signup-btn:hover {
-  background: var(--color-primary-strong-hover);
-}
-
-.ps-footer-signup-success {
-  font-size: 0.875rem;
-  color: #00D4AA;
+/* The brand is the footer's only column, so above the phone layout it sits on
+   the page's centre line instead of leaving the right half empty. */
+@media (min-width: 641px) {
+  .ps-footer-main {
+    justify-content: center;
+  }
+  .ps-footer-brand {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 640px) {
   .ps-footer-main {
     flex-direction: column;
     gap: 32px;
-  }
-  .ps-footer-signup {
-    min-width: 0;
-    width: 100%;
   }
   /* Fix #12: Ensure logo/brand stays left-aligned on mobile */
   .ps-footer-brand {
@@ -4106,29 +4013,6 @@ ul, ol {
 
 [data-theme="light"] .ps-footer-social a:hover {
   color: var(--theme-accent-text);
-}
-
-[data-theme="light"] .ps-footer-signup-heading,
-[data-theme="light"] .ps-footer-signup-label {
-  color: #4A5568;
-}
-
-[data-theme="light"] .ps-footer-signup-input {
-  background: #FFFFFF;
-  border-color: #D1D5DB;
-  color: #1A1A1A;
-}
-
-/* #9CA3AF sampled 2.54:1 on the field's #FFFFFF. #6B7280 samples 4.83:1 and is
-   the next step down the same neutral ramp, so it stays clearly secondary to
-   the field's #1A1A1A text. Scoped to this one selector — the rest of the
-   light theme measured correct and is not touched. */
-[data-theme="light"] .ps-footer-signup-input::placeholder {
-  color: #6B7280;
-}
-
-[data-theme="light"] .ps-footer-signup-input:focus {
-  border-color: var(--color-primary);
 }
 
 /* ── Reduced Motion ────────────────────────────────────────── */
@@ -6549,7 +6433,6 @@ html, body {
 .ps-btn-primary,
 .ps-btn-primary-dark,
 .ps-header-cta,
-.ps-footer-signup-btn,
 .ps-skip-link,
 .ps-dialog-cta-btn {
   color: #FFFFFF;
@@ -6603,19 +6486,14 @@ details > summary {
   align-items: center;
 }
 
-/* Honeypot fields are visually hidden spam traps — they must NOT be
+/* The honeypot field is a visually hidden spam trap — it must NOT be
    given a touch target, and must stay out of the tab order. */
-input#footer-website,
 input#contact-website {
   min-height: 0;
 }
 
-/* Real form inputs measured 31px (pre-fix; the rationale for this rule).
-   Post-fix re-measurement 2026-09-05: the footer signup input renders
-   46px tall at all 20 viewports tested, clearing the 24px SC 2.5.8
-   floor. Retained below the 44px target by design. */
-.ps-footer-signup-input,
-.ps-contact-form input:not([type="hidden"]):not(#contact-website):not(#footer-website),
+/* Real form inputs measured 31px (pre-fix; the rationale for this rule). */
+.ps-contact-form input:not([type="hidden"]):not(#contact-website),
 .ps-contact-form select,
 .ps-contact-form textarea {
   min-height: 44px;
@@ -7204,38 +7082,6 @@ body:has(.ps-contact2-hero) .ps-header-blur {
   .ps-bento-card--web { min-height: 380px; }
 }
 
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FOOTER SIGNUP ERROR TEXT — dark theme only
-   WCAG 2.2 SC 1.4.3 Contrast (Minimum), Level AA. 0.875rem/400 = normal text,
-   so the bar is 4.5:1.
-
-   `#footer-signup-error` (footer.tsx) is styled INLINE with
-   `color: var(--color-danger)`. `--color-danger: #DF1B41` (globals.css:81) is
-   a single value, not a per-theme pair: it clears AA on the light footer but
-   measures 3.74:1 on the dark footer's `--color-dark: #0A1628` (globals.css:68
-   / .ps-footer:4222). The newsletter lane found this, declined to guess a
-   colour, and left the note at footer.tsx:256-263. This is that fix.
-
-   Overriding the CUSTOM PROPERTY rather than `color` is deliberate, and it is
-   why no `!important` is needed. The inline style sets `color`, so any
-   `color` rule here would lose to it; but the inline style does NOT set
-   `--color-danger`, so a stylesheet declaration of that property on the same
-   element wins normally and the inline `var()` resolves to it. No specificity
-   war, and the value stays a token rather than a hardcoded colour at the use
-   site.
-
-   Scoped to the element, so `--color-danger` is unchanged everywhere else --
-   including the border-colour uses at globals.css:5099/5103 and the contact
-   form's own error at :5107, which sits on a different background and is not
-   in scope here.
-
-   #FF6B81 keeps the crimson hue and measures 6.62:1 on #0A1628. Dark theme
-   only: the light footer already passes and is deliberately not touched.
-   ═══════════════════════════════════════════════════════════════════════════ */
-[data-theme="dark"] #footer-signup-error {
-  --color-danger: #FF6B81;
-}
 
 /* A phone on its side (about 400px tall): the sheet drops its picture and the title
    leads, for all five cards. A 96px strip cropped the pictures to fragments (half a

@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom web application cost?",
       answer:
-        "Custom application pricing varies with scope. Focused internal tools typically run in the mid-five-figure range. More substantial applications with multiple integrations, complex business logic, or AI features scale from there. Tyler provides a fixed-price proposal upfront so there are no surprise costs. Contact tyler@preissersolutions.com for a free scoping conversation.",
+        "Custom application pricing varies with scope. Focused internal tools are the smaller scopes. More substantial applications with multiple integrations, complex business logic, or AI features scale from there. Tyler provides a written proposal with your monthly price before you commit, so there are no surprise costs. Contact tyler@preissersolutions.com for a free scoping conversation.",
     },
     {
       question: "Will the application integrate with our existing software (QuickBooks, ServiceTitan, etc.)?",
@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you provide ongoing support after the application launches?",
       answer:
-        "Yes. Every application launch includes 30 days of post-launch support. Most clients then move to an ongoing maintenance retainer that covers bug fixes, security patches, performance monitoring, and incremental feature work as needed.",
+        "Yes. Support continues after launch as part of the monthly service. Every solution needs ongoing maintenance, so bug fixes, security patches, performance monitoring, and incremental feature work are covered by the monthly price.",
     },
     {
       question: "Can you take over an existing application that another developer started?",
@@ -169,5 +169,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build the application your business actually needs",
   ctaSubcopy:
-    "Free scoping conversation, fixed-price proposal, direct work with the founder.",
+    "Free scoping conversation, a written proposal with your monthly price, direct work with the founder.",
 };

@@ -148,16 +148,16 @@ function isPageRequest(pathname: string) {
  * content-negotiation concern. A canonical-host 301 on `/api/*` silently
  * destroys form submissions, because a 301 does two fatal things to a POST:
  *
- *   1. The browser CORS-rejects the cross-origin hop. The footer signup posts
+ *   1. The browser CORS-rejects the cross-origin hop. The contact form posts
  *      `content-type: application/json`, which is not a CORS-safelisted value,
- *      and `/api/subscribe` emits no `Access-Control-Allow-Origin`, so the
+ *      and `/api/contact` emits no `Access-Control-Allow-Origin`, so the
  *      redirected request fails before it is ever handled.
  *   2. If it were followed, Fetch §4.4 (HTTP-redirect fetch, step 11) rewrites
  *      POST to GET and drops the body on a 301. That GET lands on the method
- *      dispatcher in `functions/api/subscribe.ts` and shows the visitor the
+ *      dispatcher in `functions/api/contact.ts` and shows the visitor the
  *      literal string "Method not allowed."
  *
- * Either way the address is lost. Verified against production 2026-09-05:
+ * Either way the message is lost. Verified against production 2026-09-05:
  *   curl -X POST https://www.preissersolutions.com/api/contact \
  *     -H 'content-type: application/json' --data '{}'
  *   -> HTTP/2 301  location: https://preissersolutions.com/api/contact
@@ -291,9 +291,9 @@ export const onRequest = async (context: MiddlewareContext) => {
     return redirectToCanonical(url);
   }
 
-  // `isPageRequest("/api/subscribe")` is TRUE on its own — the last segment has
+  // `isPageRequest("/api/contact")` is TRUE on its own — the last segment has
   // no dot — so without the API guard an `Accept: text/markdown` POST to the
-  // signup endpoint is answered with the contents of /llms.txt and the address
+  // contact endpoint is answered with the contents of /llms.txt and the message
   // is discarded. Same failure mode as the 301 above, different door.
   if (
     acceptsMarkdown(context.request) &&

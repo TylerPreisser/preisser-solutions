@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
         "IndexNow integration (instant search engine notification on content changes)",
         "WCAG accessibility compliance (semantic HTML, ARIA labels, reduced-motion support)",
         "Contact forms with spam protection (honeypot + timing checks)",
-        "Static export to Cloudflare Pages: global edge distribution, no monthly hosting fees beyond CDN",
+        "Static export to Cloudflare Pages: global edge distribution",
         "Custom domain configuration including DNS, SSL, and CDN setup",
         "Analytics integration (privacy-respecting; no Google Analytics required)",
       ],
@@ -75,10 +75,10 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Free scoping call: We talk through what you're trying to accomplish, what's broken, what your competition looks like, and what success looks like.",
-        "Written proposal: fixed-scope, fixed-price proposal with a clear delivery timeline and what's included.",
+        "Written proposal: the scope, a clear delivery timeline, what's included, and your monthly price.",
         "Build: We code the site directly. Weekly check-ins with working previews; you see real progress, not Photoshop mockups.",
         "Launch: DNS cutover, SSL, search engine verification, IndexNow ping, and a structured launch checklist that ensures nothing breaks.",
-        "Support: included for the first 30 days, with optional ongoing maintenance retainer afterward.",
+        "Support: ongoing maintenance and support as part of the monthly service.",
       ],
     },
     {
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Kansas?",
       answer:
-        "Custom website pricing at Preisser Solutions depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Because Preisser Solutions builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
+        "Custom website pricing at Preisser Solutions depends on scope and complexity. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price. Because Preisser Solutions builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
     },
     {
       question: "How long does a custom website take to build?",
@@ -148,7 +148,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you offer ongoing website support?",
       answer:
-        "Yes. Every custom website launch includes 30 days of post-launch support at no additional cost. After that, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching.",
+        "Yes. Support continues after launch as part of the monthly service. Every solution needs ongoing maintenance, so updates, performance monitoring, security patching and improvements to what we built are covered by the monthly price.",
     },
     {
       question: "Can you fix or rebuild my existing broken website?",

@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Applications in Wichita, KS",
   metaDescription:
-    "Custom web applications (dashboards, internal tools, client portals, CRMs): built for Wichita, Kansas businesses. Fixed-price proposals.",
+    "Custom web applications (dashboards, internal tools, client portals, CRMs): built for Wichita, Kansas businesses. Delivered as an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Dashboards, internal tools, client portals, and custom CRMs purpose-built for Wichita's aerospace, manufacturing, and healthcare operations.",
     answerParagraph:
-      "Preisser Solutions builds custom web applications for businesses in Wichita, Kansas: internal tools, operational dashboards, client portals, and custom CRMs engineered for the specific workflows of Wichita's dominant industries: aerospace and aviation supply chain, manufacturing, healthcare, and financial services. Full code ownership, fixed-price proposals, modern stack.",
+      "Preisser Solutions builds custom web applications for businesses in Wichita, Kansas: internal tools, operational dashboards, client portals, and custom CRMs engineered for the specific workflows of Wichita's dominant industries: aerospace and aviation supply chain, manufacturing, healthcare, and financial services. Full code ownership, a written proposal with your monthly price, modern stack.",
   },
 
   nearbyAreas: [
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Wichita aerospace and manufacturing operations need custom web tools, not off-the-shelf software that doesn't fit the workflow.",
     "Every application is built in Next.js, React, and TypeScript. Full code ownership transferred at launch.",
-    "Fixed-price proposals ensure no scope creep. Milestones visible to you every Friday.",
+    "A written proposal keeps the scope clear. Milestones visible to you every Friday.",
   ],
 
   industriesServed: [
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "How long does a custom web application take to build?",
       answer:
-        "Most custom web applications take 4-12 weeks depending on scope. Scope, timeline, and cost are all agreed in a fixed-price proposal before work begins.",
+        "Most custom web applications take 4-12 weeks depending on scope. Scope, timeline, and your monthly price are all agreed in a written proposal before work begins.",
     },
     {
       question: "Do Wichita businesses own the code after the project is done?",
@@ -86,14 +86,14 @@ export const locationData: LocationPageData = {
     {
       question: "Can you integrate a custom Wichita web app with existing systems?",
       answer:
-        "Yes. Integration with existing databases, ERPs, CRMs, and third-party APIs is standard. All integrations are scoped and priced up front.",
+        "Yes. Integration with existing databases, ERPs, CRMs, and third-party APIs is standard. All integrations are scoped in the proposal before work begins.",
     },
   ],
 
   cta: {
     headline: "Ready to build a custom web application in Wichita?",
     subcopy:
-      "Book a free scoping call. We will map your workflow and spec a fixed-price proposal.",
+      "Book a free scoping call. We will map your workflow and send a written proposal with your monthly price.",
     primaryButton: { label: "Start a project", href: "/contact" },
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },

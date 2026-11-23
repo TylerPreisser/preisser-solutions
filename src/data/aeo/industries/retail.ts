@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom Shopify theme cost?",
       answer:
-        "Custom Shopify themes typically run in the low-to-mid five figures depending on scope. Full custom Next.js commerce scopes from there. We provide a fixed-price proposal after a free discovery call.",
+        "Pricing depends on scope, from a custom Shopify theme to full custom Next.js commerce. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "Will custom commerce really beat my current Shopify theme?",
@@ -133,5 +133,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop using the same Shopify theme as 5,000 other brands",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your stack, identify the highest-ROI build, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI build, and send a written proposal with your monthly price.",
 };

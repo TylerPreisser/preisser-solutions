@@ -818,7 +818,7 @@ export function CaseStudies() {
 
   const warm = useCallback((slug: ShowcaseSlug) => {
     loadShowcaseLayer().then((m) => setShowcaseLayer(() => m.default), () => {});
-    warmShowcase(slug);
+    warmShowcase(slug, true);
     // Warm the connection to the client's live site (spec §3.3 idle): a preconnect only, no frame yet.
     loadShowcase(slug)
       .then((c) => {

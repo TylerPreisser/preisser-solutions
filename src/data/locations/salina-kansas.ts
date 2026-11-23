@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for central Kansas: at the I-70 and I-135 crossroads.",
     answerParagraph:
-      "Preisser Solutions serves Salina, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half west on I-70): we deliver remotely and travel for projects of sufficient scope. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves Salina, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half west on I-70): we deliver remotely and travel for projects of sufficient scope. Custom code, a written proposal with your monthly price, full ownership.",
   },
 
   nearbyAreas: [

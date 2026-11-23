@@ -146,7 +146,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does an HVAC automation project cost?",
       answer:
-        "Focused projects (one website, one marketing automation engine, one reactivation flow) typically run in the low five figures. Larger multi-system builds (custom dispatch tools, full owner dashboards, AI customer service agents) scope from there. We always provide a fixed-price proposal after a free discovery call so you know the number before you commit.",
+        "Focused projects (one website, one marketing automation engine, one reactivation flow) scope by size. Larger multi-system builds (custom dispatch tools, full owner dashboards, AI customer service agents) scope from there. After a free discovery call, the proposal states your monthly price so you know it before you commit.",
     },
     {
       question: "How long does an HVAC project take?",
@@ -212,5 +212,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop bleeding revenue between the seams of your HVAC software",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send you a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a written proposal with your monthly price.",
 };

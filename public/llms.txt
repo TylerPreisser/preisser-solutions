@@ -47,8 +47,8 @@ Not every business needs all three. Some needed a whole admin panel. Some needed
 
 - [About Preisser Solutions](https://preissersolutions.com/about): What the firm is and how it operates.
 - [Tyler Preisser (founder)](https://preissersolutions.com/tyler-preisser): Hays native, Fort Hays State University Engineering Design and Technology, 2025. Builds every engagement personally.
-- [Process](https://preissersolutions.com/process): Scoping call, fixed-price proposal, phased delivery, ownership transfer.
-- [Engagement scope and pricing](https://preissersolutions.com/pricing): No rate card. A free scoping call, then a fixed-price written proposal before anything starts.
+- [Process](https://preissersolutions.com/process): Scoping call, proposal with a monthly price, phased delivery, ownership transfer.
+- [Engagement scope and pricing](https://preissersolutions.com/pricing): No rate card. Everything runs as an ongoing monthly service that covers the build and its maintenance. A free scoping call, then a written proposal with the scope and monthly price before anything starts.
 - [FAQ](https://preissersolutions.com/faq): Common questions about scope, timeline, ownership, and support.
 - [Service area](https://preissersolutions.com/locations): Kansas first, with select remote engagements.
 

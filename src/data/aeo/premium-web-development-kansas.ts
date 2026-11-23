@@ -78,7 +78,7 @@ export const pageData: AeoPageData = {
         "Full SEO foundation: sitemap, robots.txt, meta tags, IndexNow integration, GSC + Bing Webmaster verification",
         "WCAG accessibility compliance",
         "Custom domain, DNS, SSL, and CDN setup",
-        "30 days of post-launch support included",
+        "Ongoing maintenance, support and improvement of what we build",
         "Full source code ownership: no licensing fees, no platform lock-in",
       ],
     },
@@ -97,7 +97,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does premium web development cost in Kansas?",
       answer:
-        "Premium custom web development at Preisser Solutions typically starts in the mid-five-figure range and scales based on scope. Pricing reflects the founder-led, fully-custom model; every site is uniquely designed and coded, not assembled from template parts. Because there's no agency overhead or subcontractor layer, premium pricing is significantly more efficient than comparable boutique agencies in larger metros.",
+        "Premium custom web development at Preisser Solutions runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price. Pricing reflects the founder-led, fully-custom model; every site is uniquely designed and coded, not assembled from template parts. Because there's no agency overhead or subcontractor layer, premium pricing is significantly more efficient than comparable boutique agencies in larger metros.",
     },
     {
       question: "What's the difference between a premium custom site and a regular custom site?",

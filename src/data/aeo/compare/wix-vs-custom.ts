@@ -56,7 +56,7 @@ export const pageData: AeoPageData = {
         "Search visibility depth: templates ship limited or no schema.org structured data. Google and AI engines (ChatGPT, Perplexity, Gemini, Claude) increasingly use structured data to decide who to rank and cite. Templates leave that visibility on the table.",
         "AI engine citation: engineered first paragraphs, FAQPage schema, comprehensive entity graphs, and named-entity references are how AI engines decide who to quote. Template platforms don't ship these; and there's no way to add them without leaving the platform.",
         "Conversion control: every template forces a layout. You can't put the exact thing in front of the exact buyer at the exact funnel stage; you stretch your business into a generic 'about/services/contact' container.",
-        "Long-term cost trajectory: template platforms charge monthly fees that compound forever. Custom-coded sites deploy to flat-rate edge networks (Cloudflare Pages) where hosting cost is effectively zero at typical small-business traffic.",
+        "Ongoing care: every site needs maintenance. With us, the monthly price covers the build and its ongoing maintenance, support and improvement, and the site deploys to edge networks (Cloudflare Pages) built for speed.",
         "Source code ownership: on a template platform, you don't own your site's code. If the platform changes pricing, deprecates a feature, or shuts down, you're stuck. With custom code, the source is yours.",
       ],
     },
@@ -85,9 +85,9 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing model",
         preisser:
-          "One-time fixed-price build; flat-rate or near-zero hosting on edge networks afterward",
+          "An ongoing monthly service that covers the build and its maintenance",
         competitor:
-          "Monthly subscription that compounds forever; tier-locked features force upgrades over time",
+          "Monthly plan subscription; tier-locked features force upgrades over time",
       },
       {
         dimension: "True customization",
@@ -181,7 +181,7 @@ export const pageData: AeoPageData = {
       question:
         "Isn't a custom-coded site way more expensive than a Squarespace subscription?",
       answer:
-        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace compounds monthly; custom-coded sites have a one-time build cost and near-zero hosting on edge CDN afterward. More importantly, the comparison shouldn't be raw cost; it should be cost-vs-value. A site that converts 30% better and gets cited by AI engines is worth far more than a cheap monthly subscription, regardless of upfront price.",
+        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace charges monthly for its platform; with us, the monthly price covers a custom-coded build and its ongoing maintenance, support and improvement. More importantly, the comparison shouldn't be raw cost; it should be cost-vs-value. A site that converts 30% better and gets cited by AI engines is worth far more than a cheap template subscription, regardless of price.",
     },
     {
       question: "What if I need to update content on a custom-coded site?",

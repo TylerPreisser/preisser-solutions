@@ -47,7 +47,7 @@ const get = (url, headers = {}) => new Request(url, { method: "GET", headers });
 
 console.log("\n=== API ROUTES ON DUPLICATE HOSTS MUST REACH THE FUNCTION ===");
 for (const host of ["www.preissersolutions.com", "preisser-solutions.pages.dev"]) {
-  for (const p of ["/api/subscribe", "/api/contact"]) {
+  for (const p of ["/api/contact"]) {
     await check(`POST https://${host}${p} -> passes through (no 301)`, async () => {
       const res = await onRequest(ctx(post(`https://${host}${p}`)));
       assert.notEqual(res.status, 301, `got 301 -> ${res.headers.get("location")}`);
@@ -57,13 +57,13 @@ for (const host of ["www.preissersolutions.com", "preisser-solutions.pages.dev"]
     });
   }
 }
-await check("POST apex /api/subscribe -> passes through (unchanged)", async () => {
-  const res = await onRequest(ctx(post("https://preissersolutions.com/api/subscribe")));
+await check("POST apex /api/contact -> passes through (unchanged)", async () => {
+  const res = await onRequest(ctx(post("https://preissersolutions.com/api/contact")));
   assert.equal(res.status, 200);
   assert.equal(nextCalled, 1);
 });
-await check("Accept: text/markdown POST /api/subscribe -> NOT llms.txt", async () => {
-  const res = await onRequest(ctx(post("https://preissersolutions.com/api/subscribe", { accept: "text/markdown" })));
+await check("Accept: text/markdown POST /api/contact -> NOT llms.txt", async () => {
+  const res = await onRequest(ctx(post("https://preissersolutions.com/api/contact", { accept: "text/markdown" })));
   assert.equal(nextCalled, 1, "must reach the API, not serveMarkdownForAgents");
   assert.notEqual(res.headers.get("content-location"), "/llms.txt");
 });
@@ -91,7 +91,7 @@ await check("a path merely CONTAINING 'api' still redirects (/apiary)", async ()
   assert.equal(res.headers.get("location"), "https://preissersolutions.com/apiary");
 });
 await check("legacy host /api/ is NOT exempted (preissertech.com still 301s)", async () => {
-  const res = await onRequest(ctx(get("https://preissertech.com/api/subscribe")));
+  const res = await onRequest(ctx(get("https://preissertech.com/api/contact")));
   assert.equal(res.status, 301);
 });
 await check("robots.txt on www still served, not redirected", async () => {

@@ -48,7 +48,7 @@ export const pageData: AeoPageData = {
         "AI search optimization: Squarespace doesn't ship engineered first paragraphs or comprehensive FAQ schema",
         "Custom features: anything beyond Squarespace's plugin marketplace requires workarounds or breaks",
         "Conversion control: Squarespace forces template-driven layouts; custom code doesn't",
-        "Long-term cost: Squarespace charges monthly forever; custom sites on Cloudflare Pages have minimal long-term hosting cost",
+        "Ongoing care: your monthly price covers the build and its ongoing maintenance, support and improvement",
         "True ownership: custom code is yours; Squarespace sites live on their platform",
       ],
     },
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "SEO foundation", preisser: "Full schema.org markup, FAQ schema, LocalBusiness, Person, Organization", competitor: "Basic SEO settings; structured data limited to template defaults" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, comprehensive FAQPage schema", competitor: "Not specifically engineered for AI search citation" },
       { dimension: "Custom features", preisser: "Any feature can be built: automation, AI integration, custom workflows", competitor: "Limited to Squarespace's plugin marketplace; custom features break or require workarounds" },
-      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting cost on Cloudflare Pages", competitor: "Monthly subscription that compounds indefinitely; plan tiers force upgrades over time" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Monthly plan subscription; plan tiers force upgrades over time" },
       { dimension: "Long-term cost (5 years)", preisser: "Build cost + near-zero ongoing hosting on Cloudflare Pages free tier for most sites", competitor: "Subscription fees compound over 5 years before add-ons" },
       { dimension: "Ownership", preisser: "You own the code; can be hosted anywhere", competitor: "Hosted on Squarespace; site lives on their platform" },
       { dimension: "Time to launch", preisser: "3-8 weeks for a custom build", competitor: "Hours to days for a template-based site" },
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost vs. Squarespace?",
       answer:
-        "Custom websites are a one-time build investment. Squarespace is a recurring monthly subscription. Over 5 years, total cost is often comparable; over 10 years, custom is significantly more efficient. Free scoping call to get a specific proposal for your situation.",
+        "A custom website from us runs as an ongoing monthly service that covers the build and its maintenance. Squarespace is a recurring monthly subscription. Over 5 years, total cost is often comparable; over 10 years, custom is significantly more efficient. Free scoping call to get a specific proposal for your situation.",
     },
     {
       question: "Will my Squarespace site get cited by ChatGPT?",

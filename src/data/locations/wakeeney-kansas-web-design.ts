@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Trego County operators along I-70 in western Kansas.",
     answerParagraph:
-      "Preisser Solutions serves WaKeeney, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly 37 miles east on I-70): we deliver locally and remotely. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves WaKeeney, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly 37 miles east on I-70): we deliver locally and remotely. Custom code, a written proposal with your monthly price, full ownership.",
   },
 
   nearbyAreas: [

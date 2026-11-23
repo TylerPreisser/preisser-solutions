@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web design, web applications, and AI automation for Omaha's finance, insurance, agriculture, and technology markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
-      "Preisser Solutions is a Kansas-based custom software firm serving Omaha, Nebraska businesses remotely, with on-site travel for material engagements. Omaha is a Douglas County metro of approximately 480,000, anchored by finance and insurance (Berkshire Hathaway, Union Pacific headquarters), telecommunications, agriculture, and healthcare. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions is a Kansas-based custom software firm serving Omaha, Nebraska businesses remotely, with on-site travel for material engagements. Omaha is a Douglas County metro of approximately 480,000, anchored by finance and insurance (Berkshire Hathaway, Union Pacific headquarters), telecommunications, agriculture, and healthcare. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Omaha projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

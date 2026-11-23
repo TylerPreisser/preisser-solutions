@@ -131,7 +131,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price healthcare software projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and total cost are agreed before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins.",
     },
   ],
 

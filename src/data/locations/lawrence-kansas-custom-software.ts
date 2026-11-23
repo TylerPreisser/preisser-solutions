@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Lawrence, KS Custom Software",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Lawrence, Kansas businesses: fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Lawrence, Kansas businesses: an ongoing monthly service, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Lawrence's University of Kansas community, startups, and professional-services market.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses in Lawrence, Kansas, a Douglas County city of approximately 95,000 and home to the University of Kansas. Lawrence's economy features education, healthcare, technology startups, and creative industries. Custom web applications, internal tools, research portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses in Lawrence, Kansas, a Douglas County city of approximately 95,000 and home to the University of Kansas. Lawrence's economy features education, healthcare, technology startups, and creative industries. Custom web applications, internal tools, research portals, and AI automation are the core offering. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the typical project timeline for a Lawrence custom software build?",
       answer:
-        "Most custom web applications take 4-12 weeks depending on scope. Scope, timeline, and cost are all agreed in a fixed-price proposal before work begins.",
+        "Most custom web applications take 4-12 weeks depending on scope. Scope, timeline, and your monthly price are all agreed in a written proposal before work begins.",
     },
   ],
 

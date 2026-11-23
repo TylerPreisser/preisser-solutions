@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom multi-agent engine cost?",
       answer:
-        "Pricing depends on scope. Focused builds (one or two agent specializations) run low-to-mid five figures. Comprehensive multi-agent engines (5+ specialized agents) run mid-to-high five figures. Fixed-price proposal after free scoping.",
+        "Pricing depends on scope. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price.",
     },
     {
       question: "How long does the build take?",

@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom automation code in TypeScript/Node.js or Python", competitor: "Hosted no-code automation platform with visual scenario builder" },
       { dimension: "Best for", preisser: "Production-scale workflows, complex logic, compliance", competitor: "Medium-complexity automations, iterators, branching logic" },
-      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Per-operation pricing scaling with operation volume" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Per-operation pricing scaling with operation volume" },
       { dimension: "Long-term cost (5 years, 100k ops/month)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees as volume grows" },
       { dimension: "Complex logic", preisser: "Any logic: code can do anything", competitor: "Iterators, aggregators, routers, code modules; complex logic possible but hits walls" },
       { dimension: "Error handling", preisser: "Custom: exactly the retry, dead-letter, and alerting logic you need", competitor: "Error handlers built in; less flexible than custom for complex cases" },

@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom dashboard cost?",
       answer:
-        "Cost depends on data sources and complexity. A focused single-system dashboard typically delivers in the low five figures. Multi-system dashboards combining 4-8 data sources scale from there. We provide fixed-price proposals after a free scoping conversation.",
+        "Cost depends on data sources and complexity. A focused single-system dashboard is the smaller scope. Multi-system dashboards combining 4-8 data sources scale from there. After a free scoping conversation, the proposal states your monthly price.",
     },
     {
       question: "Will my dashboard update automatically?",
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does the dashboard need ongoing maintenance?",
       answer:
-        "Minimal. Once built, dashboards run autonomously. The only ongoing work is when business systems change (new fields in QuickBooks, ServiceTitan version updates, new metrics you want to track). Preisser Solutions offers optional maintenance retainers that handle these updates as needed.",
+        "Minimal. Once built, dashboards run autonomously. The only ongoing work is when business systems change (new fields in QuickBooks, ServiceTitan version updates, new metrics you want to track). Those updates are covered by the monthly service, because every solution needs ongoing maintenance.",
     },
     {
       question: "Can you build dashboards for industries like oil and gas or healthcare?",

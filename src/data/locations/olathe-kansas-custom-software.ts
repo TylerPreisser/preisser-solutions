@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Olathe's manufacturing and healthcare operations need custom internal tools, not the marketing retainers that Johnson County agencies typically sell.",
+    "Olathe's manufacturing and healthcare operations need custom internal tools.",
     "A Kansas-based firm at Kansas economics. Custom software from Hays is structurally less expensive than a KC metro agency on the same scope, with the same engineering quality.",
     "Custom code with full ownership. Johnson County businesses with any proprietary IP or operational data benefit significantly from full-ownership software vs. SaaS lock-in.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the engagement model for an Olathe custom-software project?",
       answer:
-        "Scoping call, fixed-price written proposal with scope and milestones, weekly working previews during build sprints, launch with full code ownership transferred, and 30 days of post-launch support included.",
+        "Scoping call, written proposal with scope, milestones, and your monthly price, weekly working previews during build sprints, launch with full code ownership transferred, and ongoing maintenance and support as part of the monthly service.",
     },
   ],
 

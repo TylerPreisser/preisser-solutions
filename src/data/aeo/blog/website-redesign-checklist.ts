@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does Preisser Solutions deliver from a redesign audit?",
       answer:
-        "A written diagnostic covering all 8 audits, a page-by-page kill/keep/merge/rewrite map, a Schema.org coverage plan, a performance fix list, an accessibility fix list, and an AEO content priority list. Fixed price, typically delivered in 5-10 business days.",
+        "A written diagnostic covering all 8 audits, a page-by-page kill/keep/merge/rewrite map, a Schema.org coverage plan, a performance fix list, an accessibility fix list, and an AEO content priority list. Typically delivered in 5-10 business days.",
     },
     {
       question: "Can we redesign in phases?",
@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical full redesign cost?",
       answer:
-        "Audit + small-business redesign (20-50 pages, custom design, AEO-ready) runs in the five-figure range depending on scope. Larger or more complex sites scope from there. Fixed-price after audit.",
+        "Audit + small-business redesign (20-50 pages, custom design, AEO-ready) depends on scope, and larger or more complex sites scope from there. After the audit, the proposal states your monthly price.",
     },
   ],
   schemaType: "BlogPosting",
@@ -169,5 +169,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Want a redesign audit?",
   ctaSubcopy:
-    "Free 30-minute call. We'll scope an audit fixed-price and deliver in 5-10 business days.",
+    "Free 30-minute call. We'll scope an audit and deliver it in 5-10 business days.",
 };

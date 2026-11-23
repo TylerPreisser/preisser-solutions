@@ -133,7 +133,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price oil and gas software projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and total cost are agreed before work begins. No open-ended retainers.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins.",
     },
   ],
 

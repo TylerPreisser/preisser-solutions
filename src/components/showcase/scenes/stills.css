@@ -97,6 +97,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  transition: opacity var(--stw-fade, 280ms) linear;
 }
 .stw-amb img {
   position: absolute;
@@ -115,8 +116,23 @@
 .stw-screen {
   z-index: 1;
 }
-/* The stage is measured but the word boxes are not in yet: the first view waits, so it never jumps. */
-.stw[data-framing="waiting"] .stw-screen {
+/* The film's first still has not arrived yet: the card shows its inline preview (soft, never blank) and the still
+   fades in over it once decoded; the blurred ground around the card waits for it too. */
+.stw[data-loading] .stw-amb,
+.stw[data-bare] .stw-screen {
+  opacity: 0;
+}
+.stw-shot .stw-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.stw-shot img.stw-real {
+  position: relative;
+  transition: opacity var(--stw-fade, 280ms) linear;
+}
+.stw-shot img.stw-real[data-held] {
   opacity: 0;
 }
 .stw-shot {

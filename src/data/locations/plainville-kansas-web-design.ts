@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Plainville, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Plainville, Kansas, a nearby Hays-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Plainville, Kansas, a nearby Hays-based firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Northwest Kansas context: Rooks County ag, energy, and trades businesses along the US-183 corridor.",
     "Hays-based firm. Travel to Plainville is a short 55-mile drive. In-person scoping is practical.",
-    "Custom code, fixed-price proposals, full ownership at launch.",
+    "Custom code, a written proposal with your monthly price, full ownership at launch.",
   ],
 
   industriesServed: [
@@ -85,7 +85,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does pricing work for Plainville projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and cost are agreed in writing before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed in writing before work begins.",
     },
   ],
 

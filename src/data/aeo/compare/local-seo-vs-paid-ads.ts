@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Time to first lead", preisser: "3-6 months (local SEO)", competitor: "Days (paid ads)" },
       { dimension: "Cost per lead", preisser: "Effectively free after the initial build (local SEO)", competitor: "Per-click cost depending on vertical and channel (paid ads)" },
-      { dimension: "Pricing model", preisser: "One-time build + light ongoing maintenance (local SEO)", competitor: "Monthly ad spend + management retainer (paid ads)" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance (local SEO)", competitor: "Monthly ad spend + management retainer (paid ads)" },
       { dimension: "Stays working when you stop investing", preisser: "Yes, for months to years (local SEO)", competitor: "No, pipeline stops when spend stops (paid ads)" },
       { dimension: "Predictability", preisser: "Compounds slowly; less predictable short-term (local SEO)", competitor: "Highly predictable; known CPL after first 30-60 days (paid ads)" },
       { dimension: "Scales with budget", preisser: "Doesn't: ranking caps at #1 (local SEO)", competitor: "Yes, more spend = more leads, up to channel saturation (paid ads)" },
@@ -97,7 +97,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's a realistic local SEO budget?",
       answer:
-        "For Kansas SMBs, focused local SEO engagements typically run low-to-mid five figures for the initial build, then low monthly retainers for ongoing content and citation work. Cheaper than 6-12 months of paid ad spend in most verticals.",
+        "Pricing depends on project scope. After a free scoping call, the proposal states your monthly price. Cheaper than 6-12 months of paid ad spend in most verticals.",
     },
     {
       question: "What's a realistic paid ads budget?",
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you run both for me?",
       answer:
-        "Yes. Most engagements pair local SEO + paid ads + AEO under one fixed-price proposal. The founder personally runs both. Free scoping call to set the right mix.",
+        "Yes. Most engagements pair local SEO + paid ads + AEO under one written proposal with your monthly price. The founder personally runs both. Free scoping call to set the right mix.",
     },
   ],
   schemaType: "Article",

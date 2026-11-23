@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AEO cost vs traditional SEO?",
       answer:
-        "Comparable scope. Focused AEO engagements typically run low-to-mid five figures for the initial content build, then low monthly retainers for new pages and citation tracking. Most clients bundle both under one engagement.",
+        "Comparable scope. After a free scoping call, the proposal states your monthly price. Most clients bundle both under one engagement.",
     },
   ],
   schemaType: "Article",
@@ -146,5 +146,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
   ctaSubcopy:
-    "Free AEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal for AEO and traditional SEO combined.",
+    "Free AEO audit. We'll identify the highest-impact fixes and send a written proposal with your monthly price for AEO and traditional SEO combined.",
 };

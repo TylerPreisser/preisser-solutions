@@ -23,7 +23,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Hype-free consulting",
       heading: "AI consulting without the hype",
       body: [
-        "Most AI consulting today is sold by firms whose business model is convincing you to spend a lot of money on a vague platform. The deliverable is a 60-slide deck, a list of vendors to evaluate, and a recurring retainer. The actual business problem stays unsolved.",
+        "Most AI consulting today is sold by firms whose business model is convincing you to spend a lot of money on a vague platform. The deliverable is a 60-slide deck, and a list of vendors to evaluate. The actual business problem stays unsolved.",
         "Preisser Solutions runs AI consulting the opposite way. The deliverable is a short written roadmap that an owner can hand to their team, or to Preisser Solutions for a build. The recommendations are specific (which workflow, which tool, what it should do) rather than abstract (\"adopt AI\").",
         "We run every engagement personally, in Hays, in person where possible. The conversation is plain English. Buzzwords get translated. Owners leave the room knowing what to do next, not feeling vaguely overwhelmed by AI.",
       ],
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AI consulting cost for a Hays business?",
       answer:
-        "A typical roadmap engagement is a fixed-price project in the low-to-mid four figures, depending on the size of the business and number of workflows. Prototype and full implementation phases are scoped and priced separately based on the roadmap. No retainer is required.",
+        "A roadmap engagement runs as part of the same ongoing monthly service, and after a free scoping call the proposal states your monthly price, depending on the size of the business and number of workflows. Prototype and full implementation phases are scoped separately based on the roadmap.",
     },
     {
       question: "How long does a consulting engagement take?",
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a practical AI roadmap for your Hays business",
   ctaSubcopy:
-    "Free intro call. We'll talk through the business, decide if a consulting engagement makes sense, and send a fixed-price proposal.",
+    "Free intro call. We'll talk through the business, decide if a consulting engagement makes sense, and send a written proposal with your monthly price.",
 };

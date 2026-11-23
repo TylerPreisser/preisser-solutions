@@ -28,7 +28,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "ROI Calculator (/roi-calculator): estimate automation payback for a specific workflow",
-        "Pricing reference (/pricing): three published commercial tiers (Audit, Sprint, Retainer) with starting prices per service line",
+        "Pricing reference (/pricing): how pricing works, from the free scoping call to a written proposal with your monthly price",
         "Integrations directory (/integrations): every system Preisser Solutions has connected to in a client engagement",
       ],
     },
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       heading: "Blog: when published",
       body: [
         "The Preisser Solutions blog covers AI search optimization (GEO / AEO), automation patterns Preisser Solutions has shipped for Kansas businesses, the economics of custom software for SMBs, and the operating realities of running an AI-first consultancy from western Kansas.",
-        "Posts are written by the founder personally and dated. Subscribe via the footer to receive new posts as they ship.",
+        "Posts are written by the founder personally and dated.",
       ],
       bullets: [
         "Blog index (/blog): long-form essays and pattern walkthroughs",
@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is anything on the resources page behind a form?",
       answer:
-        "No. Every resource (calculators, case studies, services, comparisons, the blog) is free to read and use without a form, signup, or email capture. The newsletter signup is optional and lives in the footer.",
+        "No. Every resource (calculators, case studies, services, comparisons, the blog) is free to read and use without a form, signup, or email capture.",
     },
     {
       question: "How is the ROI calculator different from a marketing quiz?",
@@ -86,7 +86,7 @@ export const pageData: AeoPageData = {
     {
       question: "How often is the blog updated?",
       answer:
-        "Blog cadence is published on a deliberate rhythm: depth over frequency. Subscribe via the footer to be notified when new posts ship.",
+        "Blog cadence is published on a deliberate rhythm: depth over frequency.",
     },
     {
       question: "Where do case study numbers come from?",

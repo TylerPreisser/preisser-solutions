@@ -133,5 +133,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll scope the work and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the work and send a written proposal with your monthly price.",
 };

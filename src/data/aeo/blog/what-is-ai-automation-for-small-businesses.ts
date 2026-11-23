@@ -80,7 +80,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the ongoing cost?",
       answer:
-        "LLM API tokens are the variable cost: paid directly to the provider (Anthropic, OpenAI) based on usage volume. Custom builds can add an optional maintenance retainer. Total ongoing costs vary by automation complexity and message volume.",
+        "LLM API tokens are the variable cost: paid directly to the provider (Anthropic, OpenAI) based on usage volume. Custom builds from us run as an ongoing monthly service that includes their maintenance. Total ongoing costs vary by automation complexity and message volume.",
     },
     {
       question: "How do I know if my business is ready?",
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does Preisser Solutions scope these?",
       answer:
-        "Free 30-minute call. We map the use cases against your existing systems, identify the highest-ROI build, and quote a fixed price. Most engagements ship in 4-8 weeks.",
+        "Free 30-minute call. We map the use cases against your existing systems, identify the highest-ROI build, and send a written proposal with your monthly price. Most engagements ship in 4-8 weeks.",
     },
   ],
   schemaType: "BlogPosting",
@@ -118,5 +118,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want help identifying your highest-ROI automation?",
   ctaSubcopy:
-    "Free 30-minute call. We'll map the use cases against your business and quote a fixed price.",
+    "Free 30-minute call. We'll map the use cases against your business and send a written proposal with your monthly price.",
 };

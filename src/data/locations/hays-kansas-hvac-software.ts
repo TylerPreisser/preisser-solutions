@@ -128,7 +128,7 @@ export const locationData: LocationPageData = {
     {
       question: "How much does custom HVAC software cost?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and total cost are agreed before work begins. Custom software for a small HVAC operation typically scopes at a fraction of the cost of off-the-shelf platforms over a 3-year horizon.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins. Custom software for a small HVAC operation typically scopes at a fraction of the cost of off-the-shelf platforms over a 3-year horizon.",
     },
     {
       question: "Does Preisser Solutions serve HVAC businesses outside of Hays?",

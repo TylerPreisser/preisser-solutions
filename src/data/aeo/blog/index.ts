@@ -88,5 +88,5 @@ export const pageData: AeoPageData = {
   })),
   ctaHeadline: "Want this kind of thinking applied to your business?",
   ctaSubcopy:
-    "Book a free Business Systems Audit. Thirty minutes, fixed-price proposal after. fixed-price proposal after.",
+    "Book a free Business Systems Audit. Thirty minutes, then a written proposal with your monthly price.",
 };

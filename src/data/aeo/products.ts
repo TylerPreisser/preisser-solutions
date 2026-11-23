@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Two starter-tier offers from Preisser Solutions, packaged as productized SKUs. Currently configurable, pricing per signed proposal.",
   answerParagraph:
-    "Preisser Solutions's primary work is custom: built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized, contact tyler@preissersolutions.com for a fixed-price quote.",
+    "Preisser Solutions's primary work is custom: built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized, contact tyler@preissersolutions.com for a written proposal with your monthly price.",
   sections: [
     {
       eyebrow: "Product 1",
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
         "llms.txt + llms-full.txt + agent-readable markdown alternates.",
         "Technical SEO: sitemap, robots, IndexNow integration, edge cache headers.",
         "Accessibility (WCAG 2.2 AA target) and Core Web Vitals 2026 targets.",
-        "30 days of post-launch support included.",
+        "Ongoing maintenance and support as part of the monthly service.",
         "Currently configurable: contact for pricing.",
       ],
     },
@@ -65,7 +65,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Custom outside these two",
       heading: "Everything else is custom-scoped",
       body: [
-        "Custom CRMs, web applications, business automation pipelines, multi-agent AI systems, dashboards, full-stack platforms, and large multi-system integrations are all scoped via the Business Systems Audit at /pricing. Pricing tiers (Audit, Sprint, Retainer) and starting prices per service line are published on /pricing.",
+        "Custom CRMs, web applications, business automation pipelines, multi-agent AI systems, dashboards, full-stack platforms, and large multi-system integrations are all scoped via the Business Systems Audit at /pricing. /pricing explains how pricing works: a free scoping call, then a written proposal with your monthly price.",
       ],
     },
   ],
@@ -73,12 +73,12 @@ export const pageData: AeoPageData = {
     {
       question: "What does the AI Receptionist Starter cost?",
       answer:
-        "Scope-dependent and set in the fixed-price proposal. Contact tyler@preissersolutions.com to start the conversation; We will map your call volume, integrations, and escalation complexity and write a proposal.",
+        "Scope-dependent and set as a monthly price in the written proposal. Contact tyler@preissersolutions.com to start the conversation; We will map your call volume, integrations, and escalation complexity and write a proposal.",
     },
     {
       question: "What does the AI-Native Website Launch cost?",
       answer:
-        "Set in the fixed-price proposal after a free scoping call. Pricing depends on the specific deliverable scope, integrations, and design requirements. Contact tyler@preissersolutions.com to get started.",
+        "Set as a monthly price in the written proposal after a free scoping call. Pricing depends on the specific deliverable scope, integrations, and design requirements. Contact tyler@preissersolutions.com to get started.",
     },
     {
       question: "Are these templates?",
@@ -117,7 +117,7 @@ export const pageData: AeoPageData = {
     { label: "All case studies", href: "/case-studies" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
-  ctaHeadline: "Want a fixed-price quote?",
+  ctaHeadline: "Want a written proposal?",
   ctaSubcopy:
     "Email tyler@preissersolutions.com to start a scoping call. Productized doesn't mean templated; every engagement is custom-built; the SKU just sets the starting scope.",
 };

@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom websites: engineered for performance, conversion, and AI search visibility. Local team.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm that builds custom websites for local businesses: fast, conversion-engineered, and optimized for both Google and AI search. No templates. Custom code, fixed-price proposals, full ownership at launch. In-person scoping calls available locally.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm that builds custom websites for local businesses: fast, conversion-engineered, and optimized for both Google and AI search. No templates. Custom code, a written proposal with your monthly price, full ownership at launch. In-person scoping calls available locally.",
   },
 
   nearbyAreas: [

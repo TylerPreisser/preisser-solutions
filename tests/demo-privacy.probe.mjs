@@ -55,6 +55,9 @@ const OUT = path.resolve(process.env.PS_OUT_DIR || path.join(ROOT, "out"));
 const DENY_PATH = process.env.PS_DEMO_DENYLIST || path.join(os.homedir(), ".config", "preisser", "demo-denylist.txt");
 const INVENTED_DIR = path.join(ROOT, "src", "data", "demos", "invented");
 const COMMON_PATH = path.join(ROOT, "tests", "demo-privacy", "common-words.txt");
+// Each walkthrough's first still as a tiny inline preview (scripts/stills-posters.mjs), drawn under the still while it
+// downloads. A preview is a downscale of one manifested still and shows nothing that still does not.
+const PREVIEWS_PATH = path.join(ROOT, "src", "data", "showcase", "scenes", "walk-posters.ts");
 // Overridable so the self-test can plant a temp source root without touching
 // the real repo (review-F.md MEDIUM 4).
 const SOURCE_ROOTS = process.env.PS_SOURCE_ROOTS
@@ -101,6 +104,13 @@ function loadDenyList() {
   return entries;
 }
 
+/** The inline previews: data URI -> the still it was made from. */
+async function loadPreviews() {
+  if (!fs.existsSync(PREVIEWS_PATH)) return {};
+  const mod = await import(pathToFileURL(PREVIEWS_PATH).href);
+  return Object.fromEntries(Object.entries(mod.WALK_POSTERS ?? {}).map(([still, uri]) => [uri, still]));
+}
+
 async function loadRegistry() {
   if (!fs.existsSync(INVENTED_DIR)) throw new ConfigError(`registry directory missing: ${INVENTED_DIR}`);
   const sets = [];
@@ -120,10 +130,12 @@ function loadCommon() {
 }
 
 /** What one page may show: _shared plus the page's own scope. */
-function cfgFor(slug, sets, common, deny, stills = []) {
+function cfgFor(slug, sets, common, deny, stills = [], previews = {}) {
   const use = sets.filter((s) => s.scope === "_shared" || s.scope === slug);
   // `stills`: captured stills that carry a words manifest; a stage may draw them (§7.2 #18).
-  const cfg = { phrases: [], domains: [], assets: [], stills, words: [...common], labels: LABELS, fileTlds: FILE_TLDS };
+  // `previews`: inline data-URI previews, each mapped to the still it was made from; one may be drawn only when that
+  // still is itself a manifested still (any other inline image is an unregistered asset).
+  const cfg = { phrases: [], domains: [], assets: [], stills, previews, words: [...common], labels: LABELS, fileTlds: FILE_TLDS };
   for (const s of use) {
     for (const p of s.people) cfg.phrases.push(`${p.first} ${p.last}`, p.first, p.last, ...(p.aliases ?? []));
     for (const b of s.businesses) cfg.phrases.push(b.name, ...(b.aliases ?? []));
@@ -171,6 +183,8 @@ function checkDocument(cfg) {
       if (skip && skip(el)) continue;
       for (const a of ATTRS) {
         const v = el.getAttribute(a);
+        // (A manifested still's own preview is checked as that still: its base64 is not words.)
+        if (a === "src" && v && cfg.previews[v.trim()] && cfg.stills.includes(cfg.previews[v.trim()])) continue;
         if (v && norm(v)) out.push({ text: norm(v), at: `${at(el)}[${a}]` });
       }
     }
@@ -199,7 +213,8 @@ function checkDocument(cfg) {
     for (const img of st.querySelectorAll("img, source, image")) {
       const src = img.getAttribute("src") || img.getAttribute("srcset") || img.getAttribute("href") || "";
       const p = src.trim().split(/[\s?#]/)[0];
-      if (p && !cfg.assets.includes(p) && !cfg.stills.includes(p)) V.push({ rule: "asset", stage: id, detail: `${p} is not a registered demo asset or a still with a words manifest` });
+      const preview = cfg.previews[src.trim()];
+      if (p && !cfg.assets.includes(p) && !cfg.stills.includes(p) && !(preview && cfg.stills.includes(preview))) V.push({ rule: "asset", stage: id, detail: `${p} is not a registered demo asset or a still with a words manifest` });
     }
     for (const u of units(st)) {
       for (const m of u.text.matchAll(/(?<!\d)(?:\d[ -]?){8,}\d(?!\d)/g)) {
@@ -481,6 +496,7 @@ async function main() {
   let stageCount = 0;
   let showcaseSummary = "";
   const stills = manifestedStills();
+  const previews = await loadPreviews();
   let stillCount = 0;
   try {
     const { context, page } = await newPage(browser);
@@ -489,7 +505,7 @@ async function main() {
     stillCount = sc.count;
     for (const f of files) {
       const slug = path.basename(f, ".html");
-      const res = await checkHtml(page, fs.readFileSync(f, "utf8"), cfgFor(slug, sets, common, deny, stills));
+      const res = await checkHtml(page, fs.readFileSync(f, "utf8"), cfgFor(slug, sets, common, deny, stills, previews));
       stageCount += res.stages.length;
       const route = `/${path.relative(OUT, f).replace(/\.html$/, "")}`;
       for (const v of res.violations) V.push({ page: route, ...v });
@@ -502,7 +518,7 @@ async function main() {
       const shown = await showcaseStages(browser);
       if (shown.cards === 0) throw new ConfigError("the built home page has no showcase card to open");
       for (const s of shown.docs) {
-        const res = await checkHtml(page, s.html, cfgFor(s.slug, sets, common, deny, stills));
+        const res = await checkHtml(page, s.html, cfgFor(s.slug, sets, common, deny, stills, previews));
         stageCount += res.stages.length;
         if (res.stages.length === 0) V.push({ page: `/ (${s.slug}, ${s.width}px)`, rule: "label", stage: null, detail: "the showcase window drew no stage" });
         for (const v of res.violations) V.push({ page: `/ (${s.slug}, ${s.width}px)`, ...v });
@@ -618,6 +634,10 @@ const CASES = [
   // §7.2 #18: a captured still may sit in a stage only when it carries a words manifest.
   { name: "still with a words manifest", html: PAGE('<img src="/images/showcase/duffer/ok.webp" alt="">'), stills: ["/images/showcase/duffer/ok.webp"], expect: [] },
   { name: "still without a words manifest", html: PAGE('<img src="/images/showcase/duffer/bare.webp" alt="">'), expect: ["asset"] },
+  // An inline preview passes only as the generated preview of a manifested still.
+  { name: "a manifested still's preview", html: PAGE('<img src="data:image/webp;base64,UklGRkpQR1BWSUVX" alt="">'), stills: ["/images/showcase/duffer/ok.webp"], previews: { "data:image/webp;base64,UklGRkpQR1BWSUVX": "/images/showcase/duffer/ok.webp" }, expect: [] },
+  { name: "a preview of a still without a manifest", html: PAGE('<img src="data:image/webp;base64,UklGRkpQR1BWSUVX" alt="">'), previews: { "data:image/webp;base64,UklGRkpQR1BWSUVX": "/images/showcase/duffer/bare.webp" }, expect: ["asset", "token"] },
+  { name: "an unregistered inline image", html: PAGE('<img src="data:image/webp;base64,UklGRkpQR1BWSUVX" alt="">'), stills: ["/images/showcase/duffer/ok.webp"], expect: ["asset", "token"] },
 ];
 
 async function runSelfTest() {
@@ -632,7 +652,7 @@ async function runSelfTest() {
     const { context, page } = await newPage(browser);
     for (const c of CASES) {
       const deny = (c.deny ?? []).map((term, i) => ({ line: i + 1, term, site: false }));
-      const cfg = cfgFor("_self", [SELF_SET], common, deny, c.stills ?? []);
+      const cfg = cfgFor("_self", [SELF_SET], common, deny, c.stills ?? [], c.previews ?? {});
       const { violations } = await checkHtml(page, c.html, cfg);
       const got = [...new Set(violations.map((v) => v.rule))].sort();
       say(JSON.stringify(got) === JSON.stringify([...c.expect].sort()), c.name, got);

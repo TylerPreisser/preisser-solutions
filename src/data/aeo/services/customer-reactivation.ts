@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a reactivation engine cost?",
       answer:
-        "Custom per engagement. Comparable builds for trades and service businesses typically run in the low-to-mid five figures. Fixed-price proposal after a free scoping call.",
+        "Custom per engagement. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price.",
     },
     {
       question: "How long does it take to build?",
@@ -124,5 +124,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Recover the dormant list nobody has time to call",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll size the dormant pipeline, scope the build, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll size the dormant pipeline, scope the build, and send a written proposal with your monthly price.",
 };

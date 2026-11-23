@@ -164,5 +164,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get the time back your team spends on invoices",
   ctaSubcopy:
-    "Schedule a scoping call with Preisser Solutions. We will review the current AP workflow, identify where AI produces the best return, and send a fixed-scope proposal.",
+    "Schedule a scoping call with Preisser Solutions. We will review the current AP workflow, identify where AI produces the best return, and send a written proposal with your monthly price.",
 };

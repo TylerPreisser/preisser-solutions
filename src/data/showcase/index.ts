@@ -3,6 +3,7 @@
 // template import below into a lazy chunk per file in ./clients, so adding a
 // client is adding a file there (and `showcase: "<slug>"` on its home card).
 import type { LoadingStill, ShowcaseClient, SiteCapture } from "./types";
+import { decodeStill } from "./still-decode";
 
 export type ShowcaseSlug = string;
 
@@ -74,10 +75,28 @@ export function stillFor(client: ShowcaseClient): LoadingStill | undefined {
 // first frame, while it grows, instead of decoding a 1220 px picture mid-grow (critic 2026-11-22 MUST 3).
 const decoded = new Map<string, HTMLImageElement>();
 
-/** Fetch AND decode the client's still for this width, ahead of the tap (with the data prefetch, and on intent). */
-export function warmShowcase(slug: ShowcaseSlug) {
+/**
+ * Fetch AND decode the client's still for this width, ahead of the tap (with the data prefetch, and on intent).
+ * `films`: on intent only, each walkthrough tab's first still too, so the idle prefetch stays the five site stills.
+ */
+export function warmShowcase(slug: ShowcaseSlug, films = false) {
   loadShowcase(slug)
     .then((c) => {
+      // Each walkthrough tab's first still (and its inline preview), decoded, so that tab opens on its picture.
+      const scenes = c.beats.flatMap((b) => (b.kind === "scene" ? [b.scene] : []));
+      if (films && scenes.length) {
+        const { phone } = layoutNow();
+        import("./scenes/walk-first")
+          .then(({ WALK_FIRST }) => {
+            for (const id of scenes) {
+              const f = WALK_FIRST[id];
+              if (!f) continue;
+              void decodeStill(phone ? f.phone : f.desk);
+              if (f.poster) void decodeStill(f.poster);
+            }
+          })
+          .catch(() => {});
+      }
       const first = stillFor(c);
       if (!first || decoded.has(first.src)) return;
       const img = new Image();

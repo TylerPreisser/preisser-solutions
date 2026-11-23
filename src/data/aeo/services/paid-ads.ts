@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Google Ads, Meta, and LinkedIn run by an operator who reports the real numbers, not a dashboard of vanity metrics dressed up for the monthly call.",
   answerParagraph:
-    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses: Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Based in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a fixed-price proposal. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes (pipeline, booked appointments, customer acquisition cost), not impressions and click-through rates.",
+    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses: Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Based in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a written proposal with your monthly price. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes (pipeline, booked appointments, customer acquisition cost), not impressions and click-through rates.",
   sections: [
     {
       eyebrow: "Channels we run",
@@ -30,10 +30,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "How we work",
-      heading: "Audit-first, then fixed-price build, then transparent operating cadence",
+      heading: "Audit-first, then the build, then transparent operating cadence",
       body: [
         "Every engagement starts with a free audit. We log into your existing accounts (or sketch what they should look like if you don't have one yet), identify wasted spend, missed match types, broken conversion tracking, and structural issues. You get the audit findings whether or not you hire us.",
-        "If we move forward, the build is fixed-price (campaign architecture, conversion tracking, audience setup, creative briefs, naming conventions, reporting templates). Ongoing management is a flat monthly retainer, not percent of spend, which incentivizes the agency to waste your budget.",
+        "If we move forward, the build is part of the monthly service (campaign architecture, conversion tracking, audience setup, creative briefs, naming conventions, reporting templates). Ongoing management is a flat monthly retainer, not percent of spend, which incentivizes the agency to waste your budget.",
       ],
     },
     {
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Free paid ads audit",
   ctaSubcopy:
-    "30-minute call. We'll audit your accounts, flag waste, and send a fixed-price proposal. The audit is yours whether you hire us or not.",
+    "30-minute call. We'll audit your accounts, flag waste, and send a written proposal with your monthly price. The audit is yours whether you hire us or not.",
 };

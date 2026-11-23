@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions audit and fix these?",
       answer:
-        "Yes, typically as a 2-4 week engagement covering audit + content fixes + performance fixes. Fixed price, includes 30 days of follow-up measurement.",
+        "Yes, typically as a 2-4 week engagement covering audit + content fixes + performance fixes. It runs as part of the monthly service, with follow-up measurement after launch.",
     },
   ],
   schemaType: "BlogPosting",

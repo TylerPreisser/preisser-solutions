@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Ottawa, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Ottawa, Kansas businesses: fixed-price proposals from a Kansas-based development firm.",
+    "Custom websites, web apps, and AI automation for Ottawa, Kansas businesses: an ongoing monthly service from a Kansas-based development firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price projects for Ottawa clients?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed in writing before work begins: no hourly billing, no open-ended retainers.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed in writing before work begins.",
     },
   ],
 

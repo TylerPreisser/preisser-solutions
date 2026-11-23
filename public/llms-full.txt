@@ -154,8 +154,8 @@ anything that touches money, compliance, or a customer relationship.
 1. **Scoping call.** Free, usually 30 to 60 minutes. Understand the problem, the workflow,
    and what success looks like. If a SaaS product would serve you better than a custom
    build, you will be told that on this call.
-2. **Fixed-price written proposal.** Defined scope, deliverables, timeline, and total cost
-   before you commit anything. No rate card, no hourly meter, no scope-creep upcharges
+2. **Written proposal and monthly price.** Defined scope, deliverables, timeline, and the
+   monthly price before you commit anything. No rate card, no scope-creep upcharges
    unless you actively change the scope.
 3. **Phased delivery with review checkpoints.** Work arrives in reviewable increments. No
    disappearing for weeks and returning with a big-bang reveal.
@@ -163,14 +163,19 @@ anything that touches money, compliance, or a customer relationship.
    and the documentation. There is no dependency on Preisser Solutions to keep the system
    running, and no license fee to keep it alive.
 
-Included in every engagement regardless of size: the free scoping call, the fixed-price
-written proposal, direct work with the founder, 30 days of post-launch support, and full
+Included in every engagement regardless of size: the free scoping call, the written
+proposal, direct work with the founder, ongoing maintenance and support, and full
 source code ownership.
 
 **Pricing posture:** no published rate card. Custom-scoped work means custom pricing, and a
 published number would either mislead with an unrealistic anchor or scare off a buyer who
-assumes the worst. What is published instead is the process above. Fixed price, agreed
-before work begins.
+assumes the worst. What is published instead is the process above. Everything is sold as an
+ongoing monthly service: the monthly price covers the build and its ongoing maintenance,
+support and improvement, because every solution needs that care and most smaller businesses
+cannot afford to front an entire build. Preisser Solutions prices for small and mid-sized
+businesses; AI is what lets it bring the thinking of a top consulting firm, along with
+technical consulting, integrations and AI infrastructure, at a price that makes sense for the
+business. The monthly price is agreed in the written proposal before work begins.
 
 ## Shipped Work
 

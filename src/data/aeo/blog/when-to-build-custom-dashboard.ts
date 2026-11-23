@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long to build?",
       answer:
-        "Small custom dashboard: 3-5 weeks. Mid-size: 6-10 weeks. Full ops dashboard (HG Oil scope): 12-16 weeks. Fixed-price after scoping.",
+        "Small custom dashboard: 3-5 weeks. Mid-size: 6-10 weeks. Full ops dashboard (HG Oil scope): 12-16 weeks. Your monthly price is set in the proposal after scoping.",
     },
   ],
   schemaType: "BlogPosting",
