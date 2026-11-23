@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       { dimension: "Best for", preisser: "Production apps, complex logic, performance-critical workloads, long-term builds", competitor: "MVPs, internal tools, simple apps, non-technical founders" },
       { dimension: "Time to launch", preisser: "8-24 weeks for production-quality build", competitor: "Days to weeks for working MVP" },
       { dimension: "Performance at scale", preisser: "Optimized at every layer: millions of users possible", competitor: "Performance degrades as data and workflow complexity grows" },
-      { dimension: "Cost model", preisser: "One-time build + minimal hosting on Cloudflare/AWS", competitor: "Monthly subscription scaling with workflow units" },
+      { dimension: "Cost model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Monthly subscription scaling with workflow units" },
       { dimension: "Long-term cost (5 years, growing app)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees as workflow usage grows" },
       { dimension: "Custom logic", preisser: "Any logic: code can do anything", competitor: "Workflow editor + plugins; complex logic hits walls" },
       { dimension: "Database", preisser: "Postgres, MySQL, MongoDB: full SQL/NoSQL access", competitor: "Bubble's built-in database: works but performance limits at scale" },
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom app cost vs. Bubble?",
       answer:
-        "Bubble apps carry a monthly subscription that scales with workflow usage. Custom apps are priced one-time plus minimal hosting. Long-term, custom is more efficient for apps that grow: fixed-price proposals available after scoping.",
+        "Bubble apps carry a monthly subscription that scales with workflow usage. Custom apps from us run as an ongoing monthly service that covers the build and its maintenance. Long-term, custom is more efficient for apps that grow: a written proposal with your monthly price follows scoping.",
     },
     {
       question: "What about FlutterFlow or other no-code mobile builders?",

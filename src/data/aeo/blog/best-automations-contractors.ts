@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions ship these?",
       answer:
-        "Yes, typically as a packaged engagement covering #1 through #3 in 6-8 weeks. We set up the SaaS pieces (no markup) and custom-build the reactivation engine. Fixed-price proposal after a 30-minute call.",
+        "Yes, typically as a packaged engagement covering #1 through #3 in 6-8 weeks. We set up the SaaS pieces (no markup) and custom-build the reactivation engine. A written proposal with your monthly price after a 30-minute call.",
     },
   ],
   schemaType: "BlogPosting",
@@ -120,5 +120,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a packaged contractor automation engagement?",
   ctaSubcopy:
-    "Free 30-minute call. We'll pick the right starting point for your shop and quote a fixed-price proposal.",
+    "Free 30-minute call. We'll pick the right starting point for your shop and send a written proposal with your monthly price.",
 };

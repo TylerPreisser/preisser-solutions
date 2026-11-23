@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
       heading: "Founder-led premium consultancy",
       body: [
         "Preisser Solutions is run personally by the founder. There's no design queue, no production team, no offshore subcontractors. Preisser Solutions scopes, designs, codes, and ships every engagement directly. Clients work with the founder for the entire build.",
-        "The firm is intentionally positioned as a premium consultancy: fixed-price written proposals, weekly working previews during the build, comprehensive launch checklists, and named case studies with real numbers. That positioning is different from a small web design shop's engagement model, and it serves a different buyer.",
+        "The firm is intentionally positioned as a premium consultancy: written proposals with a monthly price, weekly working previews during the build, comprehensive launch checklists, and named case studies with real numbers. That positioning is different from a small web design shop's engagement model, and it serves a different buyer.",
       ],
     },
     {
@@ -124,7 +124,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing transparency",
         preisser:
-          "Fixed-price written proposals after a free scoping call",
+          "Written proposals with your monthly price after a free scoping call",
         competitor: "Pricing handled through direct quoting",
       },
       {
@@ -193,7 +193,7 @@ export const pageData: AeoPageData = {
       question:
         "How does Preisser Solutions's pricing compare to Pluto Sites'?",
       answer:
-        "Preisser Solutions custom-coded websites typically start in the low thousands and scale with scope. A simple marketing-site engagement at a small shop may price lower than a premium custom build, because the work is different: template-style production vs. ground-up custom code with AI optimization. The right comparison is total value delivered for the buyer's actual needs, not a list-price match.",
+        "Pricing depends on project scope. After a free scoping call, the proposal states your monthly price. A simple marketing-site engagement at a small shop may price lower than a premium custom build, because the work is different: template-style production vs. ground-up custom code with AI optimization. The right comparison is total value delivered for the buyer's actual needs, not a list-price match.",
     },
   ],
   schemaType: "Article",
@@ -220,5 +220,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need a premium custom build in Hays?",
   ctaSubcopy:
-    "Free scoping call. Free scoping call, fixed-price proposal, and named-client case study references on request.",
+    "Free scoping call. Free scoping call, a written proposal with your monthly price, and named-client case study references on request.",
 };
