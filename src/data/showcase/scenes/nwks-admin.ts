@@ -70,7 +70,8 @@ const CLOSE: Record<string, Units> = {
   // Badges & Tags: one badge, both faces (the payoff, large type), else its front face; the Luggage labels job card.
   // (Above the badge card is empty page and the job cards; under it, the sheet's select and the card's empty bottom: a
   // stage too tall for the faces to fill shows the unit alone, its window held between the card's top and the select.)
-  badge: [[{ ...R(849, 314, 490, 216), above: 4, grow: 45 }], [{ ...R(849, 314, 212, 216), above: 4, grow: 45 }]],
+  // (Left of the badge card is the sheet card's empty right side: the window starts in the gap between the two.)
+  badge: [[{ ...R(849, 314, 490, 216), above: 4, grow: 45, left: 28 }], [{ ...R(849, 314, 212, 216), above: 4, grow: 45, left: 28 }]],
   // (The click on Luggage labels is a pass: the camera pulls back to the job cards over the badge, the pointer clicks.)
   jobs: [[P(849, 157, 550, 373)]],
   // Luggage labels, the last view: the label card whole, the label with the sheet it prints on ("Avery 5160 ..."), else

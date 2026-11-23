@@ -432,7 +432,7 @@ export function frameClose(W: number, H: number, sets: readonly (readonly Rect[]
       // Nothing yet: remember the nearest miss. A camera pass (a view held for a moment while the pointer clicks) is
       // better full than sharp; a resting view whose unit cannot fill the stage cleanly is better readable than full
       // (the whole unit as a card, the rest of the stage the picture's soft blur).
-      const score = isPass ? Math.min(fill / o.minFill, 1) * 2 + (readable ? 1 : 0) + Math.min(t.med / o.readPx, 1) * 0.5 - si * 0.01 : Math.min(fill / o.minFill, 1) * 2 + (readable ? 1.5 : 0) + Math.min(t.med / o.readPx, 1) - si * 0.01;
+      const score = isPass ? Math.min(fill / o.minFill, 1) * 2 + (readable ? 1 : 0) + Math.min(t.med / o.readPx, 1) * 0.5 - si * 0.01 : Math.min(fill / o.minFill, 1) * 2 + (readable ? 1.5 : 0) + Math.min(t.med / o.readPx, 1) - si * 0.1;
       if (!fallback || score > fallback.score) fallback = { score, f };
     }
   }
