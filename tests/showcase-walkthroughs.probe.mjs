@@ -43,6 +43,19 @@
  *                  wider than its window is cut off by it); the Replay control must be wholly visible too.
  *   a. (also)      form controls whose text the capture did not record (data-solids: a select's value, an
  *                  input's text) count as one word each.
+ *   j. edges       close views: no text line (words on one baseline, closer than 0.8 x their height) has part of
+ *                  it inside the stage and part outside, so no half sentence shows; and no card (a white panel
+ *                  found in the still's pixels) is cut by the stage's left or right edge so that only a blank stub
+ *                  of it shows, or so that a card narrow enough to fit loses some of its words.
+ *   k. empty       close views: no band of the view taller than 18% of the stage's height carries no word and no
+ *                  drawn content (ink across more than 4% of the view's width: dark or strongly coloured pixels; a
+ *                  1-3 px rule is a hairline, not content). The lead asked for "about 15%": 18% is where every view
+ *                  the independent critic judged right passes and every one it judged wrong fails.
+ *   l. pairs       close views: no block (lines stacked closer than 0.6 x their height on one left edge: a wrapped
+ *                  sentence, a heading with the value or control under it) is split by the stage edge, so a view
+ *                  never ends on a heading whose value is off the stage, nor starts mid-sentence.
+ *                  (j, k, l: definitions in tests/support/walk-layout.mjs. Desk views at 1440x900 frame a part of
+ *                  a desktop page and are judged by a-g.)
  *
  * Served as the production origin through tests/support/serve-prod-origin.mjs (the build in out/).
  * Knobs: PS_OUT_DIR, PS_TEST_ONLY=<words from a rule name>, PS_TEST_TABS=nwks,duffer,
@@ -56,6 +69,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { serveAsProdOrigin, PROD_ORIGIN } from "./support/serve-prod-origin.mjs";
+import { judgeView, stillPixels, cardsOf, BLANK_MAX } from "./support/walk-layout.mjs";
 
 const req = createRequire(import.meta.url);
 const pw = req("playwright");
@@ -291,6 +305,43 @@ export function ruleDeskText(rec) {
   return summary;
 }
 
+// ------------------------------------------------------------------------------------------ j, k, l: lines, cards, empty bands
+const layouts = new Map(); // src -> { px, cards }
+async function loadLayout(src) {
+  if (layouts.has(src)) return;
+  const j = JSON.parse(fs.readFileSync(path.join(OUT, src.replace(/\.webp$/, ".words.json")), "utf8"));
+  const rect = Array.isArray(j.rect) ? j.rect[0] : j.rect;
+  const px = await stillPixels(path.join(OUT, src), rect.w, rect.h);
+  layouts.set(src, { px, cards: cardsOf(px) });
+}
+const judged = new WeakMap();
+function judge(r) {
+  if (judged.has(r)) return judged.get(r);
+  const m = manifestFor(r.src);
+  const win = windowOf(r);
+  const boxes = [...m.boxes, ...(r.solids ?? []).map((b) => [...b, "[form control]"])];
+  const { px, cards } = layouts.get(r.src);
+  const out = judgeView({ px, cards, boxes, win, stageH: (r.stage ? r.stage.h : r.screen.h) / win.s, slack: SLACK / win.s });
+  judged.set(r, out);
+  return out;
+}
+function layoutRule(rec, pick, what) {
+  const bad = [];
+  let n = 0;
+  for (const r of resting(rec.samples)) {
+    n++;
+    for (const p of pick(judge(r))) bad.push(`step ${r.step} ${r.still}: ${p}`);
+  }
+  assert.ok(bad.length === 0, bad.slice(0, 3).join(" | ") + (bad.length > 3 ? ` (+${bad.length - 3} more)` : ""));
+  return `${n} resting views, ${what}`;
+}
+export const ruleEdges = (rec) => layoutRule(rec, (j) => j.edges, "no line or card cut by the stage edge");
+export const ruleEmpty = (rec) => {
+  const worst = Math.max(0, ...resting(rec.samples).map((r) => judge(r).bandShare));
+  return layoutRule(rec, (j) => (j.blank ? [j.blank] : []), `no empty band over ${BLANK_MAX * 100}% (tallest ${(worst * 100).toFixed(0)}%)`);
+};
+export const rulePairs = (rec) => layoutRule(rec, (j) => j.pairs, "no heading or sentence split from the rest of its block");
+
 export function rulePointerPresent(rec) {
   const steps = [...new Set(rec.samples.map((s) => s.step))].sort();
   const missing = steps.filter((st) => !rec.samples.some((s) => s.step === st && s.cursor && s.cursorOn));
@@ -430,7 +481,28 @@ function fakeGuards() {
   fails("ends on Pause", () => ruleEnding({ end: { label: "Pause" } }));
   fails("replay cut off", () => ruleEnding({ end: { label: "Replay", controlVisible: false, restartStep: "1", restartStill: "a", firstStill: "a", restartLabel: "Pause" } }));
   fails("replay does not restart", () => ruleEnding({ end: { label: "Replay", restartStep: "4", restartStill: "x", firstStill: "y", restartLabel: "Pause" } }));
-  return "all 19 rule guards fail on planted defects, and their positive controls pass";
+  // j, k, l on a planted still: grey ground (240), one white card at 600..900 x 100..300 with no words in it, a line
+  // "Every word" at y 500, a heading "Sheet" at y 600 with a form control 4 px under it.
+  const W2 = 1000;
+  const H2 = 800;
+  const data = Buffer.alloc(W2 * H2 * 3, 240);
+  for (let y = 100; y < 300; y++) data.fill(255, (y * W2 + 600) * 3, (y * W2 + 900) * 3);
+  const px2 = { W: W2, H: H2, data };
+  layouts.set("/fake2.webp", { px: px2, cards: cardsOf(px2) });
+  manifests.set("/fake2.webp", { W: W2, boxes: [[100, 500, 60, 20, "Every"], [165, 500, 50, 20, "word"], [100, 600, 80, 16, "Sheet"]], lines: [] });
+  const sheet = [[100, 620, 300, 40]];
+  const b2 = { src: "/fake2.webp", shot: { x: 0, y: 0, w: 1000, h: 800 }, solids: sheet };
+  const at = (x, y, w, h) => ({ ...b2, screen: { x, y, w, h } });
+  assert.equal(layouts.get("/fake2.webp").cards.length, 1, "guard: the planted card is found in the pixels");
+  run(at(0, 480, 1000, 200), ruleEdges); // the whole line, no card in reach: passes
+  fails("half a sentence", () => run(at(162, 480, 838, 200), ruleEdges));
+  run(at(0, 80, 1000, 240), ruleEdges); // the whole card: passes
+  fails("blank card stub", () => run(at(0, 80, 640, 240), ruleEdges));
+  run(at(0, 497, 1000, 26), ruleEmpty); // a line of words, 3 px of air above and below: passes
+  fails("empty band", () => run(at(0, 380, 1000, 200), ruleEmpty));
+  run(at(0, 590, 1000, 80), rulePairs); // heading and its control: passes
+  fails("heading without its value", () => run(at(0, 560, 1000, 58), rulePairs));
+  return "all 23 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -615,7 +687,7 @@ report("c. the maintainer's label-stock note is in no shipped still manifest", r
 
 const tabKeys = (process.env.PS_TEST_TABS || Object.keys(TABS).join(",")).split(",");
 const recs = {};
-if (!ONLY || /^[abdefghi]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk")) {
+if (!ONLY || /^[abdefghijkl]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk") || /^[jkl]\./.test(ONLY) || ONLY.includes("edge") || ONLY.includes("empty") || ONLY.includes("heading")) {
   const browser = await pw[ENGINE].launch();
   try {
     // One throwaway page first: a cold browser's first film runs slow enough to blur the timing of its first views.
@@ -661,6 +733,7 @@ function across(key, rule, only) {
   assert.ok(bad.length === 0, bad.slice(0, 4).join(" || ") + (bad.length > 4 ? ` (+${bad.length - 4} more sizes)` : ""));
   return `${ok.length} sizes ok\n          ${ok.join("\n          ")}`;
 }
+for (const key of Object.keys(recs)) for (const rec of Object.values(recs[key])) for (const r of rec.samples ?? []) await loadLayout(r.src);
 for (const key of Object.keys(recs)) {
   const label = `${TABS[key].title} > ${TABS[key].tab}`;
   report(`a. no word is cut by the stage edge, pointer and focus whole (${label})`, () => across(key, ruleCut));
@@ -673,6 +746,9 @@ for (const key of Object.keys(recs)) {
   report(`h. phone and portrait-tablet views fill the stage (${label})`, () => across(key, ruleFill, (r) => r.phone || r.portrait));
   report(`i. close views show whole declared units (${label})`, () => across(key, ruleUnits, (r) => r.phone || r.portrait || r.close));
   report(`i. every visible row keeps its leading word (${label})`, () => across(key, ruleRows, (r) => r.phone || r.portrait || r.close));
+  report(`j. no text line or card is cut by the stage edge (${label})`, () => across(key, ruleEdges, (r) => r.phone || r.portrait || r.close));
+  report(`k. no empty band across the stage (${label})`, () => across(key, ruleEmpty, (r) => r.phone || r.portrait || r.close));
+  report(`l. no heading shows without its value, no sentence starts mid-way (${label})`, () => across(key, rulePairs, (r) => r.phone || r.portrait || r.close));
 }
 
 if (process.env.PS_TEST_JSON) fs.writeFileSync(process.env.PS_TEST_JSON, JSON.stringify({ engine: ENGINE, theme: THEME, json }, null, 1));
