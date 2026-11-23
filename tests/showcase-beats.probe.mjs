@@ -22,6 +22,8 @@
  *     2d. orphans  no text block ends on a line holding a single word (also swept at every width 320 to 1440).
  *     2e. figures  any text drawn at 24 px or more holds a digit (a word is not shown as a giant figure).
  *     2f. cue      a panel that scrolls at rest shows a visible cue (`.im__more`) at its cut edge.
+ *     2i. clear    and that cue rests on blank ground: every text line is whole (opaque top to bottom, inside the panel)
+ *                  or gone (transparent), and no line that shows touches the cue (its alpha read from the panel's mask).
  *     2g. size     every visible word is at least 12 px (effective, after any scale), both themes.
  *     2h. contrast every visible word meets 4.5:1 (3:1 at 24 px+, or 18.66 px bold) on its own background.
  *  3. Duffer's QR story (`[data-scene="duffer-qr"]`).
@@ -213,6 +215,25 @@ export function ruleCue(s) {
   return "scrolls, cue shown";
 }
 
+/**
+ * 2i. A panel that scrolls rests its cue on blank ground: no text line that shows (at least half opaque) touches the
+ * cue, and every line is either whole (opaque top to bottom, inside the panel) or gone (transparent top to bottom).
+ * lines = [{ text, top, bottom, aTop, aMid, aBot }] in the scroller's own px, alpha from its mask; cue = rect or null.
+ */
+export function ruleCueClear(s) {
+  if (!s.overflow) return "fits, no cue";
+  const bad = [];
+  for (const l of s.lines) {
+    const inPanel = l.top >= -0.5 && l.bottom <= s.height + 0.5;
+    const whole = inPanel && l.aTop >= 0.9 && l.aBot >= 0.9;
+    const gone = Math.max(l.aTop, l.aMid, l.aBot) <= 0.1 || l.top >= s.height - 0.5;
+    if (!whole && !gone) bad.push(`"${l.text}" is cut at the panel's lower edge`);
+    else if (whole && s.cue && l.bottom > s.cue.top + 0.5 && l.top < s.cue.bottom - 0.5 && l.right > s.cue.left + 0.5 && l.left < s.cue.right - 0.5) bad.push(`"${l.text}" shows under the scroll cue`);
+  }
+  assert.ok(bad.length === 0, bad.slice(0, 3).join("; ") + (bad.length > 3 ? ` (+${bad.length - 3})` : ""));
+  return `${s.lines.length} lines, each whole or gone, cue on blank ground`;
+}
+
 /** 2g/3. texts = [{ text, px }]. */
 export function ruleTextSize(s, min = 12) {
   const bad = s.texts.filter((t) => t.px < min - 0.05);
@@ -378,6 +399,11 @@ function fakeGuards() {
   ruleFigures({ display: [{ text: "101", px: 88 }] });
   fails("2e word figure", () => ruleFigures({ display: [{ text: "Milliseconds", px: 32 }] }));
   fails("2f no cue", () => ruleCue({ overflow: true, cue: false }));
+  const cueOk = { overflow: true, height: 400, cue: { top: 350, bottom: 380, left: 150, right: 180 }, lines: [{ text: "a b", top: 300, bottom: 320, left: 20, right: 300, aTop: 1, aMid: 1, aBot: 1 }, { text: "c d", top: 340, bottom: 360, left: 20, right: 300, aTop: 0, aMid: 0, aBot: 0 }] };
+  ruleCueClear(cueOk);
+  fails("2i word under the cue", () => ruleCueClear({ ...cueOk, lines: [{ ...cueOk.lines[1], aTop: 1, aMid: 1, aBot: 1 }] }));
+  fails("2i line faded half way", () => ruleCueClear({ ...cueOk, lines: [{ ...cueOk.lines[0], aBot: 0.4 }] }));
+  fails("2i line cut by the edge", () => ruleCueClear({ ...cueOk, lines: [{ ...cueOk.lines[0], top: 390, bottom: 410 }] }));
   fails("2g small", () => ruleTextSize({ texts: [{ text: "Sumac", px: 9.6 }] }));
   fails("2h contrast", () => ruleContrast({ texts: [{ text: "x", ratio: 3.1, large: false }] }));
   const q = { parts: { shop: 1, sign: 1, hand: 1, phone: 1, feed: 1, row: 1, count: 1 }, row: "Scan Sumac Hollow code SUMAC", count: "366", figure: "366" };
@@ -398,7 +424,7 @@ function fakeGuards() {
   fails("5 selected cut", () => ruleStrip({ ...strip, tabs: [{ ...strip.tabs[1], x0: 270, x1: 320 }] }));
   fails("z collision", () => assert.ok(cssCollisions([["a.css", ".fb{position:relative}"], ["b.css", ".fb{position:absolute;inset:0}"]]).length === 0));
   assert.ok(cssCollisions([["a.css", ".x{background:red}"], ["b.css", ".x{background:blue}"]]).length === 0, "z flags a non-layout difference");
-  return "all 28 planted defects fail their rule; every clean input passes; z ignores a colour-only difference";
+  return "all 31 planted defects fail their rule; every clean input passes; z ignores a colour-only difference";
 }
 
 // ------------------------------------------------------------------------------------------ in-page readers
@@ -549,6 +575,81 @@ function readImpact() {
   const items = [...im.querySelectorAll(".im__lead, .im__k, .im__old, .im__was, .im__now, .im__lab, .im__row, .im__text:not([hidden])")].filter((e) => opacity(e, panel) > 0.5).map(R);
   const more = im.querySelector(".im__more");
   const cue = Boolean(more) && opacity(more, panel) > 0.5 && R(more).h > 0;
+  // The scroller's mask as alpha by height: its linear-gradient stops resolved against the scroller's height.
+  const sb = scroller.getBoundingClientRect();
+  const H = scroller.clientHeight;
+  const mask = getComputedStyle(scroller).maskImage || getComputedStyle(scroller).webkitMaskImage || "none";
+  const stops = [];
+  const g = /linear-gradient\((.*)\)$/.exec(mask.trim());
+  if (g) {
+    const parts = [];
+    let depth = 0;
+    let cur = "";
+    for (const ch of g[1]) {
+      if (ch === "(") depth++;
+      if (ch === ")") depth--;
+      if (ch === "," && depth === 0) {
+        parts.push(cur.trim());
+        cur = "";
+      } else cur += ch;
+    }
+    parts.push(cur.trim());
+    const probeEl = document.createElement("div");
+    probeEl.style.cssText = `position:absolute;left:0;top:0;width:1px;visibility:hidden;`;
+    const host = document.createElement("div");
+    host.style.cssText = `position:absolute;left:0;top:0;width:1px;height:${H}px;visibility:hidden;`;
+    host.appendChild(probeEl);
+    document.body.appendChild(host);
+    for (const part of parts) {
+      if (/^to\s|deg$/.test(part)) continue;
+      const m = /^((?:rgba?|hsla?)\([^)]*\)|#[0-9a-f]+|transparent|black|white)\s*(.*)$/i.exec(part);
+      if (!m) continue;
+      const col = m[1];
+      const a = col === "transparent" ? 0 : /rgba\(/.test(col) ? parseFloat(col.split(",")[3]) : 1;
+      let pos = null;
+      if (m[2]) {
+        probeEl.style.height = m[2];
+        pos = probeEl.getBoundingClientRect().height;
+      }
+      stops.push({ a, pos });
+    }
+    host.remove();
+    if (stops.length) {
+      if (stops[0].pos === null) stops[0].pos = 0;
+      if (stops[stops.length - 1].pos === null) stops[stops.length - 1].pos = H;
+      for (let i = 1; i < stops.length; i++) if (stops[i].pos === null) stops[i].pos = stops[i - 1].pos;
+      for (let i = 1; i < stops.length; i++) stops[i].pos = Math.max(stops[i].pos, stops[i - 1].pos);
+    }
+  }
+  const alphaAt = (y) => {
+    if (!stops.length) return 1;
+    if (y <= stops[0].pos) return stops[0].a;
+    for (let i = 1; i < stops.length; i++) {
+      if (y <= stops[i].pos) {
+        const span = stops[i].pos - stops[i - 1].pos;
+        return span <= 0 ? stops[i].a : stops[i - 1].a + ((stops[i].a - stops[i - 1].a) * (y - stops[i - 1].pos)) / span;
+      }
+    }
+    return stops[stops.length - 1].a;
+  };
+  const textLines = [];
+  const walker = document.createTreeWalker(scroller, NodeFilter.SHOW_TEXT);
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    const el = n.parentElement;
+    const text = n.textContent.replace(/\s+/g, " ").trim();
+    if (!el || !text || el.closest(".ps-visually-hidden, [hidden], [data-demo-narration]") || el.closest("svg")) continue;
+    if (opacity(el, panel) < 0.5) continue;
+    const rg = document.createRange();
+    rg.selectNodeContents(n);
+    for (const q of rg.getClientRects()) {
+      if (q.width < 1 || q.height < 1) continue;
+      const top = q.top - sb.top;
+      const bottom = q.bottom - sb.top;
+      if (bottom <= 0) continue;
+      textLines.push({ text: text.slice(0, 40), top, bottom, left: q.left - sb.left, right: q.right - sb.left, aTop: alphaAt(top + 1), aMid: alphaAt((top + bottom) / 2), aBot: alphaAt(bottom - 1) });
+    }
+  }
+  const mr = more ? more.getBoundingClientRect() : null;
   const sentence = im.querySelector(".im__text");
   return {
     panel: R(im),
@@ -560,6 +661,9 @@ function readImpact() {
     blocks,
     overflow: scroller.scrollHeight > scroller.clientHeight + 1,
     cue,
+    lines: textLines,
+    height: H,
+    cueBox: cue && mr ? { top: mr.top - sb.top, bottom: mr.bottom - sb.top, left: mr.left - sb.left, right: mr.right - sb.left } : null,
     sentence: sentence ? sentence.textContent.trim() : null,
     strikeSizes: [...im.querySelectorAll(".im__old [data-strike]")].map((s) => getComputedStyle(s).backgroundSize),
   };
@@ -787,6 +891,7 @@ async function checkImpact(page, where, key, { phone, W, H, sweep }) {
     if ((key === "farmbooks" || key === "nwks") && (W >= 820 || (W <= PHONE_MAX_W && H >= 852))) record(`2c. the content uses the panel's height ${label}`, at, () => ruleFill(s));
     record(`2e. only figures are drawn at display size ${label}`, at, () => ruleFigures(s));
     record(`2f. a panel that scrolls shows a cue ${label}`, at, () => ruleCue(s));
+    record(`2i. a scrolling panel's lines are whole or gone, none under the cue ${label}`, at, () => ruleCueClear({ overflow: s.overflow, height: s.height, cue: s.cueBox, lines: s.lines }));
     record(`2g. every word is at least 12 px ${label}`, at, () => ruleTextSize(s));
     record(`2h. every word meets contrast ${label}`, at, () => ruleContrast(s));
     if (s.sentence !== null) record(`4. the Impact sentence is one plain line ${label}`, at, () => ruleSentences([s.sentence]));

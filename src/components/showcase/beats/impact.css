@@ -65,6 +65,15 @@
   -webkit-mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 48px), transparent);
   mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 48px), transparent);
 }
+/* Placed between two lines by ImpactBeat (readCut): whole lines above, nothing under the cue. */
+.im__scroll[data-edge="bottom"][data-cut] {
+  -webkit-mask-image: linear-gradient(#000 var(--im-cut), transparent var(--im-cut-end));
+  mask-image: linear-gradient(#000 var(--im-cut), transparent var(--im-cut-end));
+}
+.im__scroll[data-edge="both"][data-cut] {
+  -webkit-mask-image: linear-gradient(transparent 0, #000 16px, #000 var(--im-cut), transparent var(--im-cut-end));
+  mask-image: linear-gradient(transparent 0, #000 16px, #000 var(--im-cut), transparent var(--im-cut-end));
+}
 /* The cue that the panel scrolls: a small chevron over the faded edge, gone once the end is reached. */
 .im__more {
   position: absolute;
