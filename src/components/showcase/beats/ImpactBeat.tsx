@@ -17,6 +17,52 @@ import type { BeatProps } from "./shared";
 import { DufferQrScene } from "../scenes/DufferQrScene";
 import "./impact.css";
 
+// Where the panel scrolls, the lower fade starts between two lines, never through one, and above the cue's disc,
+// so the chevron rests on blank ground and every line is whole above it or gone under it (critic r3 MUST).
+function readCut(el: HTMLElement, more: boolean) {
+  const clear = () => {
+    el.style.removeProperty("--im-cut");
+    el.style.removeProperty("--im-cut-end");
+    el.removeAttribute("data-cut");
+  };
+  if (!more) return clear();
+  const box = el.getBoundingClientRect();
+  const lines: { top: number; bottom: number }[] = [];
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const range = document.createRange();
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+    const p = n.parentElement;
+    if (!p || !n.textContent?.trim() || p.closest("[hidden], .ps-visually-hidden, svg")) continue;
+    range.selectNodeContents(n);
+    for (const r of range.getClientRects()) {
+      if (r.width < 1 || r.height < 1) continue;
+      const top = r.top - box.top;
+      const bottom = r.bottom - box.top;
+      if (bottom > 0 && top < el.clientHeight) lines.push({ top, bottom });
+    }
+  }
+  // The cue's disc sits 10px off the bottom and is 30px tall; keep 8px of blank ground above it.
+  let cut = el.clientHeight - 48;
+  for (let moved = true; moved; ) {
+    moved = false;
+    for (const l of lines) {
+      if (l.top < cut && l.bottom > cut) {
+        cut = l.top - 2;
+        moved = true;
+      }
+    }
+  }
+  if (cut <= 0) return clear();
+  // The fade spans the blank gap around the cut: from just under the last whole line to just above the next one.
+  const prev = lines.reduce((m, l) => (l.bottom <= cut && l.bottom > m ? l.bottom : m), cut - 20);
+  const start = Math.max(prev + 1, cut - 20);
+  const next = lines.reduce((m, l) => (l.top >= cut && l.top < m ? l.top : m), start + 28);
+  const end = Math.max(start + 1, Math.min(next - 1, start + 28));
+  el.style.setProperty("--im-cut", `${Math.round(start * 10) / 10}px`);
+  el.style.setProperty("--im-cut-end", `${Math.round(end * 10) / 10}px`);
+  el.setAttribute("data-cut", "");
+}
+
 /**
  * The Impact tab (ADR-0028 §3, round 2 spec §3). Big numbers first: the old
  * number struck through, the new one at display size, a label under it; then
@@ -77,6 +123,7 @@ export function ImpactBeat({
     const top = el.scrollTop > 0;
     const more = el.scrollTop + el.clientHeight < el.scrollHeight - 1;
     setEdge((e) => (e.top === top && e.more === more ? e : { top, more }));
+    readCut(el, more);
   }
 
   // The scroller joins the Tab order only when there is something to scroll; the
@@ -135,6 +182,9 @@ export function ImpactBeat({
         }
         tabIndex={overflow ? 0 : undefined}
         onScroll={(e) => readEdge(e.currentTarget)}
+        // Entry motion moves lines; place the cut again once each piece has landed.
+        onAnimationEnd={(e) => readEdge(e.currentTarget)}
+        onTransitionEnd={(e) => readEdge(e.currentTarget)}
       >
         <div ref={inner} className="im__col">
           {beat.lead === "qr-story" ? (

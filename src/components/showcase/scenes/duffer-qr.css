@@ -493,6 +493,15 @@
   }
 }
 
+/* A tall portrait tablet stacks the story: its width follows the room left under it, so the numbers and the sentence
+   below fit without scrolling (820x1180 had 33px too few with the shop at full width). */
+@container im (min-width: 561px) and (max-aspect-ratio: 1 / 1) and (min-height: 900px) {
+  .dqr-in {
+    max-width: max(calc((100cqh - 690px) * 16 / 9 + 20px), 460px);
+    margin-inline: auto;
+  }
+}
+
 /* ── a landscape stage (a desk window): the shop and the feed side by side ──
    Chosen by the Impact stage's shape (.im is a size container), not the scene's width: a portrait tablet sheet is wide
    enough to squeeze a feed beside the shop, but it reads better stacked, and has the height for it. */
