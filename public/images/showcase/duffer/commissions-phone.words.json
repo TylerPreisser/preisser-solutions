@@ -1,0 +1,47 @@
+{
+  "still": "commissions-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": [
+    {
+      "x": 0,
+      "y": 110,
+      "w": 390,
+      "h": 343
+    },
+    {
+      "x": 0,
+      "y": 2151,
+      "w": 390,
+      "h": 160
+    }
+  ],
+  "lines": [
+    "Owed, by partner",
+    "Total owed:",
+    "$1,200.00",
+    "to",
+    "2",
+    "partners",
+    "Sumac Hollow Golf Club",
+    "commissions",
+    "·",
+    "Pays by Check",
+    "$800.00",
+    "Record payout",
+    "Lone Cottonwood Golf Course",
+    "1",
+    "commission",
+    "Payout method not recorded",
+    "$400.00",
+    "Payouts",
+    "Paid",
+    "Oct 25, 2026",
+    "by",
+    "Check",
+    "· Check 1042",
+    "· recorded by",
+    "owner@duffer.example"
+  ]
+}

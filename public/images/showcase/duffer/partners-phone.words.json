@@ -1,0 +1,35 @@
+{
+  "still": "partners-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": {
+    "x": 0,
+    "y": 694,
+    "w": 390,
+    "h": 568
+  },
+  "lines": [
+    "Partners",
+    "Osgood Bend Country Club",
+    "Golf course · Osgood Bend, KS",
+    "0",
+    "scans ·",
+    "leads, 30 days",
+    "Active",
+    "Needs review",
+    "Wheatgrass Pines Golf Club",
+    "Paused",
+    "Lone Cottonwood Golf Course",
+    "Golf course · Brannick, KS",
+    "97",
+    "5",
+    "Sumac Hollow Golf Club",
+    "Golf course · Tull Prairie, KS",
+    "188",
+    "9",
+    "Brannick Driving Range",
+    "Driving range · Brannick, KS",
+    "Retired"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "still": "orders-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": {
+    "x": 0,
+    "y": 126,
+    "w": 390,
+    "h": 548
+  },
+  "lines": [
+    "Sales",
+    "DG-0001",
+    "$3,995.00",
+    "Simulator Enclosure",
+    "·",
+    "Nov 3, 19:22",
+    "Sumac Hollow Golf Club",
+    "Placed",
+    "Commission owed: $400.00",
+    "Change status",
+    "DG-0002",
+    "$5,995.00",
+    "Simulator Enclosure + Electronics",
+    "Nov 1, 19:22",
+    "Commission held for review: $400.00",
+    "DG-0003",
+    "Oct 31, 20:22",
+    "No partner",
+    "No referral code: no commission"
+  ]
+}

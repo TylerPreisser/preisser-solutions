@@ -1,0 +1,535 @@
+/* ============================================================
+   engine.css — the MarCommand tab's engine room (ADR-0028 §5).
+   The home MarCommand section's language (src/styles/marcommand-live.css):
+   flat cards with a hairline, the lit card in the primary blue on its glow,
+   a #1590FF wire, knob faces that invert with the theme (navy in light, near
+   white in dark, as --theme-bg-surface does), a 5 px blue arc and the needle
+   in the card colour. Only --en-* is declared here.
+
+   Contrast (WCAG, on --en-bg):
+     light  ink #0A1628 17.4  ink-2 #4A5A70 7.0  accent-text #0C6FC9 5.08
+     dark   ink #F2F6FB 14.6  ink-2 #A9B6C8 8.0  accent-text #5AB0FF 6.6
+     chips  white on #0E7A3A 5.44, white on #B42318 6.54 (both themes)
+   Motion: every state change is a transition on an element that exists from
+   the first frame (no keyframe entry from opacity 0; see FetchBand.tsx).
+     wires    stroke-dashoffset, linear, 300-500 ms
+     knob     arc + needle 900 / 600 ms, the window's move curve
+     chips    200 ms scale .8 -> 1 on the grow curve
+     learned  grid rows 0fr -> 1fr 280 ms, accent glow 600 ms
+     result   380 ms, old number struck, new rises
+   ============================================================ */
+
+.en {
+  --en-font: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  --en-bg: #ffffff;
+  --en-card: #ffffff;
+  --en-line: #dfe5ec;
+  --en-wire: #c9d1dc;
+  --en-ink: #0a1628;
+  --en-ink2: #4a5a70;
+  /* The client's own accent (critic r2 M5): --en-brand / --en-brand-t come inline from its portal theme
+     (Duffer #27753A, Hays #E84C88 / #A82659); the site blue is only the fallback. Values on white:
+     Duffer 5.6:1, Hays 6.7:1. */
+  --en-accent: var(--en-brand, #1590ff);
+  --en-accent-t: var(--en-brand-t, #0c6fc9);
+  --en-tint: color-mix(in srgb, var(--en-accent) 10%, #ffffff);
+  --en-knob: #0a1628;
+  --en-ring: #e2e8f0;
+  --en-needle: #ffffff;
+  --en-ok: #0e7a3a;
+  --en-bad: #b42318;
+  --en-move: var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+  --en-grow: var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
+  position: absolute;
+  inset: 0;
+  background: var(--en-bg);
+  color: var(--en-ink);
+  font-family: var(--en-font);
+  text-rendering: geometricPrecision;
+}
+[data-theme="dark"] .en {
+  --en-bg: #13233a;
+  --en-card: #172a44;
+  --en-line: #2a3f5c;
+  --en-wire: #3a4f6c;
+  --en-ink: #f2f6fb;
+  --en-ink2: #a9b6c8;
+  --en-accent-t: color-mix(in srgb, var(--en-accent) 55%, #ffffff);
+  --en-tint: color-mix(in srgb, var(--en-accent) 22%, #13233a);
+  --en-knob: #f6f9fc;
+  --en-ring: #8a97ac;
+  --en-needle: #13233a;
+}
+/* A restart (the tab entered again) jumps to the first frame instead of rewinding on screen. */
+.en[data-cut] * {
+  transition: none !important;
+}
+.en p {
+  margin: 0;
+}
+.en-room {
+  position: relative;
+}
+.en-wires {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.en-w {
+  stroke: var(--en-wire);
+  stroke-width: 2;
+}
+.en-w--lit {
+  stroke: var(--en-accent);
+  transition-property: stroke-dashoffset;
+  transition-timing-function: linear;
+}
+
+/* Channel cards. */
+.en-ch {
+  position: absolute;
+}
+.en-ch__card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  border: 1px solid var(--en-line);
+  background: var(--en-card);
+  transition:
+    border-color 240ms ease-out,
+    background-color 240ms ease-out,
+    box-shadow 240ms ease-out;
+}
+/* Reading: each channel lights in turn before one is picked. */
+.en-ch[data-scan] .en-ch__card {
+  border-color: color-mix(in srgb, var(--en-accent) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--en-accent) 12%, transparent);
+}
+.en-ch[data-pick] .en-ch__card {
+  border-color: var(--en-accent);
+  background: var(--en-tint);
+  box-shadow: 0 0 0 1px var(--en-accent);
+}
+.en-logo {
+  width: 36px;
+  height: 36px;
+}
+.en-logo--ink {
+  fill: var(--en-ink);
+}
+.en-logo--line {
+  fill: none;
+  stroke: var(--en-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.en-glyph {
+  display: grid;
+  place-items: center;
+  color: var(--en-ink2);
+}
+.en-glyph svg {
+  width: 34px;
+  height: 34px;
+}
+.en-ch__label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--en-ink2);
+}
+.en-ch[data-pick] .en-ch__label {
+  color: var(--en-ink);
+}
+.en-chip {
+  position: absolute;
+  right: -10px;
+  top: -11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--en-ok);
+  color: #fff;
+  font-size: 13.5px;
+  line-height: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: 100% 50%;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms var(--en-grow);
+}
+.en-chip[data-tone="down"] {
+  background: var(--en-bad);
+}
+.en-chip[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Knobs. */
+/* The knobs stand in front of the wire lane: the robot walks behind them and stops beside the one he turns. */
+.en-dial {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.en-knob {
+  position: relative;
+  flex: none;
+}
+.en-knob svg {
+  display: block;
+}
+.en-knob__body {
+  fill: var(--en-knob);
+  stroke: var(--en-ring);
+  stroke-width: 1.5;
+}
+.en-knob__arc {
+  fill: none;
+  stroke: var(--en-accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition-property: stroke-dashoffset;
+  transition-timing-function: var(--en-move);
+}
+.en-needle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--en-needle);
+  transform-origin: 0 50%;
+  transition-property: transform;
+  transition-timing-function: var(--en-move);
+}
+.en-dial__label {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 19px;
+  color: var(--en-ink2);
+  white-space: nowrap;
+}
+.en-dial__value {
+  display: flex;
+  align-items: baseline;
+  font-size: 18px;
+  line-height: 23px;
+  font-weight: 700;
+  color: var(--en-accent-t);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.en-dial__old {
+  display: inline-block;
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  color: var(--en-ink2);
+  font-weight: 500;
+  text-decoration-thickness: 2px;
+  transition:
+    max-width 300ms var(--en-move),
+    margin-right 300ms var(--en-move),
+    opacity 200ms ease-out;
+}
+.en-dial__value[data-turned] .en-dial__old {
+  max-width: 90px;
+  margin-right: 6px;
+  opacity: 1;
+}
+
+.en-bot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  transition-property: transform;
+  transition-timing-function: linear;
+}
+
+/* What it learned. */
+.en-learn {
+  position: absolute;
+}
+.en-k {
+  margin-bottom: 12px !important;
+  font-size: 13.5px;
+  line-height: 17px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--en-ink2);
+}
+.en-new {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 280ms var(--en-grow),
+    opacity 200ms ease-out;
+}
+.en-new[data-on] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.en-new__in {
+  min-height: 0;
+  clip-path: inset(-14px -14px -30px -14px);
+}
+.en-lc {
+  box-sizing: border-box;
+  margin: 0 0 8px !important;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--en-line);
+  background: var(--en-card);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--en-ink2);
+}
+.en-lc--new {
+  padding: 11px 13px;
+  border: 2px solid var(--en-accent);
+  color: var(--en-ink);
+  box-shadow: 0 8px 22px rgba(21, 144, 255, 0.18);
+  transition: box-shadow 600ms ease-out;
+}
+.en-new[data-flash] .en-lc--new {
+  box-shadow:
+    0 0 0 6px rgba(21, 144, 255, 0.22),
+    0 8px 22px rgba(21, 144, 255, 0.18);
+}
+.en-lc__when {
+  display: block;
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 16px;
+  color: var(--en-ink2);
+}
+
+/* The result. */
+.en-room > .en-res {
+  position: absolute;
+}
+.en-res {
+  box-sizing: border-box;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--en-tint);
+}
+.en-res__k {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--en-ink2);
+}
+.en-res__n {
+  margin-top: 6px !important;
+  display: flex;
+  align-items: baseline;
+  font-size: 52px;
+  line-height: 56px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--en-ink);
+}
+.en-res__old {
+  display: inline-block;
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--en-ink2);
+  text-decoration-thickness: 3px;
+  transition:
+    max-width 380ms var(--en-grow),
+    margin-right 380ms var(--en-grow),
+    opacity 240ms ease-out;
+}
+.en-res[data-on] .en-res__old {
+  max-width: 80px;
+  margin-right: 10px;
+  opacity: 1;
+}
+.en-res__slot {
+  display: inline-grid;
+}
+.en-res__from,
+.en-res__to {
+  grid-area: 1 / 1;
+  transition:
+    opacity 240ms ease-out,
+    transform 380ms var(--en-grow);
+}
+.en-res__to {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.en-res[data-on] .en-res__from {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+.en-res[data-on] .en-res__to {
+  opacity: 1;
+  transform: none;
+}
+
+.en-cap {
+  position: absolute;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--en-ink2);
+  white-space: nowrap;
+}
+.en-cap b {
+  font-weight: 600;
+  color: var(--en-ink);
+}
+
+/* Phone (320 native, 0.92x at a 320 phone): every face 13 px or more so nothing renders under ~12 css px.
+   Only the dials it turns; one tile at the bottom carries the new learning above the result (critic r2 M1). */
+.en[data-mode="phone"] .en-ch__card {
+  border-radius: 15px;
+}
+.en[data-mode="phone"] .en-logo {
+  width: 26px;
+  height: 26px;
+}
+.en[data-mode="phone"] .en-glyph svg {
+  width: 24px;
+  height: 24px;
+}
+.en[data-mode="phone"] .en-ch__label {
+  top: calc(100% + 5px);
+  width: 74px;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: center;
+  white-space: normal;
+}
+.en[data-mode="phone"] .en-chip {
+  right: auto;
+  left: 50%;
+  top: -12px;
+  padding: 2px 7px;
+  font-size: 13.5px;
+  line-height: 16px;
+  transform: translateX(-50%) scale(0.8);
+  transform-origin: 50% 50%;
+}
+.en[data-mode="phone"] .en-chip[data-on] {
+  transform: translateX(-50%);
+}
+.en[data-mode="phone"] .en-knob__arc {
+  stroke-width: 4;
+}
+.en[data-mode="phone"] .en-needle {
+  height: 2.5px;
+  margin-top: -1.25px;
+}
+.en[data-mode="phone"] .en-dial__label {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 16px;
+}
+.en[data-mode="phone"] .en-dial__value {
+  font-size: 15px;
+  line-height: 19px;
+}
+.en[data-mode="phone"] .en-dial__old {
+  text-decoration-thickness: 1.5px;
+}
+.en-tile {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--en-tint);
+}
+.en-tile__was {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--en-ink) 12%, transparent);
+  font-size: 13px;
+  line-height: 17px;
+  color: var(--en-ink2);
+}
+.en-tile__was b {
+  font-weight: 600;
+  color: var(--en-ink2);
+}
+.en-tile__l {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--en-ink) 12%, transparent);
+  font-size: 13.5px;
+  line-height: 18px;
+  color: var(--en-ink);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms var(--en-grow);
+}
+.en-tile__l[data-on] {
+  opacity: 1;
+  transform: none;
+}
+.en-tile__l b {
+  font-weight: 700;
+  color: var(--en-ink);
+}
+.en-tile__l[data-learned] b {
+  color: var(--en-accent-t);
+}
+.en-tile__res {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0;
+  background: none;
+}
+.en-tile .en-res__k {
+  font-size: 13px;
+}
+.en-tile .en-res__n {
+  margin-top: 0 !important;
+  font-size: 34px;
+  line-height: 38px;
+}
+.en-tile .en-res__old {
+  font-size: 18px;
+}
+.en-tile .en-res[data-on] .en-res__old {
+  margin-right: 8px;
+}

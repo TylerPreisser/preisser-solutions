@@ -10,7 +10,7 @@
      scrim      280ms ease-out in, 180ms out
      sheen      1100ms ease-out, 160ms in                one light sweep across the glass on open
      close      180ms cubic-bezier(0.4, 0, 1, 1), scale .98
-     live       200ms linear                             the still becomes the live site
+     live       350ms ease-out                           the live site cross-fades in over its still
      pill       240ms cubic-bezier(0.65, 0, 0.35, 1)     tab pill
      panel      160ms linear cross-fade                  tab change
      sheet      460ms cubic-bezier(0.32, 0.72, 0, 1) up, 220ms down, 240ms spring back
@@ -186,11 +186,13 @@
 }
 
 /* ── Glass (the window's header and rim; the panel is opaque) ── */
+/* No backdrop-filter, on the window or on the scrim: a live blur re-renders every frame anything under or
+   inside it moves (the client site in the frame always moves), and held the open window at 6-8 frames a
+   second (Chromium, 1440x900, 2026-11-22: frames 117-133 ms apart at rest with both blurs, 17 ms without;
+   Firefox 100 -> 33 ms). The glass is its near-opaque ground, the specular lip and rim, and the sheen. */
 .sc-glass {
   position: relative;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0, rgba(255, 255, 255, 0.9) 64px, rgba(246, 249, 252, 0.86));
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
-  backdrop-filter: blur(28px) saturate(170%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.985) 0, rgba(252, 253, 255, 0.97) 64px, rgba(244, 247, 251, 0.96));
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.95),
@@ -200,7 +202,7 @@
   color: #0a1628;
 }
 [data-theme="dark"] .sc-glass {
-  background: linear-gradient(180deg, rgba(24, 38, 62, 0.94) 0, rgba(20, 33, 55, 0.9) 64px, rgba(10, 22, 40, 0.86));
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.985) 0, rgba(20, 33, 55, 0.97) 64px, rgba(12, 24, 43, 0.96));
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
@@ -266,9 +268,12 @@
 [data-theme="dark"] .sc-sheen::before {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.13) 50%, transparent);
 }
+/* backwards, not both: a finished animation that FILLS keeps its element a composited layer for as long
+   as the window is open (Chromium LayerTree: the 499x1168 sheen, plus the glass rim promoted for
+   overlapping it). The end state is the base style anyway (opacity 0), so nothing changes on screen. */
 @media (prefers-reduced-motion: no-preference) {
   [data-phase="open"] > .sc-sheen::before {
-    animation: sc-sheen 1100ms ease-out 160ms both;
+    animation: sc-sheen 1100ms ease-out 160ms backwards;
   }
 }
 @keyframes sc-sheen {
@@ -286,8 +291,33 @@
 html.sc-lock {
   overflow: hidden;
 }
+/* ...and its endless decorative bobs stop. Each one is a composited layer, and everything painted over it
+   (the card track, the page, the scrim, the open window's frame) is promoted for overlapping it: on a
+   390x844 phone at DPR 3 that held ~240 MB of layers for as long as the sheet was open (Chromium
+   LayerTree, 2026-11-04), the likeliest reason iOS Safari dropped the page. They sit under the scrim. */
+/* (sc-open is set from the window's first frame; the overflow lock above waits for the entrance to end.) */
+html.sc-open .ps-work-card__bob-label,
+html.sc-open .ps-work-swipe-hint,
+html.sc-open .ps-hero-cue__icon {
+  animation: none;
+}
 html.sc-lock--gutter {
   scrollbar-gutter: stable;
+}
+/* A settled sheet: nothing under it is drawn (see ShowcaseLayer `covered`). The strip above the sheet keeps
+   the scrim's opaque top colour, so the screen does not change. */
+html.sc-sheet-covered,
+html.sc-sheet-covered body {
+  /* !important: globals.css paints html and body with !important (the theme ground). */
+  background-color: #0a1628 !important;
+}
+html.sc-sheet-covered body > :not(.sc-root) {
+  visibility: hidden;
+}
+/* The scrim stops being drawn but still takes the tap on the strip above the sheet (a hidden scrim took no
+   tap, so a settled sheet could not be closed from there: window-fix bench, 2026-11-22). */
+html.sc-sheet-covered .sc-scrim--sheet {
+  background: none;
 }
 html.sc-sheet-open .ps-header {
   opacity: 0;
@@ -314,16 +344,29 @@ html.sc-sheet-open .ps-header {
   transition: opacity 180ms ease-in;
 }
 .sc-scrim--pop {
-  background: rgba(10, 22, 40, 0.42);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: rgba(10, 22, 40, 0.5);
 }
 [data-theme="dark"] .sc-scrim--pop {
-  background: rgba(3, 8, 16, 0.62);
+  background: rgba(3, 8, 16, 0.68);
 }
 /* The sheet's scrim is opaque in the strip above the sheet (it sits at 12px), so the page never peeks out there. */
 .sc-scrim--sheet {
   background: linear-gradient(#0a1628 0, #0a1628 40px, rgba(10, 22, 40, 0.58) 120px);
+}
+
+/* Armed (hover intent begun, not yet held): the window waits at its resting place, transparent and
+   untouchable, while its Website frame loads. Visible to layout and to the frame's own engine (so the
+   frame is not throttled as hidden), invisible and inert to the visitor. */
+.sc-root[data-armed] .sc-scrim {
+  display: none;
+}
+.sc-root[data-armed] .sc-pop[data-phase="measure"] {
+  visibility: visible;
+  opacity: 0;
+}
+.sc-root[data-armed],
+.sc-root[data-armed] * {
+  pointer-events: none !important;
 }
 
 /* ── The window (fine pointer, 900px and up): centred, spec §2.1 ── */
@@ -354,6 +397,16 @@ html.sc-sheet-open .ps-header {
 .sc-pop[data-phase="leave"] {
   opacity: 0;
 }
+/* Closing: the window fades with its still in place of the live site. Faded, a live site is a big animated
+   layer redrawn under the window's opacity every frame (Chromium 1440x900: 50-67 ms frames through the
+   close; without it, 17 ms); the still is the same picture, and nobody reads it during 180 ms. */
+.sc-pop[data-phase="leave"] .sc-web__frame {
+  visibility: hidden;
+}
+.sc-pop[data-phase="leave"] .sc-web__still {
+  visibility: visible !important;
+  transition: none !important;
+}
 @media (prefers-reduced-motion: no-preference) {
   .sc-pop[data-phase="open"] {
     transition:
@@ -380,6 +433,10 @@ html.sc-sheet-open .ps-header {
   .sc-tabs__pill,
   .sc-sheet {
     transition: none !important;
+  }
+  .sc-sheet[data-rise],
+  .sc-scrim--sheet[data-phase="open"] {
+    animation: none !important;
   }
 }
 
@@ -538,6 +595,24 @@ html.sc-sheet-open .ps-header {
 .sc-sheet[data-phase="from"] {
   transition: none;
 }
+/* The rise: an animation, so it starts on the sheet's first frame (it mounts "open"). backwards, not both:
+   a filling animation would keep the sheet a compositor layer after it ends. */
+.sc-sheet[data-rise] {
+  animation: sc-sheet-rise 460ms var(--sc-ease-sheet) backwards;
+}
+@keyframes sc-sheet-rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+.sc-scrim--sheet[data-phase="open"] {
+  animation: sc-scrim-in 280ms ease-out backwards;
+}
+@keyframes sc-scrim-in {
+  from {
+    opacity: 0;
+  }
+}
 .sc-sheet[data-drag] {
   transition: none;
 }
@@ -603,6 +678,35 @@ html.sc-sheet-open .ps-header {
     padding: 0 6px;
     font-size: 13px;
   }
+}
+/* Tabs that do not fit side by side: a horizontal scroll strip (design spec r2 §1.1). Each label keeps its
+   whole width and a 44px target; a 20px fade sits on whichever edge has tabs past it. */
+.sc-tabs[data-scroll] {
+  --sc-fade-l: 0px;
+  --sc-fade-r: 0px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  /* No scroll snapping: it moved the strip after the selected tab had been placed, into the fade. */
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
+}
+.sc-tabs[data-scroll]::-webkit-scrollbar {
+  display: none;
+}
+.sc-tabs[data-scroll][data-fade-l] {
+  --sc-fade-l: 20px;
+}
+.sc-tabs[data-scroll][data-fade-r] {
+  --sc-fade-r: 20px;
+}
+.sc-tabs[data-scroll] .sc-tabs__tab,
+.sc-sheet .sc-tabs[data-scroll] .sc-tabs__tab {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
 }
 .sc-sheet .sc-panel {
   flex: 1 1 auto;
@@ -761,6 +865,21 @@ html.sc-sheet-open .ps-header {
   height: auto;
   user-select: none;
 }
+/* A frame taller than the picture (a 430x932 phone, a 1440x1000 window; WebsiteBeat sets data-band): the picture
+   stays width-first, so the header sits where the live page draws it, and its last 24 px (a capture ends on the
+   frame's own rounded corners) fade into the picture's bottom colour (--sc-still-edge, the median colour just above
+   them), which fills the rest of the frame. Drawn width-first alone it left a white band there. Carrying the
+   picture's last row down instead was tried and smeared buttons and text into streaks (FarmBooks). */
+.sc-web__still[data-band] {
+  background: var(--sc-still-edge);
+}
+.sc-web__still-fade {
+  position: relative;
+  display: block;
+  height: 100%;
+  margin-top: -24px;
+  background: linear-gradient(to bottom, transparent, var(--sc-still-edge) 24px);
+}
 .sc-web__still--video {
   display: flex;
   flex-direction: column;
@@ -786,17 +905,131 @@ html.sc-sheet-open .ps-header {
   display: block;
   background: #fff;
   transform-origin: 0 0;
-  visibility: hidden;
+  /* Loading: transparent and untouchable, NOT visibility:hidden. A visibility:hidden cross-origin frame is
+     throttled as hidden content (Firefox held its ready message back up to ~1 s), and the still under it
+     must take the visitor's wheel to show the loading hint. A hidden tab still hides it: visibility is
+     inherited from the panel. */
+  opacity: 0;
+  pointer-events: none;
 }
-/* inherit, not visible: a hidden tab (visibility:hidden on its panel) must hide the frame too.
-   The still -> live swap is a cut, not a fade: the still and the live page never line up exactly
-   (a video hero, a different crop), and a 200 ms cross-fade showed both at once (critique R2-6).
-   The ready message is sent after the framed page has painted, so the cut lands on a drawn page. */
+/* The still -> live handover is a cross-fade (owner, 2026-11-22: smooth, not clunky). It used to be a cut
+   because the dated still and the live page did not line up (critique R2-6); the loading still is now the
+   live page captured framed at the frame's own size (`first`), and live waits out the site's own preloader
+   (`revealMs`), so the two pictures match and the fade reads as one page coming alive. */
 .sc-web[data-state="live"] .sc-web__frame {
-  visibility: inherit;
+  opacity: 1;
+  pointer-events: auto;
 }
 .sc-web[data-state="live"] .sc-web__still {
   visibility: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web[data-state="live"] .sc-web__frame {
+    transition: opacity 350ms ease-out;
+  }
+  .sc-web[data-state="live"] .sc-web__still {
+    transition: visibility 0s linear 350ms;
+  }
+  /* The still fades in once decoded, instead of popping in mid-rise. */
+  .sc-web__still {
+    opacity: 0;
+    transition: opacity 180ms ease-out;
+  }
+  .sc-web__still[data-ready] {
+    opacity: 1;
+  }
+}
+/* The loading bar: a short bright segment sliding under the URL strip, as a browser shows a page loading. */
+.sc-web__bar {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+  background: rgba(12, 111, 201, 0.14);
+  transition: opacity 250ms ease-out;
+}
+.sc-web__bar > i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(12, 111, 201, 0), #0c6fc9 30%, #0c6fc9 70%, rgba(12, 111, 201, 0));
+  transform: translateX(-100%);
+}
+[data-theme="dark"] .sc-web__bar {
+  background: rgba(90, 176, 255, 0.16);
+}
+[data-theme="dark"] .sc-web__bar > i {
+  background: linear-gradient(90deg, rgba(90, 176, 255, 0), #5ab0ff 30%, #5ab0ff 70%, rgba(90, 176, 255, 0));
+}
+.sc-web:not([data-state="loading"]) .sc-web__bar {
+  opacity: 0;
+}
+/* Reduced motion: the bar stands still (the word "Loading" says it). */
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web[data-state="loading"] .sc-web__bar > i {
+    animation: sc-web-bar 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-web__bar > i {
+    transform: translateX(75%);
+  }
+}
+@keyframes sc-web-bar {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+/* "Loading the live site…": the dot breathes (opacity only; the words used to shimmer by background-position,
+   which repainted the strip every frame). */
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web__chip[data-state="loading"] i {
+    animation: sc-web-pulse 1.2s ease-in-out infinite;
+  }
+}
+@keyframes sc-web-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+/* A wheel or touch on the still while the live site loads: say so, where the eye is. */
+.sc-web__hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 24px);
+  box-sizing: border-box;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(10, 22, 40, 0.88);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web__hint {
+    animation: sc-web-hint-in 160ms ease-out both;
+  }
+}
+@keyframes sc-web-hint-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 6px));
+  }
 }
 .sc-web__fallback {
   position: absolute;
@@ -843,6 +1076,15 @@ html.sc-sheet-open .ps-header {
     border-radius: 20px;
     text-align: center;
   }
+  /* "Loading" alone in a phone's strip, so the domain stays whole; the rest stays in the accessible name. */
+  .sc-web__chip-more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 /* A phone: the domain must stay whole at 320 (296px panel). Not live, the empty home column gives its room
    to the pill. */
@@ -882,5 +1124,41 @@ html.sc-sheet-open .ps-header {
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+}
+
+/* ── The shell and the handover (ShowcaseShell, ShowcaseLayer `handoff`) ── */
+/* The shell holds the tab row's place with an invisible tab. */
+.sc-tabs--placeholder {
+  visibility: hidden;
+}
+/* The real window takes the shell's place at rest: nothing replays (no second scrim fade, no second sheen);
+   only the tabs, which the shell did not have, fade in. */
+.sc-root[data-handoff] .sc-scrim,
+.sc-root[data-handoff] .sc-sheen::before {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-root[data-handoff] .sc-head .sc-tabs {
+    animation: sc-fade-in 200ms ease-out backwards;
+  }
+}
+@keyframes sc-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ── The card answers the finger at once (case-studies.tsx sets data-pressed on pointerdown) ── */
+.ps-work-card[data-pressed] {
+  transform: scale(0.97);
+  transition: transform 90ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ps-work-card[data-pressed] {
+    transform: none;
+    opacity: 0.85;
+    transition: none;
   }
 }

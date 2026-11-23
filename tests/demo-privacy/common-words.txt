@@ -283,3 +283,9 @@ worked
 built
 imports
 staff
+
+# round 2 Impact row labels (ordinary words, not names)
+hand
+manual
+milliseconds
+owner

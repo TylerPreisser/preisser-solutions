@@ -1,0 +1,31 @@
+/* ============================================================
+   elara.css — the robot sprite, shared by the showcase beats.
+   Copied from the home MarCommand section (src/styles/marcommand-live.css
+   .mc-elara): the same 8-cell sheet, stepped by WHOLE pixels (a percentage
+   step shimmers by 1px in Firefox), the same knockout halo, the same feet
+   anchoring. Differences: the cell width comes from --el-w (any width whose
+   height 232/192 x w is whole, 72 and 96 and 48 are), the halo colour is
+   --el-halo (the beat's card colour; the home uses --theme-bg-primary), and
+   the frame is --el-frame, set inline.
+   Cells: 0 idle, 1-3 reach, 4-7 walk.
+   ============================================================ */
+.sc-elara {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--el-w, 96px);
+  height: calc(var(--el-w, 96px) * 232 / 192);
+  background-image: url("/images/marcommand/elara-sheet.1273b05a.webp");
+  background-repeat: no-repeat;
+  background-size: 800% 100%;
+  background-position-x: calc(var(--el-frame, 0) * -1 * var(--el-w, 96px));
+  background-position-y: 0;
+  image-rendering: pixelated;
+  pointer-events: none;
+  /* A zero-offset halo in the card colour: wires stop just short of the figure instead of seeming to enter it. */
+  filter: drop-shadow(0 0 2px var(--el-halo, #fff)) drop-shadow(0 0 2px var(--el-halo, #fff)) drop-shadow(0 0 1px var(--el-halo, #fff));
+  /* The element's position is the point his FEET stand on. The sole band is centred at 0.40625 of the cell, so the
+     cell is nudged 9.375% of its width, and the nudge flips with him. */
+  transform: translate3d(calc(-50% + 9.375% * var(--el-flip, 1)), -100%, 0) scaleX(var(--el-flip, 1));
+  -webkit-transform: translate3d(calc(-50% + 9.375% * var(--el-flip, 1)), -100%, 0) scaleX(var(--el-flip, 1));
+}

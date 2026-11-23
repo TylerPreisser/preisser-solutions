@@ -2,23 +2,41 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { SiteCapture, WebsiteBeat as WebsiteBeatData } from "@/data/showcase/types";
+import { estimateViewWidth, frameScale, loadingStill } from "@/data/showcase";
 import { useBox, type BeatProps } from "./shared";
 
 /**
  * Their live site, in a frame the visitor scrolls and clicks (ADR-0022 §2,
- * ADR-0023, design spec §3). The frame loads behind a dated still of the site
- * and is shown only once the framed page says it rendered (the
- * `ps-portal-ready` message, §3.5): a frame the browser refused still fires
+ * ADR-0023, design spec §3). The frame loads behind a still of the site under a
+ * loading bar, and is shown only once the framed page says it rendered (the
+ * `ps-portal-ready` message, §3.5) AND its own preloader or entrance has had its
+ * time (`live.revealMs`): every client sends ready before its content is on
+ * screen, and Hays's flat pink preloader showed as "Live" (owner, 2026-11-22: "if
+ * it needs to load it can show a bit of a loading animation instead of it being
+ * so clunky"). Then the frame cross-fades in over the still (350 ms), which is the
+ * same picture (`first`, captured framed). A frame the browser refused still fires
  * `load`, and would otherwise show a blank white box as "Live". No message
  * within 8 s and the frame is removed; the still stays, with "Open <domain>".
+ *
+ * While loading, the chip says so in words ("Loading the live site…") and a wheel or touch on the still
+ * answers with a short hint: a visitor who scrolls the still and sees nothing move reads it as a dead
+ * window (owner, 2026-11-04, Duffer: "it's still, it's not scrollable"). The frame waits transparent and
+ * untouchable above the still, not visibility:hidden, so engines do not throttle it as hidden content
+ * (Firefox held the ready message back up to ~1 s that way) and the still takes the visitor's input.
  */
+
+/**
+ * A frame that has fired `load` but not said it is ready this long after is taken as refused (a frame the
+ * browser blocked fires `load` within ~5-64 ms with no ready message; a real page sends ready at first
+ * paint, before or around its own load). Only the still changes: the entrance picture gives way to the
+ * finished page. Live and the 8 s fallback keep their own rules.
+ */
+const REFUSED_MS = 1000;
+/** How long the "the live site is loading" hint stays up after the last wheel or touch on the still. */
+const HINT_MS = 2200;
 
 /** How long a frame may take to say it rendered before the window falls back to the still. */
 export const READY_MS = 8000;
-/** The narrowest width a desktop frame renders at; a narrower view scales it down to fit (§3.4). */
-const DESK_RENDER_W = 1024;
-/** Below this scale the client's own narrower layout reads better than a shrunken desktop. */
-const MIN_SCALE = 0.8;
 
 /**
  * Kept for the beats index (beatMs). Nothing auto-advances any more (ADR-0022 §2),
@@ -40,16 +58,11 @@ const domainOf = (src: string) => {
   }
 };
 
-/** Render width and scale for a view of this size (§3.4). */
-export function frameScale(vw: number) {
-  if (vw >= DESK_RENDER_W) return { w: vw, s: 1 };
-  const s = vw / DESK_RENDER_W;
-  if (s >= MIN_SCALE) return { w: DESK_RENDER_W, s };
-  return { w: vw, s: 1 };
-}
+export { frameScale };
 
 export function WebsiteBeat({ client, beat, variant, active }: BeatProps<WebsiteBeatData>) {
   const live = beat.live;
+  const revealMs = live.revealMs ?? 0;
   const domain = domainOf(live.src);
   const viewRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -58,9 +71,28 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   const [shown, setShown] = useState(false);
   const [state, setState] = useState<FrameState>(live.frame === "off" ? "preview" : "loading");
   const [reload, setReload] = useState(0);
+  // The frame loaded but never said ready: the browser refused it (or the page is broken).
+  const [refused, setRefused] = useState(false);
+  const refusedTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(refusedTimer.current), []);
+  // Ready arrived; the site's own preloader / entrance is still playing for `revealMs`.
+  const revealTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(revealTimer.current), []);
+  const [hint, setHint] = useState(false);
+  const hintTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
     if (active) setShown(true);
   }, [active]);
+  useEffect(() => {
+    if (state !== "loading") setHint(false);
+  }, [state]);
+  useEffect(() => () => window.clearTimeout(hintTimer.current), []);
+  const nudge = () => {
+    if (state !== "loading") return;
+    setHint(true);
+    window.clearTimeout(hintTimer.current);
+    hintTimer.current = window.setTimeout(() => setHint(false), HINT_MS);
+  };
 
   const framed = shown && state !== "preview";
 
@@ -73,11 +105,20 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
       if (!live.origins.includes(e.origin)) return;
       const data = e.data as { type?: unknown } | null;
       if (!data || typeof data !== "object" || data.type !== "ps-portal-ready") return;
-      setState((s) => (s === "loading" ? "live" : s));
+      window.clearTimeout(refusedTimer.current);
+      if (revealTimer.current !== undefined) return;
+      revealTimer.current = window.setTimeout(() => {
+        revealTimer.current = undefined;
+        setState((s) => (s === "loading" ? "live" : s));
+      }, revealMs);
     };
     window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [framed, live.frame, live.origins]);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      window.clearTimeout(revealTimer.current);
+      revealTimer.current = undefined;
+    };
+  }, [framed, live.frame, live.origins, revealMs]);
 
   // No word from the site in time: drop the frame (a refused frame's blank page never shows, a stuck one stops costing CPU).
   useEffect(() => {
@@ -88,6 +129,13 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
 
   const cap = variant === "phone" ? beat.phone : beat.desk;
   const { w: renderW, s } = variant === "phone" ? { w: box.w, s: 1 } : frameScale(box.w);
+  // The loading still for this frame's width (a 320 phone and a tablet sheet reflow the site): chosen once, from
+  // the window's CSS before the view is measured, so the picture never swaps under the visitor.
+  const [first] = useState(() => {
+    const sheet = typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
+    const view = typeof window !== "undefined" ? estimateViewWidth(window.innerWidth, sheet) : 0;
+    return loadingStill(cap, variant === "phone" ? view : frameScale(view).w);
+  });
   const frameStyle: CSSProperties | undefined =
     box.w > 0
       ? { width: renderW, height: s === 1 ? box.h : box.h / s, transform: s === 1 ? undefined : `scale(${s})` }
@@ -109,7 +157,10 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
               // page. Re-setting the same src is a no-op in Firefox once the visitor has navigated
               // inside the frame (QA 2026-11-04, HG Oil at 1440), so the frame is remounted instead,
               // and it is live again only when the site says so, like the first time.
+              window.clearTimeout(revealTimer.current);
+              revealTimer.current = undefined;
               setState("loading");
+              setRefused(false);
               setReload((n) => n + 1);
             }}
           >
@@ -127,6 +178,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
           <span className="sc-web__chip" data-state={state} title={state === "preview" ? beat.captured : undefined} aria-live="polite">
             <i aria-hidden="true" />
             {chip}
+            {state === "loading" ? <span className="sc-web__chip-more"> the live site…</span> : null}
           </span>
         </span>
         <a className="sc-web__open" href={live.src} target="_blank" rel="noopener noreferrer">
@@ -134,8 +186,20 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
           <span className="ps-visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
-      <div className="sc-web__view" ref={viewRef}>
-        <Still cap={cap} alt={`${domain} home page, a still from ${when}`} />
+      <div className="sc-web__view" ref={viewRef} onWheel={nudge} onTouchStart={nudge}>
+        {/* The entrance picture only while the frame is on its way; any other time (refused, the fallback) the
+            finished page, so a frame that never goes live still shows a real-looking site (critic r2 N1). */}
+        <Still
+          settled={active}
+          edge={first && state !== "preview" && !refused ? first.edge : undefined}
+          cap={first && state !== "preview" && !refused ? { ...cap, ...first, video: undefined } : cap}
+          alt={`${domain} home page, a still from ${(first && state !== "preview" && !refused && first.captured?.replace(/^Captured\s+/i, "")) || when}`}
+        />
+        {/* The loading sign over the picture, under the URL strip (a browser's own loading bar): it slides by
+            transform only, and fades out as the live site fades in. */}
+        <div className="sc-web__bar" aria-hidden="true">
+          <i />
+        </div>
         {framed ? (
           <iframe
             key={reload}
@@ -148,8 +212,20 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
             allow=""
             loading="eager"
             style={frameStyle}
-            onLoad={live.frame === "load" ? () => setState((st) => (st === "loading" ? "live" : st)) : undefined}
+            onLoad={
+              live.frame === "load"
+                ? () => setState((st) => (st === "loading" ? "live" : st))
+                : () => {
+                    window.clearTimeout(refusedTimer.current);
+                    refusedTimer.current = window.setTimeout(() => setRefused(true), REFUSED_MS);
+                  }
+            }
           />
+        ) : null}
+        {hint && state === "loading" ? (
+          <div className="sc-web__hint" aria-hidden="true">
+            One second, the live site is loading
+          </div>
         ) : null}
         {state === "preview" ? (
           <div className="sc-web__fallback">
@@ -165,22 +241,57 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   );
 }
 
-/** The dated still: the capture's top, or the site's header bar over its hero video's poster. Never pans. */
-function Still({ cap, alt }: { cap: SiteCapture; alt: string }) {
+/** The dated still: the capture's top, or the site's header bar over its hero video's poster. Never pans.
+ *  It fades in once decoded, so a picture that is not ready at the window's first frame does not pop in.
+ *  One that arrives while the window is still coming in waits for it to settle (`settled`): drawn for the
+ *  first time mid-grow, a 1220 px picture cost the grow a frame (desktop, FarmBooks cold, window-fix bench). */
+function Still({ cap, alt, settled, edge }: { cap: SiteCapture; alt: string; settled: boolean; edge?: string }) {
+  const [ready, setReady] = useState<string | null>(null);
+  const [early, setEarly] = useState<string | null>(null);
+  const key = cap.video ? cap.video.poster : cap.src;
+  // Whether this picture was already decoded the first time it was attached (only then is it "early").
+  const seen = useRef<string | null>(null);
+  const onImg = (img: HTMLImageElement | null) => {
+    if (!img) return;
+    const first = seen.current !== key;
+    seen.current = key;
+    if (img.complete && img.naturalWidth > 0 && ready !== key) {
+      setReady(key);
+      if (first && !settled) setEarly(key);
+    }
+  };
+  const shown = ready === key && (settled || early === key) ? "" : undefined;
+  const onLoad = () => setReady(key);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [band, setBand] = useState(false);
+  useEffect(() => {
+    const box = boxRef.current;
+    const pic = box?.querySelector("img");
+    if (!edge || !box || !pic) return;
+    const measure = () => setBand(box.clientHeight - pic.clientHeight > 1);
+    const ro = new ResizeObserver(measure);
+    ro.observe(box);
+    ro.observe(pic);
+    return () => ro.disconnect();
+  }, [edge, key]);
   if (cap.video) {
     return (
-      <div className="sc-web__still sc-web__still--video" role="img" aria-label={alt}>
+      <div className="sc-web__still sc-web__still--video" role="img" aria-label={alt} data-ready={shown}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="sc-web__still-head" src={cap.src} width={cap.width} height={cap.height} alt="" loading="eager" decoding="async" draggable={false} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="sc-web__still-hero" src={cap.video.poster} width={cap.video.width} height={cap.video.height} alt="" loading="eager" decoding="async" draggable={false} />
+        <img ref={onImg} onLoad={onLoad} className="sc-web__still-hero" src={cap.video.poster} width={cap.video.width} height={cap.video.height} alt="" loading="eager" decoding="async" draggable={false} />
       </div>
     );
   }
+  // A frame taller than the picture (`band`): the picture's last rows fade into its own bottom colour, which fills the
+  // rest of the frame, so the page reads as continuing instead of stopping at a white band. The header stays
+  // width-first, where the live page draws it.
   return (
-    <div className="sc-web__still">
+    <div ref={boxRef} className="sc-web__still" data-ready={shown} data-band={band ? "" : undefined} style={edge ? ({ "--sc-still-edge": edge } as CSSProperties) : undefined}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={cap.src} width={cap.width} height={cap.height} alt={alt} loading="eager" decoding="async" draggable={false} />
+      <img ref={onImg} onLoad={onLoad} src={cap.src} width={cap.width} height={cap.height} alt={alt} loading="eager" decoding="async" draggable={false} />
+      {band ? <i className="sc-web__still-fade" aria-hidden="true" /> : null}
     </div>
   );
 }

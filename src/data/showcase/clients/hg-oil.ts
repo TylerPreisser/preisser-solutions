@@ -1,5 +1,5 @@
 // HG Oil Holdings' showcase (ADR-0022): their website, the COI story, and
-// Impact. Vendor insurance is AI at work; the saltwater close is automation
+// Impact (ADR-0028 tab set: Website, Vendor Insurance, Impact). Vendor insurance is AI at work; the saltwater close is automation
 // (there is no model in it) and is never called AI, here or anywhere.
 //
 // Website: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
@@ -12,99 +12,64 @@
 // Phone: cropped to x 440-1780 of 1920 so the whole pumpjack and the dusk
 // show; desk: the whole frame. Above it, the site's own header bar, cut whole
 // from the round 9 capture (Playwright Chromium, phone 390 at 2x, desk 1440 at
-// 1x). "Visit" goes to the live site. Sample data for the COI scene:
-// src/data/showcase/scenes/hg-coi.ts.
+// 1x). "Visit" goes to the live site. Sample data for the vendor scene:
+// src/data/showcase/scenes/hg-vendor.ts (builder B1).
 //
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
 // precise citation for each is kept outside this public repo.
-// Rules: no HG dollar amounts, no HG people, vendor or well names, no vendor
-// counts, and no description of HG's own past bookkeeping errors. The hours and
-// people the old way took have no source yet, so there is no `time` row.
-import type { ShowcaseClient } from "../types";
-import type { SceneBeatData } from "@/components/showcase/scenes";
-import { coiNarration } from "@/data/showcase/scenes/hg-coi";
+// Rules: no HG dollar amounts, no HG people, vendor or well names, and no live
+// vendor counts until the owner says so (HG_PUBLISH_VENDOR_COUNTS below). The
+// hours the old way took have no source yet, so the month-end close is a
+// now-only number: no before is shown for it.
+import type { ImpactStat, SceneBeat, ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
 
-const coi: SceneBeatData = {
+// ADR-0028 §2: a certificate arrives, four checks tick green, it is filed to the vendor's folder.
+// The scene (scenes/HgVendorScene, builder B1) is a ComingScene until it lands.
+const vendor: SceneBeat = {
   kind: "scene",
-  tab: "COI",
-  caption: "One vendor's certificate, chased from the lapse to the insurer's package, in the engine's own words.",
-  scene: "hg-coi",
-  narration: coiNarration,
+  tab: "Vendor Insurance",
+  caption: "A vendor's certificate arrives, every check ticks green, and it files itself to the vendor.",
+  scene: "hg-vendor",
+  narration:
+    "Vendor insurance on demonstration data: a certificate of insurance arrives, the engine reads the coverage type, the effective dates, the limits and the certificate holder, marks it good to go, and files it to the vendor's folder.",
 };
+
+/**
+ * HG's vendor certificate count (80 -> 155). Held back: the owner has not said
+ * live vendor counts may be published (spec §3.4). The lead flips this one
+ * line to true when the owner says yes; nothing else changes.
+ */
+const HG_PUBLISH_VENDOR_COUNTS = false;
+
+// A function, so that while the flag is false the numbers are dead code and the minifier drops them from the bundle.
+const vendorCertificates = () =>
+  ({
+    before: figure<"Owner, Oct 23 2026">("80", "vendor certificates on file, checked and current"),
+    now: figure<"Measured live, Oct 27 2026">("155", "vendor certificates on file, checked and current"),
+  }) as const satisfies ImpactStat;
+const closeSeconds = {
+  now: figure<"Measured live, Sep 17 2026">("70", "the longest the engine took to run a whole month-end close"),
+  unit: "s",
+} as const satisfies ImpactStat;
+const handTyped = {
+  before: figure<"How it is built">("74", "hand-typed totals in the close workbook"),
+  now: figure<"How it is built">("0", "hand-typed totals in the close workbook"),
+} as const satisfies ImpactStat;
 
 export const impact = impactBeat("hg-oil", {
   tab: "Impact",
   caption: "What the month-end close and vendor insurance engines do now, and what they replaced.",
-  shape: "chapters",
-  kicker: "What we automated",
-  chapters: [
-    {
-      name: "The month-end close",
-      cadence: "Every month",
-      hero: {
-        before: fact<"Client's words, Sep 10 2026">("An accountant built each month by hand, typing every total."),
-        now: fact<"How it is built">("A field person edits five cells. The owner presses Run."),
-      },
-      figures: [
-        figure<"How it is built">("74", "disposal agreements, worked out in one calculation"),
-        figure<"Measured live, Sep 17 2026">("70 s", "the longest the engine took to run a whole close, in five measured runs"),
-        figure<"How it is built">("17", "owner statements produced from every close"),
-      ],
-      how: "How the close runs",
-      steps: [
-        { verb: "Reads", text: fact<"How it is built">("the live sheet of disposal agreements, where the field edits only five columns.") },
-        { verb: "Calculates", text: fact<"How it is built">("every well's barrels and dollars from one rule, with shared charges split to the cent.") },
-        { verb: "Produces", text: "the A/P import, the GL journal and every owner statement from that same calculation." },
-        { verb: "Checks", text: "that every vendor is told exactly what it is paid, and holds the month if not." },
-        { verb: "Hands off", text: "the finished month to a person, who reviews it and releases it." },
-      ],
-      pairs: [
-        {
-          label: "Every total",
-          before: "Typed by hand into the workbook.",
-          now: fact<"How it is built">("Worked out from one rule and tied out before anything is released."),
-        },
-        {
-          label: "The controller",
-          before: "Built the payables entries by hand.",
-          now: "Imports the finished file.",
-        },
-      ],
-    },
-    {
-      name: "Vendor insurance",
-      cadence: "Every business day",
-      hero: {
-        before: fact<"Client's words">("A spreadsheet of X marks, and emails written one vendor at a time."),
-        now: "AI reads every certificate and chases only the vendors who need it.",
-      },
-      how: "How it keeps after it",
-      steps: [
-        { verb: "Reads", text: "every certificate that arrives, with AI, field by field." },
-        { verb: "Judges", text: "each vendor's coverage and dates: covered, expiring or not covered." },
-        { verb: "Chases", text: "only the vendors who need it, insurance agent first, and answers their replies." },
-        { verb: "Searches", text: fact<"How it is built">("HG's own mailboxes when a vendor says it already sent one.") },
-        { verb: "Hands off", text: "only the real decisions to the owner." },
-      ],
-      pairs: [
-        {
-          label: "The record",
-          before: fact<"Owner, Oct 23 2026">("The marks said a certificate was on file. Checked against the files, most were not."),
-          now: "Each vendor's status comes from the certificate itself, and its dates are watched.",
-        },
-        {
-          label: "The people",
-          before: fact<"Client's words">("Staff kept the files and wrote every request by hand."),
-          now: "A person handles only a certificate that comes on paper.",
-        },
-      ],
-    },
+  kicker: "What changed",
+  big: HG_PUBLISH_VENDOR_COUNTS ? [vendorCertificates(), handTyped, closeSeconds] : [handTyped, closeSeconds],
+  rows: [
+    { now: figure<"Measured live, Oct 23 2026">("258", "Insurance emails handled for you in the first 8 days") },
+    { now: figure<"How it is built">("17", "Owner statements produced every close") },
   ],
-  closing: "Same numbers every month. Nobody retypes them.",
+  text: "Vendor insurance and the month-end close now run themselves. A person signs off; nobody types.",
   narration:
-    "What we automated for HG Oil Holdings. The month-end close used to be built by hand with every total typed; now a field person edits a few cells, the owner presses Run, and the engine produces the payables import, the journal and the owner statements from a single calculation. Vendor insurance used to be a spreadsheet of marks and emails written by hand; now AI reads every certificate, judges coverage and chases only the vendors who need it.",
+    "What changed for HG Oil Holdings. The handwritten totals in the close workbook are gone, and the engine runs a whole month-end close in moments. Vendor insurance emails go out and are handled by the engine, and a person signs off instead of typing.",
 });
 
 const client: ShowcaseClient = {
@@ -129,7 +94,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://www.hgoilholdings.com/", origins: ["https://www.hgoilholdings.com", "https://hgoilholdings.com"], frame: "handshake" },
+      live: { src: "https://www.hgoilholdings.com/", origins: ["https://www.hgoilholdings.com", "https://hgoilholdings.com"], frame: "handshake", revealMs: 350 },
       tab: "Website",
       caption: "HG Oil's site opens on a pumpjack working at dusk.",
       captured: "Captured Nov 1, 2026",
@@ -137,6 +102,11 @@ const client: ShowcaseClient = {
         src: "/images/showcase/hg-oil-site-desk-head-2fb3472a.webp",
         width: 1440,
         height: 157,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
+        first: { src: "/images/showcase/hg-oil-site-desk-live-325b9f88.webp", width: 1220, height: 715, edge: "#060606", captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/hg-oil-site-tablet-live-df1a38a9.webp", width: 794, height: 981, edge: "#050605", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
         video: {
           webm: "/images/showcase/hg-oil-hero-desk-97e5697b.webm",
@@ -153,6 +123,11 @@ const client: ShowcaseClient = {
         src: "/images/showcase/hg-oil-site-phone-head-098f7029.webp",
         width: 390,
         height: 91,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
+        first: { src: "/images/showcase/hg-oil-site-phone-live-20c51093.webp", width: 376, height: 675, edge: "#050505", captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/hg-oil-site-phone320-live-685f6cf5.webp", width: 294, height: 369, edge: "#060605", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
         // The whole frame shows: a taller phone gets more of the clip's own sky and ground around it.
         video: {
@@ -167,7 +142,7 @@ const client: ShowcaseClient = {
         },
       },
     },
-    coi,
+    vendor,
     impact,
   ],
 };

@@ -1,0 +1,35 @@
+{
+  "still": "feed-before-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": {
+    "x": 0,
+    "y": 1535,
+    "w": 390,
+    "h": 484
+  },
+  "lines": [
+    "Live feed",
+    "19:21:34",
+    "Scan",
+    "· #",
+    "4",
+    "·",
+    "Sumac Hollow Golf Club",
+    "Tull Prairie, KS · mobile · iOS",
+    "19:20:34",
+    "Page view",
+    "9",
+    "Lone Cottonwood Golf Course",
+    "Brannick, KS · mobile · Android",
+    "19:18:34",
+    "Lead submitted",
+    "19:16:34",
+    "11",
+    "Wheatgrass Pines Golf Club",
+    "Osgood Bend, KS · mobile · iOS",
+    "19:13:34",
+    "Buy click"
+  ]
+}

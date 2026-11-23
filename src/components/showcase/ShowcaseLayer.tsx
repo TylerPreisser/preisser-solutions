@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
-import { loadShowcase, type ShowcaseSlug } from "@/data/showcase";
+import { loadShowcase, peekShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { ShowcaseClient } from "@/data/showcase/types";
 import { BeatView } from "./beats";
+import { isSheetLayout, onEntranceEnd, prefersReduced } from "./ShowcaseShell";
 import "./showcase.css";
 
 /**
@@ -16,13 +17,30 @@ import "./showcase.css";
  *            over a scrim, min(100% - 96, 1248) x min(100% - 64, 940), grown
  *            out of the card. The client's live site renders inside it at its
  *            desktop width. Nothing auto-advances: the visitor picks the tab.
- *            Hover-opened ("hover"): stays open while the pointer is anywhere
- *            inside it, including inside the client's site, and closes 400 ms
- *            after the pointer leaves. Any pointerdown on our own chrome pins it.
+ *            Hover-opened ("hover"): until the pointer has been inside the window's
+ *            resting box once, it stays open wherever the pointer is (a card at the
+ *            row's end sits outside the centred window, so the visitor crosses the
+ *            scrim to reach it). After that it stays open while the pointer is
+ *            inside it, including inside the client's site, and closes 400 ms after
+ *            the pointer leaves. Any pointerdown on our own chrome pins it; x,
+ *            Escape and a scrim click close it.
  *            Click- or key-opened ("pinned"): a modal dialog that closes only by
  *            the close button, Escape or the scrim.
  *   sheet    touch, or narrower than 900px: an opaque sheet from the bottom,
  *            swiped down from its grip and title row to dismiss.
+ *   armed    hover intent has begun but not yet held: the window is mounted at its resting place,
+ *            transparent and untouchable, so it is built before it is shown. Nothing else happens (no
+ *            scrim, no scroll lock, no keys) until the card clears `armed`. The Website frame no longer
+ *            starts here: a client site starting up runs on this page's thread in WebKit and in
+ *            Playwright's Chromium, and FarmBooks's start-up landed on the grow (frames 50-83 ms apart,
+ *            window-fix bench 2026-11-22). The loading bar covers the wait instead.
+ *   handoff  the home page's own shell (ShowcaseShell) was up first, because this code or the client's
+ *            data had not arrived at the tap. The window then mounts already at rest in the shell's place
+ *            (no rise, no grow) and the shell goes in the same frame.
+ *
+ * The tab's live content (the Website frame, a scene's timeline) starts only once the window has come
+ * in: built during the 420/460 ms entrance, its work landed on the rise's frames (WebKit runs a
+ * cross-origin frame on the page's own thread: one 813 ms hole mid-rise, window-fix lab 2026-11-22).
  */
 export type LayerMode = "hover" | "pinned";
 
@@ -33,24 +51,21 @@ const DISMISS_PX = 96;
 const DISMISS_V = 0.6;
 /** Sheet: the drag zone is the grip and the name/close row. */
 const DRAG_ZONE = 72;
+/** After taking over from the shell: how long the swap has before the tab's live content starts. */
+const HANDOFF_MS = 250;
 
-function prefersReduced() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-export function isSheetLayout() {
-  return typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
-}
+export { isSheetLayout };
 
 export default function ShowcaseLayer(props: LayerProps) {
-  const [show, setShow] = useState<ShowcaseClient | null>(null);
+  // Already here (the usual case: fetched as the cards came near): drawn in the first frame, no empty one.
+  const [show, setShow] = useState<ShowcaseClient | null>(() => peekShowcase(props.slug));
   const { slug } = props;
   const closeRef = useRef(props.onClose);
   closeRef.current = props.onClose;
   useEffect(() => {
     let on = true;
     loadShowcase(slug).then(
-      (c) => on && setShow(c),
+      (c) => on && setShow((cur) => cur ?? c),
       () => on && closeRef.current(),
     );
     return () => {
@@ -65,16 +80,41 @@ interface LayerProps {
   /** The card the window grows out of. */
   anchor: HTMLElement;
   mode: LayerMode;
+  /** Mounted ahead of hover intent completing: invisible, inert, only the Website frame loads. */
+  armed?: boolean;
+  /** Takes over from the shell already on screen: mounts at rest, no entrance. */
+  handoff?: boolean;
   onClose: () => void;
 }
 
 type Phase = "measure" | "from" | "open" | "leave";
 
-function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseClient }) {
+function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
-  const [phase, setPhase] = useState<Phase>(sheet ? "from" : "measure");
+  // A sheet mounts already "open" and rises by a CSS animation that starts on its first frame: the old
+  // "from" state needed two more frames first, and on a slow phone each frame of this page is the cost
+  // (critic r2 W2, WebKit: ~0.6 s between the sheet entering the DOM and its first visible frame).
+  const [phase, setPhase] = useState<Phase>(sheet || handoff ? "open" : "measure");
+  // The entrance is over (or there was none): the shown tab's live content may start.
+  const [cameIn, setCameIn] = useState(reduced);
+  useEffect(() => {
+    if (cameIn || phase !== "open") return;
+    // After a shell there is no entrance, but the swap itself gets its frames first (HANDOFF_MS).
+    if (handoff) {
+      const t = window.setTimeout(() => setCameIn(true), HANDOFF_MS);
+      return () => window.clearTimeout(t);
+    }
+    const box = boxRef.current;
+    if (!box) return;
+    return onEntranceEnd(box, sheet, () => setCameIn(true));
+  }, [cameIn, phase, sheet, handoff]);
   const [at, setAt] = useState(0);
+  // Tabs are built when first shown, not all at once on open: the open is one tab's work, not five.
+  const [built, setBuilt] = useState<ReadonlySet<number>>(() => new Set([0]));
+  useEffect(() => {
+    setBuilt((b) => (b.has(at) ? b : new Set(b).add(at)));
+  }, [at]);
   const [pinned, setPinned] = useState(mode === "pinned");
   const [from, setFrom] = useState<string | undefined>(undefined);
   // A scene's current step line, for screen readers only (the caption row is gone, spec §9).
@@ -94,18 +134,19 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   // ── Open: the window's place is CSS (centred, spec §2.1); JS only measures where it grows from.
   useLayoutEffect(() => {
-    if (sheet) return;
+    if (sheet || armed) return;
     const box = boxRef.current;
     if (!box) return;
     const w = box.getBoundingClientRect();
     finalBox.current = w;
+    if (handoff) return;
     const c = anchor.getBoundingClientRect();
     const sx = c.width / w.width;
     const dx = c.left + c.width / 2 - (w.left + w.width / 2);
     const dy = c.top + c.height / 2 - (w.top + w.height / 2);
     setFrom(`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sx.toFixed(3)})`);
     setPhase("from");
-  }, [anchor, sheet]);
+  }, [anchor, sheet, armed, handoff]);
 
   useEffect(() => {
     if (phase !== "from") return;
@@ -130,23 +171,36 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     return () => window.removeEventListener("resize", onResize);
   }, [sheet, phase]);
 
-  // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting sideways.
+  // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting
+  // sideways. Locked once the window has come in, not on its first frame: overflow:hidden on <html> re-lays-out the
+  // whole page, and in WebKit that alone held the rise back ~350 ms (mount to rise end 790 ms locked at mount,
+  // 420-470 ms without; window-fix lab 2026-11-22). Nothing scrolls the page from under a window still coming in.
   useEffect(() => {
+    if (armed) return;
+    const html = document.documentElement;
+    html.classList.add("sc-open");
+    if (sheet) html.classList.add("sc-sheet-open");
+    return () => html.classList.remove("sc-open", "sc-sheet-open");
+  }, [sheet, armed]);
+  useEffect(() => {
+    // After a shell, the shell already held the lock: keep it from the first frame (dropping it for the 250 ms
+    // of HANDOFF_MS re-laid-out the page twice in the swap).
+    if (armed || !(cameIn || handoff)) return;
     const html = document.documentElement;
     // Keep the gutter only where a classic scrollbar takes room; an overlay scrollbar has none to keep.
     const gutter = window.innerWidth - html.clientWidth > 0;
     html.classList.add("sc-lock");
     if (gutter) html.classList.add("sc-lock--gutter");
-    if (sheet) html.classList.add("sc-sheet-open");
-    return () => html.classList.remove("sc-lock", "sc-lock--gutter", "sc-sheet-open");
-  }, [sheet]);
+    return () => html.classList.remove("sc-lock", "sc-lock--gutter");
+  }, [armed, cameIn, handoff]);
 
   const closing = useRef(false);
   const close = useCallback(() => {
     if (closing.current) return;
     closing.current = true;
     setPhase("leave");
-    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 180);
+    // A frame past the leave transition (showcase.css: sheet 220 ms, window 180 ms), so its last frame paints.
+    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 200);
   }, [onClose, reduced, sheet]);
 
   // ── Hover window: open while the pointer is inside (including inside the client's frame, where the
@@ -171,12 +225,26 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     if (!hover) disarmLeave();
   }, [hover]);
 
-  const onWinEnter = () => {
+  // The pointer has been inside the window's RESTING box at least once. Until then nothing closes a
+  // hover window but x, Escape or a scrim click: the window grows out of the card, so on a wide screen
+  // its edge sweeps past a pointer resting on an end card (FarmBooks at 1920, NWKS at 2560), and the
+  // old rule closed it 400 ms later while the visitor was still on the way in, then the card under the
+  // pointer opened again (debug report 2026-11-04, all three engines).
+  const entered = useRef(false);
+  const inFinal = (e: ReactPointerEvent) => {
+    const fin = finalBox.current;
+    return fin ? e.clientX >= fin.left && e.clientX <= fin.right && e.clientY >= fin.top && e.clientY <= fin.bottom : false;
+  };
+  const onWinEnter = (e: ReactPointerEvent) => {
     inside.current = true;
+    if (inFinal(e)) entered.current = true;
     disarmLeave();
   };
+  const onWinMove = (e: ReactPointerEvent) => {
+    if (!entered.current && inFinal(e)) entered.current = true;
+  };
   const onWinLeave = (e: ReactPointerEvent) => {
-    if (!hover) return;
+    if (!hover || !entered.current) return;
     const edge = e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1;
     if (edge) return;
     inside.current = false;
@@ -184,16 +252,14 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
   };
   // Over the scrim: the pointer is outside the window's final box (it may still be growing under the pointer).
   const onScrimMove = (e: ReactPointerEvent) => {
-    if (!hover) return;
-    const fin = finalBox.current;
-    const inBox = fin ? e.clientX >= fin.left && e.clientX <= fin.right && e.clientY >= fin.top && e.clientY <= fin.bottom : false;
-    if (inBox) return;
+    if (!hover || !entered.current || inFinal(e)) return;
     inside.current = false;
     armLeave();
   };
 
   // ── Keyboard: Escape closes either kind (while focus is in our document; Escape inside the client's site is theirs).
   useEffect(() => {
+    if (armed) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -202,7 +268,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [close]);
+  }, [close, armed]);
 
   // A click-, key- or touch-opened window takes focus to its close button, and gives it back on close.
   // (Not while measuring: the window is visibility:hidden then, and focus() on it is a no-op.)
@@ -216,13 +282,18 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     closeBtn.current?.focus({ preventScroll: true });
   }, [phase]);
   useEffect(() => {
-    const returnTo = openedModal.current ? (document.activeElement as HTMLElement | null) : null;
+    // After a shell, focus sits on the shell's close button, which is gone: go back to the card instead.
+    const returnTo = handoff
+      ? anchor.querySelector<HTMLElement>('[aria-haspopup="dialog"]')
+      : openedModal.current
+        ? (document.activeElement as HTMLElement | null)
+        : null;
     return () => {
       // A hover window pinned by a click returns focus to its card's button (it never took focus at open).
       const back = returnTo ?? (pinnedRef.current ? anchor.querySelector<HTMLElement>('[aria-haspopup="dialog"]') : null);
       back?.focus?.({ preventScroll: true });
     };
-  }, [anchor]);
+  }, [anchor, handoff]);
 
   // The focus trap's two ends: Tab inside the client's frame cannot be seen, so the trap is two
   // focusable sentinels, first and last, that send focus round to the other end.
@@ -256,6 +327,101 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     e.preventDefault();
   };
 
+  // Labels that do not fit side by side (Duffer's five tabs on a phone sheet, design spec r2 §1.1) turn
+  // the bar into a horizontal scroll strip; labels are never squeezed, overprinted or cut. Measured from
+  // the labels' own text, so the answer is the same in either layout (no flip-flop between them).
+  const [scrollTabs, setScrollTabs] = useState(false);
+  // The strip's end is padded just enough that its last resting place also starts on a tab, so the left edge
+  // never shows the tail of a word ("nter", "mmand Center": critic r2 W3) even fully scrolled.
+  const padEnd = useCallback(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    const tabs = [...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")];
+    let pad = "";
+    if (track.hasAttribute("data-scroll") && tabs.length) {
+      const last = tabs[tabs.length - 1];
+      const end = last.offsetLeft + last.offsetWidth + 4; // content end with the track's own 4 px
+      const cw = track.clientWidth;
+      const start = tabs.map((t) => t.offsetLeft - 4).find((x) => x + cw >= end);
+      const extra = start === undefined ? 0 : Math.max(0, Math.ceil(start + cw - end));
+      if (extra > 0) pad = `${4 + extra}px`;
+    }
+    if (track.style.paddingRight !== pad) track.style.paddingRight = pad;
+  }, []);
+  const keepInView = useCallback((smooth: boolean) => {
+    const track = tabsRef.current;
+    if (!track || !track.hasAttribute("data-scroll")) return;
+    const t = track.querySelector<HTMLElement>(`[aria-selected="true"]`);
+    if (!t) return;
+    const cw = track.clientWidth;
+    const max = Math.max(0, track.scrollWidth - cw);
+    const L = t.offsetLeft;
+    const R = L + t.offsetWidth;
+    const CLEAR = 28; // the fade (20) and a little air
+    const fits = (c: number) => (c <= 0 ? L >= 0 : L - c >= CLEAR) && (c >= max ? R <= c + cw : c + cw - R >= CLEAR);
+    const starts = [0, max, ...[...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")].map((x) => Math.min(max, Math.max(0, x.offsetLeft - 4)))];
+    // No tab-aligned rest fits (a long label on a 320 phone): the selected tab sits just clear of the left
+    // fade, so at most the fade's width of the previous label shows, under the fade.
+    let ok = starts.filter(fits);
+    if (!ok.length) ok = [L - CLEAR, R + CLEAR - cw].map((c) => Math.min(max, Math.max(0, c))).filter(fits).slice(0, 1);
+    const now = track.scrollLeft;
+    const left = ok.length
+      ? ok.reduce((best, c) => (Math.abs(c - now) < Math.abs(best - now) ? c : best), ok[0])
+      : Math.min(max, Math.max(0, L - (cw - t.offsetWidth) / 2));
+    if (Math.abs(left - now) > 0.5) track.scrollTo({ left, behavior: smooth && !reduced ? "smooth" : "auto" });
+  }, [reduced]);
+  // In the strip, a fade marks whichever edge has tabs hidden past it.
+  const edges = useCallback(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    const on = track.hasAttribute("data-scroll");
+    track.toggleAttribute("data-fade-l", on && track.scrollLeft > 1);
+    track.toggleAttribute("data-fade-r", on && track.scrollLeft + track.clientWidth < track.scrollWidth - 1);
+  }, []);
+  useEffect(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    let live = true;
+    const fit = () => {
+      if (!live) return;
+      let need = 8; // the track's own padding
+      track.querySelectorAll<HTMLElement>(".sc-tabs__tab").forEach((t) => {
+        const r = document.createRange();
+        r.selectNodeContents(t);
+        // 10px a side: below that the labels read as one run ("Command Center MarCommand", WebKit at 430).
+        need += r.getBoundingClientRect().width + 20;
+      });
+      setScrollTabs(need > track.clientWidth + 1);
+      requestAnimationFrame(() => {
+        padEnd();
+        keepInView(false);
+        edges();
+      });
+    };
+    fit();
+    document.fonts?.ready.then(fit).catch(() => {});
+    const ro = new ResizeObserver(fit);
+    ro.observe(track);
+    return () => {
+      live = false;
+      ro.disconnect();
+    };
+  }, [edges, keepInView, padEnd]);
+  // The selected tab stays in view, whole and clear of the 20 px edge fades, and the strip comes to rest
+  // with a tab's start at its left edge so no cut-off word sits there (critic r2 W3: "MarCommand" ran into
+  // the right fade; "ommand Center" was cut at the left). Computed by hand: the engines disagree on
+  // scroll-padding for programmatic scrolls, and scroll snapping moved the strip after we placed it.
+  // At once on open and under reduced motion, smoothly after.
+  const scrolledOnce = useRef(false);
+  useEffect(() => {
+    if (scrollTabs) {
+      padEnd();
+      keepInView(scrolledOnce.current);
+      scrolledOnce.current = true;
+    }
+    edges();
+  }, [at, scrollTabs, keepInView, edges, padEnd]);
+
   // The pill sits under the selected tab by measurement (tab widths are unequal), after the
   // web font has loaded and again whenever the track resizes.
   const [pill, setPill] = useState<{ x: number; w: number; ready: boolean } | null>(null);
@@ -277,18 +443,37 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
       live = false;
       ro.disconnect();
     };
-  }, [at]);
+  }, [at, scrollTabs]);
 
   // ── Sheet: swipe down to dismiss, from the grip and the name/close row only.
   const drag = useRef<{ y0: number; y: number; t: number; v: number; id: number; moved: boolean } | null>(null);
   const [dragY, setDragY] = useState<number | null>(null);
   // Once the sheet is up, a short drag springs back in 240 ms instead of the 460 ms rise.
-  const [settled, setSettled] = useState(false);
+  const [settled, setSettled] = useState(handoff);
   useEffect(() => {
-    if (!sheet || phase !== "open") return;
-    const t = window.setTimeout(() => setSettled(true), 480);
-    return () => window.clearTimeout(t);
-  }, [sheet, phase]);
+    if (!sheet || phase !== "open" || settled) return;
+    const box = boxRef.current;
+    if (!box) return;
+    if (reduced) {
+      setSettled(true);
+      return;
+    }
+    // On the rise's own end, not a clock from mount: on a slow engine the clock ran out mid-rise and the
+    // page behind was taken away (covered) under a sheet still on its way up.
+    return onEntranceEnd(box, true, () => setSettled(true));
+  }, [sheet, phase, settled, reduced]);
+  // A settled sheet covers the whole page but its top strip. Then the page under it, and the scrim, stop
+  // being drawn: drawn, they made Chromium composite the page in big layers and the sheet's scene frame in
+  // a layer of its own for as long as the sheet was open (LayerTree, 390x844 at DPR 3: ~10 MB for the
+  // frame alone, iOS Safari dropped the page ~1 s into a tab). They come back for any movement: a drag,
+  // the close, the next open.
+  const covered = sheet && phase === "open" && settled && dragY === null;
+  useEffect(() => {
+    if (!covered) return;
+    const html = document.documentElement;
+    html.classList.add("sc-sheet-covered");
+    return () => html.classList.remove("sc-sheet-covered");
+  }, [covered]);
   const onSheetDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const box = boxRef.current;
     if (!box || phase !== "open") return;
@@ -342,7 +527,15 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
       <p className="sc-head__name" id={titleId}>
         {show.short}
       </p>
-      <div className="sc-tabs" role="tablist" aria-label={show.name} ref={tabsRef} onKeyDown={onTabKey}>
+      <div
+        className="sc-tabs"
+        role="tablist"
+        aria-label={show.name}
+        ref={tabsRef}
+        onKeyDown={onTabKey}
+        data-scroll={scrollTabs ? "" : undefined}
+        onScroll={scrollTabs ? edges : undefined}
+      >
         <span
           className="sc-tabs__pill"
           data-ready={pill?.ready ? "" : undefined}
@@ -381,15 +574,15 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
           aria-hidden={i !== at || undefined}
           inert={i !== at || undefined}
         >
-          <BeatView
+          {built.has(i) || i === at ? <BeatView
             client={show}
             beat={b}
             variant={variant}
-            active={opened && i === at}
+            active={opened && cameIn && i === at}
             fill
             reduced={reduced}
             onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}
-          />
+          /> : null}
         </div>
       ))}
       <p className="ps-visually-hidden" aria-live="polite">
@@ -409,7 +602,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
   if (sheet) {
     const style = dragY !== null ? ({ transform: phase === "leave" ? undefined : `translateY(${dragY}px)` } as CSSProperties) : undefined;
     return createPortal(
-      <div className="sc-root">
+      <div className="sc-root" data-handoff={handoff ? "" : undefined}>
         <div {...scrimProps} />
         <div
           ref={boxRef}
@@ -417,6 +610,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
           data-phase={phase}
           data-drag={dragY !== null && phase !== "leave" ? "" : undefined}
           data-settled={settled && phase === "open" ? "" : undefined}
+          data-rise={!settled && phase === "open" ? "" : undefined}
           style={style}
           onPointerDown={onSheetDown}
           onPointerMove={onSheetMove}
@@ -437,7 +631,13 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   const style = { transform: phase === "from" ? from : undefined } as CSSProperties;
   return createPortal(
-    <div className="sc-root">
+    <div
+      className="sc-root"
+      data-armed={armed ? "" : undefined}
+      data-handoff={handoff ? "" : undefined}
+      aria-hidden={armed || undefined}
+      inert={armed || undefined}
+    >
       <div {...scrimProps} />
       <div
         ref={boxRef}
@@ -446,6 +646,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
         data-mode={pinned ? "pinned" : "hover"}
         style={style}
         onPointerEnter={onWinEnter}
+        onPointerMove={hover ? onWinMove : undefined}
         onPointerLeave={onWinLeave}
         onPointerDownCapture={() => {
           // Using our own chrome (a tab, home, the strip) pins a hover window. Clicks inside the

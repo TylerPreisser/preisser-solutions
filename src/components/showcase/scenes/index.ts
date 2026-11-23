@@ -8,19 +8,41 @@ import type { ComponentType } from "react";
 import type { SceneProps } from "./kit";
 import { HgCoiScene, type FluidSceneProps } from "./HgCoiScene";
 import { HgSwdScene } from "./HgSwdScene";
+import { HgVendorScene } from "./HgVendorScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
+import { FarmbooksBillsScene } from "./FarmbooksBillsScene";
+import { stillsScene } from "./StillsWalkthrough";
+import { DUFFER_CC } from "@/data/showcase/scenes/duffer-cc";
+import { NWKS_ADMIN } from "@/data/showcase/scenes/nwks-admin";
 import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
 import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
+import { VENDOR_TOTAL_MS } from "@/data/showcase/scenes/hg-vendor";
 import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
+import { BILLS_TOTAL_MS } from "@/data/showcase/scenes/farmbooks-bills";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
-export type SceneId = "hg-coi" | "hg-swd" | "farmbooks-bill" | "nwks-beds";
+// Round 2 (ADR-0028): "hg-vendor", "farmbooks-bills", "duffer-cc" and "nwks-admin" are fluid scenes. Each is a
+// All four are real components now (round 2 builders B1, B5, B6, B7).
+// "hg-coi", "farmbooks-bill" and "nwks-beds" are retired from the client files and deleted once the replacements land.
+export type SceneId =
+  | "hg-coi"
+  | "hg-swd"
+  | "farmbooks-bill"
+  | "nwks-beds"
+  | "hg-vendor"
+  | "farmbooks-bills"
+  | "duffer-cc"
+  | "nwks-admin";
 
 /** Scenes that lay themselves out for the window (no camera, no native size). */
-export type FluidSceneId = "hg-coi";
+export type FluidSceneId = "hg-coi" | "hg-vendor" | "farmbooks-bills" | "duffer-cc" | "nwks-admin";
 export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> = {
   "hg-coi": HgCoiScene,
+  "hg-vendor": HgVendorScene,
+  "farmbooks-bills": FarmbooksBillsScene,
+  "duffer-cc": stillsScene(DUFFER_CC, "duffer-cc"),
+  "nwks-admin": stillsScene(NWKS_ADMIN, "nwks-admin"),
 };
 export const isFluid = (id: SceneId): id is FluidSceneId => id in FLUID_SCENES;
 
@@ -39,6 +61,12 @@ export const SCENE_MS: Record<SceneId, number> = {
   // The catch is the last beat: its rows land over ~2.9 s, then the held bill holds 4.5 s.
   "farmbooks-bill": fbCues[fbCues.length - 1] + fbHoldMs,
   "nwks-beds": bedsCues[bedsCues.length - 1] + 4200,
+  // Spec lengths (design-spec-r2 §2, §6.1-6.3); the builder owns the final value.
+  // Four steps (Arrives, Checks, Good to go, Filed), 13 s, then the window moves to Impact.
+  "hg-vendor": VENDOR_TOTAL_MS,
+  "farmbooks-bills": BILLS_TOTAL_MS,
+  "duffer-cc": DUFFER_CC.totalMs,
+  "nwks-admin": NWKS_ADMIN.totalMs,
 };
 
 /** The phone picture is 300 wide; its height is per scene (the COI cards need more room). */
@@ -48,6 +76,11 @@ export const PHONE_H: Record<SceneId, number> = {
   // Tall enough that a `top` shot can start on its clean line on every short phone.
   "farmbooks-bill": 516,
   "nwks-beds": 518,
+  // Fluid scenes fill the sheet; these are not read.
+  "hg-vendor": 520,
+  "farmbooks-bills": 520,
+  "duffer-cc": 520,
+  "nwks-admin": 520,
 };
 
 /**
@@ -102,6 +135,10 @@ export const SCENE_CAM: Record<SceneId, { desk?: readonly Shot[]; phone?: readon
   "hg-swd": { desk: swdDeskCam, phone: swdCam },
   "farmbooks-bill": { phone: fbCam },
   "nwks-beds": { phone: bedsCam },
+  "hg-vendor": {},
+  "farmbooks-bills": {},
+  "duffer-cc": {},
+  "nwks-admin": {},
 };
 
 export { NATIVE_SIZE, type SceneLayout, type SceneProps } from "./kit";

@@ -17,12 +17,12 @@
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
 // precise citation for each is kept outside this public repo.
-// Duffer's partner network has no live results to show yet, so Impact leads
-// with what the Command Center does and claims no sales, scans, partner
-// counts or dollars: no figures and no `time` row.
+// Duffer's partner network has no live results to show yet, so Impact claims no
+// sales, scans, partner counts or dollars: only the tracked visitors (0 on the
+// old site, counted since tracking went live). The QR story (spec §3.5) leads.
 import type { ShowcaseClient } from "../types";
 import { count, sum } from "../format";
-import { fact, impactBeat } from "../impact";
+import { fact, figure, impactBeat } from "../impact";
 
 type Course = { label: string; sub: string; scans: number; visits: number; leads: number; orders: number };
 
@@ -58,40 +58,19 @@ const DUFFER_DESK_BANDS = [
 export const impact = impactBeat("duffer-golf", {
   tab: "Impact",
   caption: "What the Command Center runs for Duffer's partners, dealers and course displays.",
-  shape: "loop",
-  kicker: "What we built",
-  chapters: [
+  kicker: "What changed",
+  // The QR story (spec §3.5, DufferQrScene, built in its own branch) leads this tab; the numbers rise below it.
+  lead: "qr-story",
+  big: [
     {
-      name: "The Command Center",
-      hero: {
-        before: fact<"Our audit of the old site, Sep 13 2026">("The old site tracked nothing, and no order said who sent it."),
-        now: "Every scan and visit is credited to the partner who sent it.",
-      },
-      how: "The partner loop",
-      steps: [
-        { verb: "Signs up", text: "a new partner and links their course display on its own." },
-        { verb: "Prints", text: "a QR display for the course, tied to that partner." },
-        { verb: "Credits", text: fact<"How it is built">("every scan to that partner, and a returning golfer to the last display within 90 days.") },
-        { verb: "Follows", text: "the golfer to the buy button and checkout, with every visit in MarCommand." },
-        { verb: "Keeps", text: "each partner's commission ledger, and each dealer's stock." },
-      ],
-      pairs: [
-        {
-          label: "Tracking",
-          before: fact<"Our audit of the old site, Sep 13 2026">("No pixel and no analytics across 34 page loads."),
-          now: "Every visit, scan and buy-button tap recorded.",
-        },
-        {
-          label: "Referrals",
-          before: fact<"Our audit of the old site, Sep 13 2026">("A code field at checkout, and no record of who sent an order."),
-          now: "Partner codes, course displays and a commission ledger.",
-        },
-      ],
+      oldWay: fact<"Our audit of the old site, Sep 13 2026">("The old site tracked no one"),
+      now: figure<"Measured live, Nov 3 2026">("366", "visitors tracked since tracking went live"),
     },
   ],
-  closing: "A dealer network that keeps its own books.",
+  rows: [],
+  text: "Every scan and visit is credited to the partner who sent it.",
   narration:
-    "What we built for Duffer Golf. The Command Center signs up partners and links their course displays, prints a QR display for each course, credits every scan and returning golfer to the partner who sent them, follows each golfer to checkout in MarCommand, and keeps the commission and dealer stock ledgers. The old site tracked nothing.",
+    "What changed for Duffer Golf. The old site tracked nothing, so no visit and no order said who sent it. Now every scan and every visit is recorded and credited to the partner who sent it, and the Command Center keeps each partner's commission ledger.",
 });
 
 const client: ShowcaseClient = {
@@ -116,7 +95,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake" },
+      live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake", revealMs: 150 },
       tab: "Website",
       caption: "The bay folds away so the car still fits, and every model shows its price.",
       captured: "Captured Nov 1, 2026",
@@ -124,6 +103,11 @@ const client: ShowcaseClient = {
         src: "/images/showcase/duffer-golf-site-desk-e28191de.webp",
         width: 1280,
         height: 1788,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
+        first: { src: "/images/showcase/duffer-golf-site-desk-live-eae07fe0.webp", width: 1220, height: 715, edge: "#13331c", captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/duffer-golf-site-tablet-live-614bb131.webp", width: 794, height: 981, edge: "#39623f", captured: "Captured Nov 22, 2026" }],
         stops: [
           { y: 0, holdMs: 2400, avoid: DUFFER_DESK_BANDS },
           // "Choose your model." and all four models with their prices and buttons.
@@ -134,6 +118,11 @@ const client: ShowcaseClient = {
         src: "/images/showcase/duffer-golf-site-phone-7ed25c02.webp",
         width: 390,
         height: 1700,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
+        first: { src: "/images/showcase/duffer-golf-site-phone-live-85927f95.webp", width: 376, height: 675, edge: "#111111", captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/duffer-golf-site-phone320-live-730dfd64.webp", width: 294, height: 369, edge: "#1d1c1b", captured: "Captured Nov 22, 2026" }],
         // The caption promises the prices: every stop rests with its band whole, at every phone height.
         stops: [
           // "A full golf bay. Then it's a garage again." and its button, whole.
@@ -146,38 +135,41 @@ const client: ShowcaseClient = {
       },
     },
     {
-      kind: "funnel",
-      tab: "MarCommand",
-      caption: "A scan at a golf course counter and an order online land in the same funnel.",
+      kind: "scene",
+      tab: "Command Center",
+      caption: "Duffer's own command center, clicked through: scans, courses, orders and commissions.",
+      scene: "duffer-cc",
       narration:
-        "The MarCommand dashboard on demonstration data: partner golf courses, the scans at each course's display, and how many became visits, leads and orders. None of these courses are real.",
-      funnel: {
-        window: "30 days",
-        lead: {
-          kicker: "Partner courses · last 30 days",
-          value: `${COURSES} courses`,
-          sub: [
-            { label: "Displays", value: count(COURSES) },
-            { label: "Orders", value: count(orders) },
-          ],
-        },
-        stages: [
-          { label: "Scanned", value: scans },
-          { label: "Visited", value: visits },
-          { label: "Leads", value: leads },
-          { label: "Orders", value: orders },
-        ],
-        railFigures: ["Scans", "Orders"],
-        rail: courses.map((c) => ({
-          label: c.label,
-          sub: c.sub,
-          icon: c === others ? ("flags" as const) : ("flag" as const),
-          hue: c.orders >= 2 ? 1 : 2,
-          figures: [c.scans, c.orders] as const,
-          weight: c.scans,
-          reach: c.orders > 0 ? 3 : c.leads > 0 ? 2 : 1,
-        })),
-      },
+        "The partner program's command center on demonstration data: today's scans and the live feed, the QR codes on each display, a partner course's record, the orders, and the commissions owed and paid.",
+    },
+    {
+      kind: "engine",
+      tab: "MarCommand",
+      caption: "MarCommand watches every channel, turns its own knobs and keeps what it learns.",
+      narration:
+        "The MarCommand engine on demonstration data: it weighs the ad channels and the course displays, favours the ad channel that brings leads for the least, turns the budget and schedule dials, and keeps what it learned.",
+      // Invented, and sized for a garage golf simulator sold online: a modest daily ad budget,
+      // a radius around the partner courses, and the month's leads equal to the AI tab's total.
+      // The weekend schedule follows the older learning; the new one is the AI tab's display finding.
+      channels: [
+        { icon: "ads", label: "Google Ads", delta: { text: "best", tone: "up" } },
+        { icon: "social-ads", label: "Meta ads", delta: { text: "+41% cost/lead", tone: "down" } },
+        { icon: "displays", label: "Course displays" },
+        { icon: "search", label: "Search" },
+      ],
+      dials: [
+        { label: "Daily budget", from: "$60", to: "$75", r0: 0.3, r1: 0.42 },
+        { label: "Radius", from: "40 mi", r0: 0.5 },
+        { label: "Ad schedule", from: "All day", to: "Weekends", r0: 0.15, r1: 0.62 },
+      ],
+      pick: 0,
+      turns: [0, 2],
+      learned: [
+        { text: "Displays at the pro-shop counter outsell the cart barn 3 to 1.", when: "Just now", isNew: true },
+        { text: "Meta ad leads cost 41% more this month: budget moved to Google Ads.", when: "2 days ago" },
+        { text: "Orders come in after the weekend rounds.", when: "2 weeks ago" },
+      ],
+      result: { label: "Leads a month", from: String(leads), to: String(leads + 5) },
     },
     {
       kind: "ai-ask",
@@ -189,10 +181,18 @@ const client: ShowcaseClient = {
       steps: [
         { label: "Reading your question", phase: 0, ms: 700 },
         { label: "Reading scans by course, last 30 days", phase: 1, ms: 900, chip: `${COURSES} rows` },
+        { label: "Reading site visits, last 30 days", phase: 1, ms: 700, chip: `${visits} rows` },
+        { label: "Reading leads, last 30 days", phase: 1, ms: 700, chip: `${leads} rows` },
         { label: "Reading orders, last 30 days", phase: 1, ms: 700, chip: `${orders} rows` },
         { label: "Matching each order to the display it started at", phase: 2, ms: 1200 },
         { label: "Writing the answer", phase: 3, ms: 900 },
         { label: "Checking every figure", phase: 4, ms: 800, chip: "8 figures matched" },
+      ],
+      sources: [
+        { icon: "scan", label: "Course scans", short: "Scans", chip: `${COURSES} rows`, step: 1 },
+        { icon: "visit", label: "Site visits", short: "Visits", chip: `${visits} rows`, step: 2 },
+        { icon: "lead", label: "Leads", chip: `${leads} rows`, step: 3 },
+        { icon: "order", label: "Orders", chip: `${orders} rows`, step: 4 },
       ],
       worked: [
         {

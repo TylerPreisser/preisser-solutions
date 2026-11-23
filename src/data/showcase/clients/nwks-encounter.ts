@@ -11,62 +11,32 @@
 // precise citation for each is kept outside this public repo.
 // Left out on purpose: piece totals and people counts that were never counted,
 // the "90 percent" (no measurement behind it), and any live-database count.
-// Hours per weekend have no source yet, so there is no `time` row.
+// Hours per weekend have no source yet: the before side is words, not hours.
 import type { ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
 
 export const impact = impactBeat("nwks-encounter", {
   tab: "Impact",
   caption: "What the system does every weekend, and what the volunteers used to do by hand.",
-  shape: "pieces",
-  kicker: "What we automated",
-  chapters: [
+  kicker: "What changed",
+  big: [
     {
-      name: "Every Encounter weekend",
-      hero: {
-        before: fact<"Client's words, Aug 19 2026">("A cabin plan the ministry called 100 percent manual."),
-        now: fact<"Measured live, Oct 8 2026">("Drafted in milliseconds. Volunteers only adjust it."),
-      },
-      figures: [
-        figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
-        figure<"Owner, Aug 20 2026">("5", "printed pieces per person, made from registration"),
-        figure<"How it is built">("24 h", "for each waitlist offer before it passes on"),
-      ],
-      pairs: [
-        {
-          label: "Name tags",
-          before: fact<"Client's words, Aug 19 2026">("Typed one name at a time onto label sheets."),
-          now: "Printed from registration on the ministry's own label stock.",
-        },
-        {
-          label: "Luggage tags",
-          before: fact<"Client's words, Aug 19 2026">("Typed by hand with name and cabin, at the last minute."),
-          now: "Printed as stickers, each cabin read from the plan.",
-        },
-        {
-          label: "Launch letters",
-          before: fact<"Client's words, Aug 19 2026">("One person per program emailed every registrant, every day or two."),
-          now: "Sent on their own, on fixed dates.",
-        },
-        {
-          label: "The waitlist",
-          before: "Details retyped by hand, and offers made by phone.",
-          now: "The next person gets an email offer, then it passes on.",
-        },
-      ],
-      how: "How the weekend runs",
-      steps: [
-        { verb: "Opens", text: fact<"Client's words, Aug 19 2026">("registration at the announced minute, and turns the same form into a waitlist when it fills.") },
-        { verb: "Offers", text: "each freed seat to the next person on the waitlist, then passes it on." },
-        { verb: "Drafts", text: "the cabin plan: each man with the server who invited him, each town together." },
-        { verb: "Prints", text: "the name tags and luggage stickers on the ministry's own label stock." },
-        { verb: "Sends", text: "each server their own schedule, with a calendar file." },
-      ],
+      oldWay: fact<"Client's words, Aug 19 2026">("Emailed by hand, every day or two"),
+      now: figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
+    },
+    {
+      oldWay: fact<"Client's words, Aug 19 2026">("Typed one at a time"),
+      now: figure<"Owner, Aug 20 2026">("5", "name tags and luggage stickers per person, made from registration"),
     },
   ],
-  closing: "Volunteers adjust the plan. They no longer type it.",
+  rows: [
+    {
+      now: figure<"Measured live, Oct 8 2026">("Milliseconds", "Cabin plan, drafted for volunteers to adjust"),
+    },
+  ],
+  text: "Volunteers adjust the plan. They no longer type it.",
   narration:
-    "What we automated for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Name tags and luggage stickers print from registration, launch letters go out on their own dates, and a freed seat is offered to the next person on the waitlist by email.",
+    "What changed for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Launch letters go out on their own dates, name tags and luggage stickers print from registration, and a freed seat is offered to the next person on the waitlist by email.",
 });
 
 /** Men's title, logo, date, Enter button; women's title, logo, date, Enter button (y in the 390-wide capture). */
@@ -103,7 +73,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake" },
+      live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake", revealMs: 400 },
       tab: "Website",
       caption: "The men's and women's weekends share one front door.",
       captured: "Captured Nov 1, 2026",
@@ -111,12 +81,22 @@ const client: ShowcaseClient = {
         src: "/images/showcase/nwks-encounter-site-desk-ff921ff6.webp",
         width: 1440,
         height: 900,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
+        first: { src: "/images/showcase/nwks-encounter-site-desk-live-003dc735.webp", width: 1220, height: 715, edge: "#f3f3ec", captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/nwks-encounter-site-tablet-live-164f03ed.webp", width: 794, height: 981, edge: "#f7f6ee", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 3400 }],
       },
       phone: {
         src: "/images/showcase/nwks-encounter-site-phone-8722795d.webp",
         width: 390,
         height: 844,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
+        first: { src: "/images/showcase/nwks-encounter-site-phone-live-a316a5ca.webp", width: 376, height: 675, edge: "#fbf8f2", captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/nwks-encounter-site-phone320-live-b85361f2.webp", width: 294, height: 369, edge: "#ffffff", captured: "Captured Nov 22, 2026" }],
         // Two rests, and neither edge of either one cuts a logo, a title, a date or a
         // button in half (critique r8 S6: the Women's Encounter logo was cut on every
         // phone): the men's half, then the women's half to the capture's end. Bands
@@ -126,6 +106,14 @@ const client: ShowcaseClient = {
           { y: 422, holdMs: 2600, toEnd: true, avoid: NWKS_PHONE_BANDS },
         ],
       },
+    },
+    {
+      kind: "scene",
+      tab: "Admin",
+      caption: "The administration panel, clicked through: the dashboard, the cabins, the attendees and the badges.",
+      scene: "nwks-admin",
+      narration:
+        "The Encounter weekend's administration panel on demonstration data: the dashboard, cabins filling with attendees, the attendee list filtered to those who have not paid, and the badges and luggage tags ready to print.",
     },
     impact,
   ],
