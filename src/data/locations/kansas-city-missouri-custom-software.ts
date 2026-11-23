@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Kansas City, MO Custom Software",
   metaDescription:
-    "Custom software and AI automation for Kansas City, Missouri businesses: Kansas-based firm serving the KC metro as an ongoing monthly service.",
+    "Custom software and AI automation for Kansas City, Missouri businesses: Kansas-based firm serving the KC metro offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

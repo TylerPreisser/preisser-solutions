@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Emporia, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses: built by a Kansas development firm as an ongoing monthly service.",
+    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses: built by a Kansas development firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

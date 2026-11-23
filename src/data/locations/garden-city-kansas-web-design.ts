@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Garden City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Garden City, Kansas: built by a nearby Kansas firm as an ongoing monthly service.",
+    "Custom websites, web apps, and AI automation for Garden City, Kansas: built by a nearby Kansas firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

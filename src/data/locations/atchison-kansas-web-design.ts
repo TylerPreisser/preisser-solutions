@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Atchison, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses: built by a Kansas-based firm as an ongoing monthly service.",
+    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses: built by a Kansas-based firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
