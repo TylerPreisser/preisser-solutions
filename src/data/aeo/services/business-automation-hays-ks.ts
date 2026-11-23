@@ -66,7 +66,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How projects ship",
       heading: "How an automation engagement ships",
       body: [
-        "Every project starts with a paid systems audit. We map the current workflows, identifies the highest-leverage targets, and writes a proposal that states your monthly price and lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
+        "Every project starts with a paid systems audit. We map the current workflows, identify the highest-leverage targets, and write a proposal that states your monthly price and lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
         "Support after launch continues as part of the monthly service. Once the workflows are running, the maintenance, support and improvement of what we built are covered by the monthly price. Plenty of clients get a sprint of work done, run it for a year unchanged, and come back when the next bottleneck appears.",
       ],
     },
