@@ -408,16 +408,10 @@ export interface StillsWalkthroughData {
 
 /** Duffer's QR story at the head of its Impact tab (§3.5). */
 export interface DufferQrData {
+  /** The partner shop whose counter display is scanned, and the code its sales carry. Invented. */
   course: string;
+  code: string;
   display: string;
-  town: string;
-  device: string;
-  /** The feed row, the order and the commission, invented. */
-  feedRow: string;
-  order: { id: string; item: string; code: string };
-  commission: { amount: string; to: string };
-  scansBefore: number;
-  scansAfter: number;
 }
 
 /** The new Impact: big numbers first (ADR-0028 §3, spec §3.1). */
