@@ -57,6 +57,13 @@
  *   n. never blank every 400 ms the stage is photographed; no photograph may be a flat field (pixel spread under 4):
  *                  a step must not switch to a still that cannot paint yet. PS_TEST_STILL_DELAY=<ms> holds back
  *                  every still's bytes to make that case happen.
+ *   o. opening     from the moment the tab is selected, every painted frame for 4 s (recorded in the page on each
+ *                  animation frame) shows the film's first still with the first step dot lit and the picture shown
+ *                  (while its framing loads, the card shows that still whole-height and then pushes in; those
+ *                  pre-roll frames are judged here, the framed views by every other rule),
+ *                  and the stage photographed every 100 ms is never a flat field: the tab never opens on another
+ *                  page (its old no-script picture) and then fades to step 1. PS_TEST_MANIFEST_DELAY=<ms> holds back
+ *                  the word manifests so the framing is late; PS_TEST_OPENING_SHOTS=<dir> keeps the photographs.
  *                  (j, k, l: definitions in tests/support/walk-layout.mjs. Desk views at 1440x900 frame a part of
  *                  a desktop page and are judged by a-g.)
  *
@@ -104,6 +111,10 @@ const SHOTS = process.env.PS_TEST_SHOTS || "";
 const STILL_DELAY = Number(process.env.PS_TEST_STILL_DELAY || 0);
 const FLAT_MS = 400; // the stage is photographed this often to catch a blank (flat) frame
 const FLAT_SD = 4; // a photographed stage whose pixels vary less than this (std dev, 0-255) is a flat field
+const OPENING_MS = 4000; // how long the opening is watched from the moment the tab is selected
+const OPENING_PHOTO_MS = 100;
+const MANIFEST_DELAY = Number(process.env.PS_TEST_MANIFEST_DELAY || 0);
+const OPENING_SHOTS = process.env.PS_TEST_OPENING_SHOTS || "";
 const VIEWPORTS = (process.env.PS_TEST_VIEWPORTS || ALL_VIEWPORTS.join(",")).split(",");
 
 // Which page of the product each still is, and the words a click must land on to go to a page.
@@ -112,6 +123,8 @@ const TABS = {
     title: "NWKS Encounter",
     tab: "Admin",
     dir: "nwks",
+    scene: "nwks-admin",
+    first: "dashboard", // the still of the film's first cue (nwks-admin.ts cues[0])
     pages: { dashboard: "Dashboard", "cabins-before": "Cabins", cabins: "Cabins", "cabins-moved": "Cabins", attendees: "Attendees", "attendees-unpaid": "Attendees", badges: "Badges", labels: "Labels" },
     dest: { Dashboard: /^dashboard$/i, Cabins: /^cabins$/i, Attendees: /^attendees$/i, Badges: /^(badges|tags)$/i, Labels: /^(labels?|luggage)$/i },
   },
@@ -119,6 +132,8 @@ const TABS = {
     title: "Duffer Golf",
     tab: "Command Center",
     dir: "duffer",
+    scene: "duffer-cc",
+    first: "dashboard", // the still of the film's first cue (duffer-cc.ts cues[0])
     pages: { dashboard: "Dashboard", "feed-before": "Dashboard", feed: "Dashboard", qr: "QR", partners: "Partners", partner: "Partner", orders: "Orders", commissions: "Commissions" },
     dest: { Dashboard: /^dashboard$/i, QR: /^(qr|codes)$/i, Partners: /^partners$/i, Partner: /^(sumac|lone|wheatgrass|hollow|cottonwood|golf|club|course|pines)$/i, Orders: /^orders$/i, Commissions: /^commissions$/i },
   },
@@ -358,6 +373,35 @@ export function ruleNoBlank(rec) {
   return `${flats.length} photographs of the stage, none flat (lowest spread ${Math.min(...flats.map((f) => f.sd)).toFixed(1)})`;
 }
 
+/** o. Every frame painted in the first OPENING_MS after the tab is selected is the film's first still, first dot lit, shown. */
+export function ruleOpening(rec, tab) {
+  // (A frame stamped past the window is the film's own next step after a stalled frame, not the opening.)
+  // (A stalled page paints nothing new: the frame before the stall is what shows through it.)
+  const all = rec.opening ?? [];
+  const o = all.filter((f) => f.t - all[0].t <= OPENING_MS);
+  assert.ok(o.length >= 10, `only ${o.length} frames of the opening were recorded`);
+  const span = all.length ? all[all.length - 1].t - all[0].t : 0;
+  assert.ok(span >= OPENING_MS, `the opening was watched for ${span} ms, not ${OPENING_MS}`);
+  const what = (f) => (f.still !== tab.first ? `the ${f.still} still` : f.dot !== 0 ? `dot ${f.dot + 1} lit` : f.shown < 0.99 ? `the picture hidden (opacity ${f.shown.toFixed(2)})` : null);
+  // Runs of wrong frames, each named once with its time span.
+  const runs = [];
+  for (const f of o) {
+    const w = what(f);
+    const last = runs[runs.length - 1];
+    if (w && last && last.w === w && last.open) last.to = f.t;
+    else if (w) runs.push({ w, from: f.t, to: f.t, open: true });
+    else if (last) last.open = false;
+  }
+  const photos = rec.openingPhotos ?? [];
+  const flat = photos.filter((p) => p.sd < FLAT_SD);
+  const msgs = [
+    ...runs.map((r) => `${r.from}-${r.to} ms: ${r.w}${r.w.startsWith("the ") && !r.w.includes("hidden") ? ` (dot ${(o.find((f) => f.t === r.from)?.dot ?? -1) + 1} lit)` : ""}`),
+    ...flat.slice(0, 2).map((p) => `photo at ${p.t} ms is a flat field (spread ${p.sd.toFixed(1)})`),
+  ];
+  assert.ok(msgs.length === 0, `the opening is not the film's first view: ${msgs.slice(0, 4).join(" | ")}${msgs.length > 4 ? ` (+${msgs.length - 4} more)` : ""}`);
+  return `${o.length} painted frames over ${span} ms, all the ${tab.first} still with dot 1 lit; ${photos.length} photographs, none flat (lowest spread ${photos.length ? Math.min(...photos.map((p) => p.sd)).toFixed(1) : "n/a"})`;
+}
+
 export function rulePointerPresent(rec) {
   const steps = [...new Set(rec.samples.map((s) => s.step))].sort();
   const missing = steps.filter((st) => !rec.samples.some((s) => s.step === st && s.cursor && s.cursorOn));
@@ -528,7 +572,17 @@ function fakeGuards() {
   const flatsOk = Array.from({ length: 12 }, (_, i) => ({ t: i * 400, step: "1", still: "a", sd: 40 }));
   ruleNoBlank({ flats: flatsOk }); // passes
   fails("blank stage", () => ruleNoBlank({ flats: [...flatsOk, { t: 5000, step: "2", still: "b", sd: 0.4 }] }));
-  return "all 25 rule guards fail on planted defects, and their positive controls pass";
+  // o. an opening on another still, on another dot, with the picture hidden, with a flat photograph
+  const otab = { first: "dashboard" };
+  const opening = Array.from({ length: 260 }, (_, i) => ({ t: i * 16, still: "dashboard", dot: 0, shown: 1 }));
+  const photosOk = Array.from({ length: 30 }, (_, i) => ({ t: i * 100, sd: 30 }));
+  const plant = (k, v) => ({ opening: opening.map((f, i) => (i < 40 ? { ...f, [k]: v } : f)), openingPhotos: photosOk });
+  ruleOpening({ opening, openingPhotos: photosOk }, otab); // passes
+  fails("opens on another still", () => ruleOpening(plant("still", "cabins"), otab));
+  fails("opens on another dot", () => ruleOpening(plant("dot", 2), otab));
+  fails("opens hidden", () => ruleOpening(plant("shown", 0), otab));
+  fails("opens flat", () => ruleOpening({ opening, openingPhotos: [...photosOk, { t: 0, sd: 0.5 }] }, otab));
+  return "all 29 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -591,10 +645,37 @@ function snapshot() {
     cursorOn,
     focus: f ? f.split(",").map(Number) : null,
     label: (root.querySelector(".stw-pause") || {}).ariaLabel ?? null,
+    pre: root.dataset.framing === "waiting",
   };
 }
 
-async function openTab(page, tab) {
+/** In the page: from the first frame the scene's panel is on, record its still, lit dot and picture opacity on every animation frame. */
+function openingRecorder({ scene, ms }) {
+  const log = (window.__opening = []);
+  let t0 = null;
+  const tick = () => {
+    const panel = document.querySelector('[role="tabpanel"][data-on]');
+    const root = panel && panel.querySelector(`.stw[data-scene="${scene}"]`);
+    if (root) {
+      const now = performance.now();
+      if (t0 === null) t0 = now;
+      const screen = root.querySelector(".stw-screen");
+      const on = root.querySelector(".stw-shot[data-on]");
+      const dots = [...root.querySelectorAll(".stw-dot")];
+      log.push({
+        t: Math.round(now - t0),
+        still: root.dataset.still,
+        dot: dots.findIndex((d) => d.getAttribute("aria-current") === "step"),
+        shown: Math.min(screen ? Number(getComputedStyle(screen).opacity) : 0, on ? Number(getComputedStyle(on).opacity) : 0),
+      });
+      if (now - t0 > ms) return;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+async function openTab(page, tab, watch) {
   await page.goto(`${PROD_ORIGIN}/`, { waitUntil: "load", timeout: 60000 });
   await page.waitForTimeout(800);
   if (THEME === "dark") {
@@ -611,6 +692,8 @@ async function openTab(page, tab) {
   await page.waitForTimeout(400);
   await page.mouse.move(2, 2);
   await page.waitForTimeout(500);
+  if (watch) await page.evaluate(openingRecorder, { scene: tab.scene, ms: OPENING_MS });
+  const photos = watch ? watch() : null;
   await btn.click({ timeout: 10000 });
   await page.locator('[role="tablist"]').first().waitFor({ state: "visible", timeout: 15000 });
   const tb = page.getByRole("tab", { name: tab.tab, exact: true }).first();
@@ -624,6 +707,7 @@ async function openTab(page, tab) {
     });
     if (ground !== "#0a1628") throw new Error(`dark theme did not hold: the walkthrough ground is ${ground}`);
   }
+  return photos;
 }
 
 async function play(browser, tab, vp) {
@@ -646,11 +730,42 @@ async function play(browser, tab, vp) {
       if (!["dashboard", tab.dir === "nwks" ? "cabins" : "feed"].includes(name)) await new Promise((ok) => setTimeout(ok, STILL_DELAY));
       await r.fallback();
     });
+    // o. The word manifests can be held back too, so the framing of the first view is late.
+    if (MANIFEST_DELAY) await ctx.route(/\/images\/showcase\/(nwks|duffer)\/[^/?]+\.words\.json/, async (r) => {
+      await new Promise((ok) => setTimeout(ok, MANIFEST_DELAY));
+      await r.fallback();
+    });
     const page = await ctx.newPage();
-    await openTab(page, tab);
+    const sharp = req("sharp");
+    // o. From the click that opens the showcase: the scene's stage photographed every 100 ms for OPENING_MS once it is on
+    // (as fast as the engine allows: WebKit takes ~1 s a photograph of a 3x phone; the painted-frame record is the
+    // per-frame check). Bounded, so a page that never shows the scene cannot starve the sampler.
+    const openingPhotos = [];
+    const watch = async () => {
+      const stage = page.locator(`[role="tabpanel"][data-on] .stw[data-scene="${tab.scene}"] .stw-stage`).first();
+      await stage.waitFor({ state: "visible", timeout: 20000 }).catch(() => null);
+      const until = Date.now() + OPENING_MS + 6000;
+      let s0 = null;
+      while (Date.now() < until) {
+        const t = s0 === null ? 0 : Date.now() - s0;
+        if (s0 !== null && t > OPENING_MS) break;
+        const buf = await stage.screenshot({ timeout: 4000, scale: "css", animations: "allow" }).catch(() => null);
+        if (buf) {
+          if (s0 === null) s0 = Date.now();
+          const tt = Date.now() - s0;
+          const st = await sharp(buf).stats();
+          openingPhotos.push({ t: tt, sd: (st.channels[0].stdev + st.channels[1].stdev + st.channels[2].stdev) / 3 });
+          if (OPENING_SHOTS) {
+            fs.mkdirSync(OPENING_SHOTS, { recursive: true });
+            fs.writeFileSync(path.join(OPENING_SHOTS, `${tab.dir}__${ENGINE}__${vp}__${THEME}__t${String(tt).padStart(5, "0")}.png`), buf);
+          }
+        }
+        await new Promise((ok) => setTimeout(ok, s0 === null ? 30 : Math.max(0, OPENING_PHOTO_MS - (Date.now() - s0 - t))));
+      }
+    };
+    const openingDone = await openTab(page, tab, watch);
     const samples = [];
     const flats = [];
-    const sharp = req("sharp");
     const t0 = Date.now();
     let ended = false;
     // n. The stage is photographed every FLAT_MS by its own loop, beside the sampler (which must keep its 100 ms pace
@@ -686,9 +801,11 @@ async function play(browser, tab, vp) {
     }
     photographing = false;
     await photos;
-    // The tab opens on its no-script picture for a frame or two before the film's first view; the film starts at step 1.
-    const from = samples.findIndex((x) => x.step === "1");
-    const rec = { samples: from > 0 ? samples.slice(from) : samples, flats, vp, phone, portrait: !phone && H > W, close: samples.some((x) => x.close), end: null };
+    await openingDone;
+    const opening = await page.evaluate(() => window.__opening ?? []);
+    // Rule o judges the opening (from the tab selected); the other rules judge the film from its step 1.
+    const from = samples.findIndex((x) => x.step === "1" && !x.pre);
+    const rec = { samples: from > 0 ? samples.slice(from) : samples, flats, opening, openingPhotos, vp, phone, portrait: !phone && H > W, close: samples.some((x) => x.close), end: null };
     if (SHOTS) {
       fs.mkdirSync(SHOTS, { recursive: true });
       await page.screenshot({ path: path.join(SHOTS, `${tab.dir}__${ENGINE}__${vp}__${THEME}__rest.png`) });
@@ -740,7 +857,7 @@ report("c. the maintainer's label-stock note is in no shipped still manifest", r
 
 const tabKeys = (process.env.PS_TEST_TABS || Object.keys(TABS).join(",")).split(",");
 const recs = {};
-if (!ONLY || /^[abdefghijkln]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk") || /^[jkl]\./.test(ONLY) || ONLY.includes("edge") || ONLY.includes("empty") || ONLY.includes("heading") || ONLY.includes("blank")) {
+if (!ONLY || /^[abdefghijklno]\./.test(ONLY) || ONLY.includes("open") || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk") || /^[jkl]\./.test(ONLY) || ONLY.includes("edge") || ONLY.includes("empty") || ONLY.includes("heading") || ONLY.includes("blank")) {
   const browser = await pw[ENGINE].launch();
   try {
     // One throwaway page first: a cold browser's first film runs slow enough to blur the timing of its first views.
@@ -802,6 +919,7 @@ for (const key of Object.keys(recs)) {
   report(`j. no text line or card is cut by the stage edge (${label})`, () => across(key, ruleEdges, (r) => r.phone || r.portrait || r.close));
   report(`k. no empty band across the stage (${label})`, () => across(key, ruleEmpty, (r) => r.phone || r.portrait || r.close));
   report(`l. no heading shows without its value, no sentence starts mid-way (${label})`, () => across(key, rulePairs, (r) => r.phone || r.portrait || r.close));
+  report(`o. the tab opens on the film's first view, first dot lit${MANIFEST_DELAY ? `, manifests held back ${MANIFEST_DELAY} ms` : ""} (${label})`, () => across(key, (r) => ruleOpening(r, TABS[key])));
   report(`n. the stage is never blank${STILL_DELAY ? `, stills held back ${STILL_DELAY} ms` : ""} (${label})`, () => across(key, ruleNoBlank));
 }
 
