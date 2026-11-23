@@ -60,7 +60,10 @@
  *   o. opening     from the moment the tab is selected, every painted frame for 4 s (recorded in the page on each
  *                  animation frame) shows the film's first still with the first step dot lit and the picture shown
  *                  (while its framing loads, the card shows that still whole-height and then pushes in; those
- *                  pre-roll frames are judged here, the framed views by every other rule),
+ *                  pre-roll frames are judged here, the framed views by every other rule), and no frame shows the card
+ *                  before its still has arrived (a white card); until it arrives the card may wait unseen on the
+ *                  stage's ground (data-loading). The shown card is photographed and must not be a flat field.
+ *                  PS_TEST_FIRST_DELAY=<ms> holds back the first still's bytes,
  *                  and the stage photographed every 100 ms is never a flat field: the tab never opens on another
  *                  page (its old no-script picture) and then fades to step 1. PS_TEST_MANIFEST_DELAY=<ms> holds back
  *                  the word manifests so the framing is late; PS_TEST_OPENING_SHOTS=<dir> keeps the photographs.
@@ -114,6 +117,8 @@ const FLAT_SD = 4; // a photographed stage whose pixels vary less than this (std
 const OPENING_MS = 4000; // how long the opening is watched from the moment the tab is selected
 const OPENING_PHOTO_MS = 100;
 const MANIFEST_DELAY = Number(process.env.PS_TEST_MANIFEST_DELAY || 0);
+const FIRST_DELAY = Number(process.env.PS_TEST_FIRST_DELAY || 0);
+const FADE_IN_MS = 400; // the first picture's fade-in once it has arrived (280 ms) and a frame's slack
 const OPENING_SHOTS = process.env.PS_TEST_OPENING_SHOTS || "";
 const VIEWPORTS = (process.env.PS_TEST_VIEWPORTS || ALL_VIEWPORTS.join(",")).split(",");
 
@@ -382,7 +387,24 @@ export function ruleOpening(rec, tab) {
   assert.ok(o.length >= 10, `only ${o.length} frames of the opening were recorded`);
   const span = all.length ? all[all.length - 1].t - all[0].t : 0;
   assert.ok(span >= OPENING_MS, `the opening was watched for ${span} ms, not ${OPENING_MS}`);
-  const what = (f) => (f.still !== tab.first ? `the ${f.still} still` : f.dot !== 0 ? `dot ${f.dot + 1} lit` : f.shown < 0.99 ? `the picture hidden (opacity ${f.shown.toFixed(2)})` : null);
+  // While the first still has not arrived the card may wait unseen on the stage's ground (data-loading), then fade in
+  // with its picture (FADE_IN_MS); a card that shows before its picture is a white card, and a card hidden for any
+  // other reason is a blank stage.
+  let lastLoading = -Infinity;
+  const what = (f) => {
+    if (f.loading) lastLoading = f.t;
+    return f.still !== tab.first
+      ? `the ${f.still} still`
+      : f.dot !== 0
+        ? `dot ${f.dot + 1} lit`
+        : f.card > 0.01 && f.pic === false
+          ? `a card with no picture (card ${f.card.toFixed(2)}, still not arrived)`
+          : f.early
+            ? "the still shown before it has arrived"
+          : f.shown < 0.99 && !f.loading && !(f.pic && f.t - lastLoading <= FADE_IN_MS)
+            ? `the picture hidden (opacity ${f.shown.toFixed(2)})`
+            : null;
+  };
   // Runs of wrong frames, each named once with its time span.
   const runs = [];
   for (const f of o) {
@@ -396,10 +418,11 @@ export function ruleOpening(rec, tab) {
   const flat = photos.filter((p) => p.sd < FLAT_SD);
   const msgs = [
     ...runs.map((r) => `${r.from}-${r.to} ms: ${r.w}${r.w.startsWith("the ") && !r.w.includes("hidden") ? ` (dot ${(o.find((f) => f.t === r.from)?.dot ?? -1) + 1} lit)` : ""}`),
-    ...flat.slice(0, 2).map((p) => `photo at ${p.t} ms is a flat field (spread ${p.sd.toFixed(1)})`),
+    ...flat.slice(0, 2).map((p) => `photo of the shown card at ${p.t} ms is a flat field (spread ${p.sd.toFixed(1)}): a white card`),
   ];
   assert.ok(msgs.length === 0, `the opening is not the film's first view: ${msgs.slice(0, 4).join(" | ")}${msgs.length > 4 ? ` (+${msgs.length - 4} more)` : ""}`);
-  return `${o.length} painted frames over ${span} ms, all the ${tab.first} still with dot 1 lit; ${photos.length} photographs, none flat (lowest spread ${photos.length ? Math.min(...photos.map((p) => p.sd)).toFixed(1) : "n/a"})`;
+  const waited = o.filter((f) => f.loading).length;
+  return `${o.length} painted frames over ${span} ms, all the ${tab.first} still with dot 1 lit${waited ? ` (${waited} on the inline preview before the still arrived)` : ""}; ${photos.length} photographs of the shown card, none flat (lowest spread ${photos.length ? Math.min(...photos.map((p) => p.sd)).toFixed(1) : "n/a"})`;
 }
 
 export function rulePointerPresent(rec) {
@@ -440,7 +463,7 @@ export function ruleEnding(rec) {
   assert.ok(rec.end, "the replay probe did not run");
   assert.ok(rec.end.label === "Replay", `the film ends showing "${rec.end.label}" (not "Replay") after ${END_WAIT_MS / 1000}s`);
   assert.ok(rec.end.controlVisible !== false, "the Replay control is cut off by the edge of the walkthrough");
-  assert.ok(rec.end.restartStep === "1" && rec.end.restartStill === rec.end.firstStill, `pressing it did not start from the first step (step ${rec.end.restartStep}, still ${rec.end.restartStill})`);
+  assert.ok(rec.end.restartStep === "1" && rec.end.restartStill === rec.end.firstStill, `pressing it did not start from the first step (step ${rec.end.restartStep}, still ${rec.end.restartStill}; the film started on ${rec.end.firstStill})`);
   assert.ok(rec.end.restartLabel === "Pause", `after pressing it the control reads "${rec.end.restartLabel}", not "Pause"`);
   return "ends on Replay; pressing it plays again from step 1";
 }
@@ -574,15 +597,21 @@ function fakeGuards() {
   fails("blank stage", () => ruleNoBlank({ flats: [...flatsOk, { t: 5000, step: "2", still: "b", sd: 0.4 }] }));
   // o. an opening on another still, on another dot, with the picture hidden, with a flat photograph
   const otab = { first: "dashboard" };
-  const opening = Array.from({ length: 260 }, (_, i) => ({ t: i * 16, still: "dashboard", dot: 0, shown: 1 }));
+  const opening = Array.from({ length: 260 }, (_, i) => ({ t: i * 16, still: "dashboard", dot: 0, shown: 1, card: 1, pic: true, loading: false }));
   const photosOk = Array.from({ length: 30 }, (_, i) => ({ t: i * 100, sd: 30 }));
   const plant = (k, v) => ({ opening: opening.map((f, i) => (i < 40 ? { ...f, [k]: v } : f)), openingPhotos: photosOk });
   ruleOpening({ opening, openingPhotos: photosOk }, otab); // passes
   fails("opens on another still", () => ruleOpening(plant("still", "cabins"), otab));
   fails("opens on another dot", () => ruleOpening(plant("dot", 2), otab));
   fails("opens hidden", () => ruleOpening(plant("shown", 0), otab));
+  ruleOpening({ opening: opening.map((f, i) => (i < 40 ? { ...f, shown: 0, card: 0, pic: false, loading: true } : f)), openingPhotos: photosOk }, otab); // loading ground: passes
+  fails("white card", () => ruleOpening(plant("pic", false), otab));
+  fails("still shown before it arrived", () => ruleOpening(plant("early", true), otab));
+  const fadeIn = (from) => opening.map((f, i) => (i < 40 ? { ...f, shown: 0, card: 0, pic: false, loading: true } : i < from ? f : i < from + 16 ? { ...f, shown: (i - from) / 16, card: (i - from) / 16 } : f));
+  ruleOpening({ opening: fadeIn(40), openingPhotos: photosOk }, otab); // fades in as the loading ends: passes
+  fails("fade long after loading", () => ruleOpening({ opening: fadeIn(100), openingPhotos: photosOk }, otab));
   fails("opens flat", () => ruleOpening({ opening, openingPhotos: [...photosOk, { t: 0, sd: 0.5 }] }, otab));
-  return "all 29 rule guards fail on planted defects, and their positive controls pass";
+  return "all 32 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -638,7 +667,7 @@ function snapshot() {
     step: root.dataset.step,
     still: root.dataset.still,
     view: shots.indexOf(on),
-    src: on.querySelector("img").getAttribute("src"),
+    src: on.querySelector("img:not(.stw-poster)").getAttribute("src"),
     screen: sr,
     shot: rect(on),
     cursor,
@@ -667,6 +696,12 @@ function openingRecorder({ scene, ms }) {
         still: root.dataset.still,
         dot: dots.findIndex((d) => d.getAttribute("aria-current") === "step"),
         shown: Math.min(screen ? Number(getComputedStyle(screen).opacity) : 0, on ? Number(getComputedStyle(on).opacity) : 0),
+        card: screen ? Number(getComputedStyle(screen).opacity) : 0,
+        // The card has a picture: the shown still has arrived, or its inline preview is under it (a card shown with
+        // neither is a white card). And the still itself is never shown before it has arrived.
+        pic: Boolean(on && [...on.querySelectorAll("img")].some((im) => im.complete && im.naturalWidth > 0 && Number(getComputedStyle(im).opacity) > 0.5)),
+        early: Boolean(on && [...on.querySelectorAll("img:not(.stw-poster)")].some((im) => !(im.complete && im.naturalWidth > 0) && Number(getComputedStyle(im).opacity) > 0.01 && im.classList.contains("stw-real"))),
+        loading: root.hasAttribute("data-loading"),
       });
       if (now - t0 > ms) return;
     }
@@ -707,7 +742,8 @@ async function openTab(page, tab, watch) {
     });
     if (ground !== "#0a1628") throw new Error(`dark theme did not hold: the walkthrough ground is ${ground}`);
   }
-  return photos;
+  // (Wrapped: returning the promise itself would make the caller wait for the opening photographs to finish.)
+  return { photos };
 }
 
 async function play(browser, tab, vp) {
@@ -725,6 +761,11 @@ async function play(browser, tab, vp) {
     await ctx.route((u) => u.origin !== PROD_ORIGIN, (r) => r.abort());
     // The film's first still and its no-script picture load with the window (there is nothing earlier to keep on
     // screen); every other still is held back, so the film reaches a step whose still has not arrived.
+    // o. The film's first still held back (a phone network): PS_TEST_FIRST_DELAY=<ms>.
+    if (FIRST_DELAY) await ctx.route(new RegExp(`/images/showcase/${tab.dir}/${tab.first}\\.webp`), async (r) => {
+      await new Promise((ok) => setTimeout(ok, FIRST_DELAY));
+      await r.fallback();
+    });
     if (STILL_DELAY) await ctx.route(/\/images\/showcase\/(nwks|duffer)\/[^/?]+\.webp/, async (r) => {
       const name = r.request().url().split("/").pop().replace(/\.webp.*$/, "");
       if (!["dashboard", tab.dir === "nwks" ? "cabins" : "feed"].includes(name)) await new Promise((ok) => setTimeout(ok, STILL_DELAY));
@@ -743,13 +784,17 @@ async function play(browser, tab, vp) {
     const openingPhotos = [];
     const watch = async () => {
       const stage = page.locator(`[role="tabpanel"][data-on] .stw[data-scene="${tab.scene}"] .stw-stage`).first();
+      const card = page.locator(`[role="tabpanel"][data-on] .stw[data-scene="${tab.scene}"] .stw-screen`).first();
       await stage.waitFor({ state: "visible", timeout: 20000 }).catch(() => null);
       const until = Date.now() + OPENING_MS + 6000;
       let s0 = null;
       while (Date.now() < until) {
         const t = s0 === null ? 0 : Date.now() - s0;
         if (s0 !== null && t > OPENING_MS) break;
-        const buf = await stage.screenshot({ timeout: 4000, scale: "css", animations: "allow" }).catch(() => null);
+        // The card is photographed while it is shown (a card waiting unseen on the loading ground is not a picture).
+        const shown = await card.evaluate((el) => Number(getComputedStyle(el).opacity)).catch(() => 0);
+        const buf = shown >= 0.99 ? await card.screenshot({ timeout: 4000, scale: "css", animations: "allow" }).catch(() => null) : null;
+        if (!buf && s0 === null && shown < 0.99 && (await stage.isVisible().catch(() => false))) s0 = Date.now();
         if (buf) {
           if (s0 === null) s0 = Date.now();
           const tt = Date.now() - s0;
@@ -763,7 +808,7 @@ async function play(browser, tab, vp) {
         await new Promise((ok) => setTimeout(ok, s0 === null ? 30 : Math.max(0, OPENING_PHOTO_MS - (Date.now() - s0 - t))));
       }
     };
-    const openingDone = await openTab(page, tab, watch);
+    const { photos: openingDone } = await openTab(page, tab, watch);
     const samples = [];
     const flats = [];
     const t0 = Date.now();
@@ -783,7 +828,8 @@ async function play(browser, tab, vp) {
         await new Promise((ok) => setTimeout(ok, Math.max(0, FLAT_MS - (Date.now() - t0 - t))));
       }
     })();
-    while (Date.now() - t0 < END_WAIT_MS) {
+    // (Only the opening asked for, PS_TEST_ONLY=opens: the film is not played past it.)
+    while (Date.now() - t0 < (ONLY === "opens" ? OPENING_MS + 1500 : END_WAIT_MS)) {
       const s = await page.evaluate(snapshot);
       if (s) {
         s.t = Date.now() - t0;
@@ -919,7 +965,7 @@ for (const key of Object.keys(recs)) {
   report(`j. no text line or card is cut by the stage edge (${label})`, () => across(key, ruleEdges, (r) => r.phone || r.portrait || r.close));
   report(`k. no empty band across the stage (${label})`, () => across(key, ruleEmpty, (r) => r.phone || r.portrait || r.close));
   report(`l. no heading shows without its value, no sentence starts mid-way (${label})`, () => across(key, rulePairs, (r) => r.phone || r.portrait || r.close));
-  report(`o. the tab opens on the film's first view, first dot lit${MANIFEST_DELAY ? `, manifests held back ${MANIFEST_DELAY} ms` : ""} (${label})`, () => across(key, (r) => ruleOpening(r, TABS[key])));
+  report(`o. the tab opens on the film's first view, first dot lit, never a white card${MANIFEST_DELAY ? `, manifests held back ${MANIFEST_DELAY} ms` : ""}${FIRST_DELAY ? `, first still held back ${FIRST_DELAY} ms` : ""} (${label})`, () => across(key, (r) => ruleOpening(r, TABS[key])));
   report(`n. the stage is never blank${STILL_DELAY ? `, stills held back ${STILL_DELAY} ms` : ""} (${label})`, () => across(key, ruleNoBlank));
 }
 
