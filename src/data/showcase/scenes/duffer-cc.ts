@@ -11,7 +11,7 @@ import type { CursorTarget, Still, StillsWalkthroughData } from "../types";
 import { DUFFER_CC_SHOTS as S } from "./duffer-cc-stills";
 
 type Shot = { desk: { src: string; width: number; height: number; css: { w: number; h: number } } };
-export type Rect = { x: number; y: number; w: number; h: number; grow?: number; above?: number; place?: "centre" };
+export type Rect = { x: number; y: number; w: number; h: number; grow?: number; above?: number; left?: number; place?: "centre"; pass?: true };
 
 /** What a walkthrough needs beyond the shared data shape: overlay boxes, step captions, framings. */
 export interface WalkCue {
@@ -77,14 +77,16 @@ const CAM = {
 type Units = readonly (readonly Rect[])[];
 const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
 const CL: Record<string, Units> = {
-  // Dashboard: today's figures. Scans and visitors, then leads and buy clicks (a tablet holds all four).
-  // (A phone's first view ends its right edge between Unique visitors' words and the Live feed's times.)
-  kpiA: [[R(640, 179, 753, 147)], [R(640, 179, 325, 147)], [R(640, 179, 179, 147)]],
-  // Then leads and buy clicks with the Live feed's rows under them, time and event (a 320 phone: the two figures).
-  kpiB: [[R(640, 179, 753, 147)], [R(1023, 179, 369, 147), R(962, 560, 423, 120)], [R(1023, 179, 369, 147)], [R(1023, 179, 178, 147)]],
+  // Dashboard. Only the left of the page has tiles in both rows (right of x 627 the second row is empty page), so a close
+  // view opens there: a tablet on the first three tiles and the two under them, a phone on the 2 x 2 block of whole
+  // tiles under the review banner, a 320 phone on the first column of two tiles.
+  kpiA: [[R(257, 179, 562, 307)], [R(257, 179, 370, 307)], [R(257, 179, 178, 307)]],
+  // Then the camera moves down to the daily scans and leads chart (a tablet already shows it, and stays).
+  kpiB: [[R(257, 179, 562, 307)], [R(257, 338, 370, 400)], [R(257, 506, 290, 220)]],
   // The Live feed card: time and what happened, row by row.
   // (A 320 phone cannot read time and event together: it shows the events, each whole.)
-  feed: [[R(947, 25, 446, 680)], [R(947, 25, 446, 330)], [R(955, 75, 430, 260)], [R(1085, 75, 300, 250)]],
+  // (A tablet's window stops in the gap before the feed card: left of it are the dashboard's charts, cut.)
+  feed: [[{ ...R(947, 25, 446, 600), left: 17 }], [{ ...R(947, 25, 446, 330), left: 17 }], [{ ...R(955, 75, 430, 260), left: 8 }], [R(1085, 75, 300, 250)]],
   // The sidebar's page list.
   nav: [[R(8, 175, 208, 452)], [R(8, 320, 208, 230)]],
   // QR Codes: the displays table with its Display and Holder columns, and the scans the caption talks about.
@@ -93,14 +95,17 @@ const CL: Record<string, Units> = {
   partners: [[R(257, 360, 660, 320)], [R(262, 360, 225, 310)]],
   // One partner: the At a glance card (referral code, payout preference, scans and leads, each label with its value);
   // a smaller stage, the form's payout preference with the contact under it.
-  partner: [[R(947, 417, 446, 270), R(947, 133, 446, 262)], [R(960, 417, 420, 270)], [R(590, 195, 325, 230)]],
+  // (The 320 view starts under the form card's header strip, whose title sits off to the left.)
+  partner: [[R(947, 417, 446, 270), R(947, 133, 446, 262)], [R(960, 417, 420, 270)], [{ ...R(590, 195, 325, 230), above: 12 }]],
   // Orders: each sale with the course it is credited to (product, amount, partner); a tablet adds its commission.
   // (A 320 phone: each sale's amount and the course it is credited to.)
   orders: [[R(380, 100, 850, 590)], [R(478, 100, 370, 590)], [R(478, 100, 370, 300)], [R(620, 100, 225, 300)]],
-  // Commissions: what is owed to each course, and the payout recorded by check.
-  pay: [[R(947, 100, 446, 487)], [R(947, 100, 446, 333)], [R(955, 155, 300, 280)]],
-  // The last view: the whole column, owed and paid, in the middle of the stage (the page under it is empty).
-  paid: [[R(947, 100, 446, 487)], [{ ...R(955, 100, 430, 487), place: "centre" }], [R(947, 452, 446, 135)], [R(955, 510, 310, 70)]],
+  // Commissions: what is owed to each course, and the payout recorded by check. The column has empty page above and
+  // below it: a tall phone holds the column a little closer (its edges in the cards' padding), in the middle of the stage.
+  pay: [[R(947, 100, 446, 487)], [{ ...R(961, 100, 418, 487), place: "centre" }], [R(955, 155, 300, 280)]],
+  // The last view: the whole column, owed and paid. A landscape stage too short for it ends on the second course's
+  // payout row with the Payouts card; a 320 phone on the Owed, by partner card (its labels, amounts and buttons).
+  paid: [[R(947, 100, 446, 487)], [{ ...R(961, 100, 418, 487), place: "centre" }], [R(955, 315, 430, 272)], [R(955, 100, 300, 330)]],
 };
 // The sidebar is the same on every still: the word boxes in each .words.json put its labels at x 48 and these y.
 const NAV = { partners: 336, orders: 450, commissions: 488, qr: 526 };
@@ -109,6 +114,8 @@ const nav = (y: number, click = false): CursorTarget => ({ x: 64, y: Math.round(
 // (every edge of this window lands in a gap on every still the film clicks from).
 const NAV_DESK: Rect = { x: 0, y: 160, w: 930, h: 600 };
 const dot = (x: number, y: number, click = false): CursorTarget => ({ x, y, click });
+// The payout row's "check" (where the last click lands), for the per-set pointers of the last view.
+const CHECK: CursorTarget = at(T("commissions", "check"), true) ?? dot(1100, 545, true);
 
 export const DUFFER_CC: WalkData = {
   stills: [
@@ -133,8 +140,8 @@ export const DUFFER_CC: WalkData = {
   cues: [
     // Dashboard, then its live feed.
     { at: 0, still: I.dashboard, step: 0, cam: CAM.dashboard, close: CL.kpiA },
-    { at: 900, still: I.dashboard, step: 0, cursor: dot(300, 246), closeCursor: dot(690, 252) },
-    { at: 2400, still: I.dashboard, step: 0, cursor: at(T("dashboard", "scans"), true), closeCursor: dot(1070, 252), close: CL.kpiB },
+    { at: 900, still: I.dashboard, step: 0, cursor: dot(300, 246), closeCursor: [dot(690, 252), dot(520, 252), dot(330, 252)] },
+    { at: 2400, still: I.dashboard, step: 0, cursor: at(T("dashboard", "scans"), true), closeCursor: [dot(690, 252), dot(470, 650), dot(420, 650)], close: CL.kpiB },
     { at: 4200, still: I["feed-before"], step: 1, cam: CAM.feed, close: CL.feed, cursor: dot(1110, 93) },
     { at: 6200, still: I.feed, step: 1, cam: CAM.feed, close: CL.feed, overlay: "feed-row", fadeMs: 280 },
     // Click "QR Codes" in the sidebar.
@@ -160,7 +167,8 @@ export const DUFFER_CC: WalkData = {
     { at: 31000, still: I.orders, step: 4, cursor: nav(NAV.commissions, true) },
     { at: 31900, still: I.commissions, step: 5, cam: CAM.commissions, close: CL.pay, cursor: at(T("commissions", "pay")) },
     { at: 33800, still: I.commissions, step: 5, cursor: at(T("commissions", "pay"), true) },
-    { at: 35200, still: I.commissions, step: 5, close: CL.paid, cursor: at(T("commissions", "check"), true) },
+    // (On a 320 phone the last view is the Owed card: the pointer rests on the payout it just recorded, Record payout.)
+    { at: 35200, still: I.commissions, step: 5, close: CL.paid, cursor: at(T("commissions", "check"), true), closeCursor: [CHECK, CHECK, CHECK, dot(1116, 284, true)] },
   ],
   // The last cue rests for ~3 s, then the film is over and the control offers a replay.
   totalMs: 38500,
