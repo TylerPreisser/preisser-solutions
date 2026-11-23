@@ -146,8 +146,9 @@ export const NWKS_ADMIN: WalkData = {
   cues,
   // The last cue rests for ~4 s, then the film is over and the control offers a replay.
   totalMs: 34600,
-  // Spec §6.3: no script and reduced motion show the cabins after the plan.
-  ssrStill: I.cabins,
+  // A phone holds the first figures and the payment card for ~2.6 s (the desk's pointer tour of the other figures,
+  // 2.6 s to 6 s, has nothing new to show there), then goes to the sidebar.
+  phoneSkip: { from: 2600, to: 6000 },
   manifest: ORDER.map((id) => shot(id).desk.src.replace(/\.webp$/, ".words.json")),
   deskAspect: { w: 1440, h: 900 },
   phoneUsesDesk: true,

@@ -46,6 +46,9 @@ export interface WalkData extends StillsWalkthroughData {
   solids?: Readonly<Record<string, readonly Rect[]>>;
   /** The phone sheet frames the DESK still in close views (a product with no narrow layout of its own, or a film that must click between pages). */
   phoneUsesDesk?: boolean;
+  /** On a phone the cues from `from` up to (not including) `to` ms are left out and every later cue (and the end) comes
+   *  `to - from` ms sooner: desk pointer tours a phone's close view cannot show, so it would only hold the same view. */
+  phoneSkip?: { from: number; to: number };
 }
 
 const still = (id: keyof typeof S, alt: string): Still => {
@@ -173,8 +176,6 @@ export const DUFFER_CC: WalkData = {
   ],
   // The last cue rests for ~3 s, then the film is over and the control offers a replay.
   totalMs: 38500,
-  // No script, reduced motion and the privacy probe see the live feed with its newest scan.
-  ssrStill: I.feed,
   manifest: ORDER.map((id) => S[id].desk.src.replace(/\.webp$/, ".words.json")),
   deskAspect: { w: 1440, h: 900 },
   feedRow: { still: I.feed, desk: T("feed", "row")! },
