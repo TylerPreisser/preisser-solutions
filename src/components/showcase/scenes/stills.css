@@ -25,6 +25,8 @@
   inset: 0;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
+  /* The column is the window's width, never the foot's: wider, and the window would cut the stage off. */
+  grid-template-columns: minmax(0, 1fr);
   background: linear-gradient(180deg, var(--stw-ground-2), var(--stw-ground));
   color: var(--stw-ink);
   font-family: var(--pt-body, Inter, system-ui, -apple-system, "Segoe UI", sans-serif);
@@ -353,6 +355,18 @@
 /* Six 44 px dots and a pause fit the 366 px sheet only without the name; the caption slot carries it. */
 .stw--phone .stw-step {
   display: none;
+}
+/* A 320 px phone's sheet is 294 px: six 44 px dots and the control (348 px with the foot's padding) do not fit, so the
+   dots close up to 38 px (the control keeps 44). */
+@media (max-width: 359px) {
+  .stw--phone .stw-foot {
+    gap: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .stw--phone .stw-dot {
+    width: 38px;
+  }
 }
 
 .stw.is-still *,

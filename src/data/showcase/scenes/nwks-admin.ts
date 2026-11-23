@@ -52,7 +52,7 @@ const CLOSE: Record<string, Units> = {
   people: [[R(8, 298, 208, 132)]],
   weekend: [[R(8, 636, 208, 166)]],
   // Cabins before the plan: the men waiting in the pool, then the Rerun button with the empty cabins under it.
-  pool: [[R(249, 165, 727, 600)], [R(686, 180, 290, 575)], [R(686, 180, 290, 300)]],
+  pool: [[R(249, 165, 727, 600)], [R(686, 180, 290, 575)], [R(686, 180, 290, 300)], [R(695, 245, 200, 230)]],
   rerun: [[R(248, 20, 560, 100), R(249, 165, 423, 390)], [R(248, 85, 233, 35), R(249, 165, 423, 190)], [R(248, 85, 233, 35), R(249, 165, 222, 190)], [R(248, 85, 233, 35)]],
   // After the plan: the rooms the men landed in (Cabin 1 and Cabin 3, where the drag goes), names and counts.
   board: [[R(249, 165, 727, 590)], [R(258, 170, 206, 180), R(258, 372, 206, 180)], [R(258, 170, 206, 180)]],
@@ -60,7 +60,8 @@ const CLOSE: Record<string, Units> = {
   // (The filter row is a band of selects no narrow window can cross, so a phone's list view starts under it.)
   // A phone shows each row's name, chips, email and phone: the only line clear of every row's words is just past the
   // phone numbers (x ~621-628, the first row's runs past it), so the list starts at the second row, names at the edge.
-  names: [[R(248, 20, 560, 540)], [R(313, 275, 200, 380)], [R(313, 275, 200, 220)]],
+  // (A 320 phone: rows 4 to 6, whose emails all end before x 517 and whose phones start after it.)
+  names: [[R(248, 20, 560, 540)], [R(313, 275, 200, 380)], [R(313, 275, 200, 220)], [R(313, 425, 200, 190)]],
   filter: [[R(915, 143, 110, 37)]],
   unpaid: [[R(248, 20, 560, 540)], [R(248, 198, 406, 20), R(313, 237, 200, 300)], [R(313, 237, 200, 300)], [R(313, 237, 200, 220)]],
   // Badges & Tags: one badge, both faces (the payoff, large type), else its front face; the Luggage labels job card.
@@ -101,7 +102,7 @@ const cues: WalkCue[] = [
   // Click "Attendees".
   { at: 16900, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees), cam: navDesk(NAV.attendees), close: CLOSE.people },
   { at: 17800, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees, true) },
-  { at: 18700, still: I.attendees, step: 3, cursor: dot(340, 226), closeCursor: dot(360, 300), cam: DESK.list, close: CLOSE.names },
+  { at: 18700, still: I.attendees, step: 3, cursor: dot(340, 226), closeCursor: [dot(360, 300), dot(360, 300), dot(360, 300), dot(360, 448)], cam: DESK.list, close: CLOSE.names },
   // The filter: a close view travels to it with the pointer, and the click narrows the list.
   { at: 20900, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid"), true), close: CLOSE.filter },
   // Narrowed: the frame comes back to the men it left.

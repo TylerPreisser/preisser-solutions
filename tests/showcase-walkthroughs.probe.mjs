@@ -39,6 +39,8 @@
  *                  unit) is visible, so a row never shows without its leading label or name.
  *   b. (also)      portrait tablets get the phone rule; on landscape stages (1024x768, 1440x900) the median word
  *                  over all resting views must be 10 px or more; the number, and any view under it, is printed.
+ *   a. (also)      the stage is measured as the visitor sees it, clipped by the walkthrough's own box (a stage
+ *                  wider than its window is cut off by it); the Replay control must be wholly visible too.
  *   a. (also)      form controls whose text the capture did not record (data-solids: a select's value, an
  *                  input's text) count as one word each.
  *
@@ -326,6 +328,7 @@ export function ruleClicked(rec, tab) {
 export function ruleEnding(rec) {
   assert.ok(rec.end, "the replay probe did not run");
   assert.ok(rec.end.label === "Replay", `the film ends showing "${rec.end.label}" (not "Replay") after ${END_WAIT_MS / 1000}s`);
+  assert.ok(rec.end.controlVisible !== false, "the Replay control is cut off by the edge of the walkthrough");
   assert.ok(rec.end.restartStep === "1" && rec.end.restartStill === rec.end.firstStill, `pressing it did not start from the first step (step ${rec.end.restartStep}, still ${rec.end.restartStill})`);
   assert.ok(rec.end.restartLabel === "Pause", `after pressing it the control reads "${rec.end.restartLabel}", not "Pause"`);
   return "ends on Replay; pressing it plays again from step 1";
@@ -425,8 +428,9 @@ function fakeGuards() {
   fails("pointer vanishes", () => rulePointerPresent({ samples: steps }));
   // f. ending
   fails("ends on Pause", () => ruleEnding({ end: { label: "Pause" } }));
+  fails("replay cut off", () => ruleEnding({ end: { label: "Replay", controlVisible: false, restartStep: "1", restartStill: "a", firstStill: "a", restartLabel: "Pause" } }));
   fails("replay does not restart", () => ruleEnding({ end: { label: "Replay", restartStep: "4", restartStill: "x", firstStill: "y", restartLabel: "Pause" } }));
-  return "all 18 rule guards fail on planted defects, and their positive controls pass";
+  return "all 19 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -444,7 +448,15 @@ function snapshot() {
   if (!screen || !on) return null;
   const cur = root.querySelector(".stw-cursor:not(.stw-cursor--drag)");
   const layer = root.querySelector(".stw-layer");
-  const sr = rect(screen);
+  // What the visitor can see: the stage and the picture as clipped by the walkthrough's own box (a stage wider than
+  // its window is cut off by it, and its words with it).
+  const vis = rect(root);
+  const clip = (r) => {
+    const x = Math.max(r.x, vis.x);
+    const y = Math.max(r.y, vis.y);
+    return { x, y, w: Math.max(0, Math.min(r.x + r.w, vis.x + vis.w) - x), h: Math.max(0, Math.min(r.y + r.h, vis.y + vis.h) - y) };
+  };
+  const sr = clip(rect(screen));
   let cursor = null;
   let cursorOn = false;
   if (cur && layer) {
@@ -459,6 +471,8 @@ function snapshot() {
   const st = rect(stageEl);
   const pad = (k) => parseFloat(cs[k]) || 0;
   const stage = { x: st.x + pad("paddingLeft"), y: st.y + pad("paddingTop"), w: st.w - pad("paddingLeft") - pad("paddingRight"), h: st.h - pad("paddingTop") - pad("paddingBottom") };
+  const ctl = root.querySelector(".stw-pause");
+  const cr = ctl ? rect(ctl) : null;
   const json = (k) => {
     const v = root.getAttribute(k);
     return v ? JSON.parse(v) : null;
@@ -466,6 +480,7 @@ function snapshot() {
   return {
     stage,
     close: root.hasAttribute("data-close"),
+    controlVisible: cr ? cr.x >= vis.x - 0.5 && cr.x + cr.w <= vis.x + vis.w + 0.5 : true,
     units: json("data-units"),
     solids: json("data-solids"),
     step: root.dataset.step,
@@ -555,7 +570,7 @@ async function play(browser, tab, vp) {
     }
     const first = samples.find((s) => s.step === "1");
     const last = samples[samples.length - 1];
-    rec.end = { label: last?.label ?? "none", firstStill: first?.still };
+    rec.end = { label: last?.label ?? "none", firstStill: first?.still, controlVisible: last?.controlVisible };
     if (ended) {
       await page.locator('[role="tabpanel"][data-on] .stw-pause').click();
       await page.waitForTimeout(1300);
