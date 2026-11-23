@@ -38,6 +38,8 @@ npm run validate:seo
 
 ## Deploy
 
+Preferred (clean checkout, ci-local-green tip of main, live proof): `_workspace/tools/deploy.sh <repo dir> <sha> [--dry-run]`, which runs `scripts/deploy-from-clean-checkout.sh`. Manual form:
+
 ```bash
 npx wrangler pages deploy out --project-name preisser-solutions
 ```
