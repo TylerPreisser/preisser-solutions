@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a similar build cost?",
       answer:
-        "Custom AI commerce builds typically run in the mid-to-high five figures depending on catalog complexity, AI feature scope, and brand presentation requirements. We provide a fixed-price proposal after a free scoping call.",
+        "Pricing depends on catalog complexity, AI feature scope, and brand presentation requirements. After a free scoping call, the proposal states your monthly price.",
     },
     {
       question: "Do you use Shopify as the backend?",
@@ -178,5 +178,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Build a custom AI commerce platform from scratch",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a written proposal with your monthly price.",
 };

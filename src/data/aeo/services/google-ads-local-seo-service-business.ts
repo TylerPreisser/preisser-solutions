@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free paid + organic audit for your service business",
   ctaSubcopy:
-    "We will audit your ad account, Google Business Profile, landing pages, and call tracking, and send a fixed-price proposal for a bundled paid + organic system.",
+    "We will audit your ad account, Google Business Profile, landing pages, and call tracking, and send a written proposal with your monthly price for a bundled paid + organic system.",
 };

@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Google Business Profile work, citation cleanup, review velocity, and on-site changes that win the local pack and get cited by AI engines.",
   answerParagraph:
-    "Preisser Solutions delivers local SEO in Hays, KS for businesses that want to show up in Google Maps, the local pack, and AI engine recommendations for the buyer queries that actually drive revenue. The firm is based in Hays, Kansas and combines Google Business Profile optimization, citation cleanup, review velocity automation, on-site local content, and AI search readability into one fixed-price engagement. Every project starts with a free local SEO audit. Hays clients get in-person scoping and priority scheduling because the firm is headquartered locally.",
+    "Preisser Solutions delivers local SEO in Hays, KS for businesses that want to show up in Google Maps, the local pack, and AI engine recommendations for the buyer queries that actually drive revenue. The firm is based in Hays, Kansas and combines Google Business Profile optimization, citation cleanup, review velocity automation, on-site local content, and AI search readability into one ongoing monthly service. Every project starts with a free local SEO audit. Hays clients get in-person scoping and priority scheduling because the firm is headquartered locally.",
   sections: [
     {
       eyebrow: "How local search actually works",
@@ -80,7 +80,7 @@ export const pageData: AeoPageData = {
       bullets: [
         "Phase 1: Audit. Free in-person review of the existing Google Business Profile, citations, reviews, and on-site local SEO. We deliver a written audit identifying the biggest gaps and the highest-leverage fixes",
         "Phase 2: Foundation. Fix the GBP, clean up citations, set up review automation, deploy LocalBusiness schema, and build any service area pages the strategy calls for. Usually four to eight weeks",
-        "Phase 3: Ongoing. Monthly GBP content, review monitoring, citation maintenance, and reporting tied to phone calls and form fills. Optional, scoped as a flat monthly retainer when it makes sense",
+        "Phase 3: Ongoing. Monthly GBP content, review monitoring, citation maintenance, and reporting tied to phone calls and form fills. Part of the monthly service",
       ],
     },
     {
@@ -101,7 +101,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does local SEO cost in Hays?",
       answer:
-        "Pricing is fixed up front. A one-time local SEO foundation build typically runs in the low-to-mid four figures, depending on the citation cleanup workload and service area scope. Ongoing monthly work is available as a flat retainer when needed. The free audit identifies which engagement makes sense.",
+        "Pricing depends on the citation cleanup workload and service area scope. Everything we build runs as an ongoing monthly service that covers the local SEO foundation build and the ongoing monthly work. The free audit identifies which engagement makes sense.",
     },
     {
       question: "How is this different from your other Hays SEO page?",
@@ -149,5 +149,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Win the local pack in Hays",
   ctaSubcopy:
-    "Free local SEO audit: GBP, citations, reviews, and AI-search visibility reviewed in person. Fixed-price proposal follows.",
+    "Free local SEO audit: GBP, citations, reviews, and AI-search visibility reviewed in person. A written proposal with your monthly price follows.",
 };

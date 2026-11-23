@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AI invoicing automation cost?",
       answer:
-        "Custom AI invoicing builds typically run in the mid-five figures depending on integration complexity. The HG Oil Holdings build delivered 75% reduction in manual processing time, payback periods are usually under 12 months. Fixed-price proposal after a free discovery call.",
+        "Pricing depends on integration complexity. The HG Oil Holdings build delivered 75% reduction in manual processing time, payback periods are usually under 12 months. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does the build take?",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop having office staff manually read invoices",
   ctaSubcopy:
-    "Free scoping call. We'll map your AP workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your AP workflow and send a written proposal with your monthly price.",
 };

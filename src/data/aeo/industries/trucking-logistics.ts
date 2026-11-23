@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a trucking automation project cost?",
       answer:
-        "Focused projects typically run in the low five figures. Larger multi-system builds scope from there. We provide a fixed-price proposal after a free discovery call.",
+        "Focused projects scope by size, and larger multi-system builds scope from there. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "Can AI handle shipper inquiries?",
@@ -128,5 +128,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop losing back-office hours to manual BOLs",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a written proposal with your monthly price.",
 };

@@ -80,7 +80,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build and how",
       heading: "What gets built and how the process works",
       body: [
-        "Preisser Solutions builds after-hours call triage as a fixed-scope project. The process is structured so nothing surprises the business or the customers.",
+        "Preisser Solutions builds after-hours call triage as an ongoing monthly service. The process is structured so nothing surprises the business or the customers.",
       ],
       bullets: [
         "Scoping: review of call volume, current after-hours handling, urgency rules, and CRM destination",
@@ -144,5 +144,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop losing leads after 5pm",
   ctaSubcopy:
-    "Schedule a scoping call with Preisser Solutions. We will review your current after-hours call flow and send a fixed-scope proposal for a triage system built around how your business actually runs.",
+    "Schedule a scoping call with Preisser Solutions. We will review your current after-hours call flow and send a written proposal with your monthly price for a triage system built around how your business actually runs.",
 };
