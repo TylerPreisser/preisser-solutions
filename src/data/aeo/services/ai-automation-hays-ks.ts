@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
       heading: "How automation projects are scoped",
       body: [
         "Every automation project starts the same way. A free in-person scoping call in Hays, walking through how the business actually operates and where the time goes. We map the current workflow, identifies the highest-leverage automation opportunities, and recommends which ones to build first.",
-        "From there, Preisser Solutions delivers a fixed-price proposal: scope, timeline, and price all defined up front. No hourly billing surprises. No retainer treadmill. The first system usually ships in four to eight weeks and pays for itself inside three months.",
+        "From there, Preisser Solutions delivers a written proposal: scope, timeline, and your monthly price, all agreed before work begins. The first system usually ships in four to eight weeks and pays for itself inside three months.",
       ],
     },
   ],
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AI automation cost for a Hays business?",
       answer:
-        "Pricing is fixed up front and scoped per project. A first AI automation system typically lands in the low-to-mid five figures, depending on integration complexity. Most systems pay for themselves inside 90 days in saved labor. We will scope the work and send a written proposal before any engagement.",
+        "Pricing is scoped per project. Everything we build runs as an ongoing monthly service, and the proposal states your monthly price. Most systems pay for themselves inside 90 days in saved labor. We will scope the work and send a written proposal before any engagement.",
     },
     {
       question: "Do I have to change my CRM or accounting software?",
@@ -141,5 +141,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get back the hours AI automation can take off your team",
   ctaSubcopy:
-    "Free in-person scoping call in Hays. We'll map the workflow, identify the highest-leverage automations, and send a fixed-price proposal.",
+    "Free in-person scoping call in Hays. We'll map the workflow, identify the highest-leverage automations, and send a written proposal with your monthly price.",
 };

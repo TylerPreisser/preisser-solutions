@@ -110,9 +110,9 @@ export const pageData: AeoPageData = {
         "Because two projects that look the same on paper can have a 5x difference in actual scope depending on integrations, data variety, and workflow complexity. A published number would either be misleadingly low or unnecessarily scary. The free scoping call exists to give an accurate, specific number based on your actual situation.",
     },
     {
-      question: "Are there setup fees, license fees, or hidden costs?",
+      question: "Are there license fees or hidden costs?",
       answer:
-        "No hidden costs from us. We quote a fixed price and that price is the price. Third-party costs (Twilio for SMS, OpenAI API tokens, SaaS subscriptions) get itemized in writing: paid directly by you to those vendors, no markup.",
+        "No hidden costs from us. The proposal states your monthly price, and that price is the price. Third-party costs (Twilio for SMS, OpenAI API tokens, SaaS subscriptions) get itemized in writing: paid directly by you to those vendors, no markup.",
     },
     {
       question: "What if my project is very large in scope?",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a scope estimate on my specific project?",
       answer:
-        "Email tyler@preissersolutions.com. Free 30-minute call. We'll map your situation against these tiers and give a fixed-price proposal in writing.",
+        "Email tyler@preissersolutions.com. Free 30-minute call. We'll map your situation against these tiers and send a written proposal with your monthly price.",
     },
   ],
   schemaType: "BlogPosting",
@@ -152,5 +152,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a scoped estimate on your project?",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll map your situation and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your situation and send a written proposal with your monthly price.",
 };

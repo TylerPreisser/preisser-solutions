@@ -86,7 +86,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does an AI customer service build cost?",
       answer:
-        "Focused builds (one channel, one use case) typically run in the low five figures. Multi-channel, multi-workflow builds scope from there. Fixed-price proposal after a free discovery call.",
+        "Focused builds (one channel, one use case) scope smaller. Multi-channel, multi-workflow builds scope from there. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does a build take?",
@@ -127,5 +127,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop losing after-hours calls and stop hiring more CSRs",
   ctaSubcopy:
-    "Free scoping call. We'll map your customer service workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your customer service workflow and send a written proposal with your monthly price.",
 };

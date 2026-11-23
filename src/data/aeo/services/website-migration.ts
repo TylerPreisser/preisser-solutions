@@ -23,7 +23,7 @@ export const pageData: AeoPageData = {
         "Speed: template platforms ship megabytes of unused JavaScript on every page; custom sites ship only what's needed",
         "SEO: templates don't generate the structured data that modern Google and AI engines now require",
         "Conversion: every template forces a layout; custom code lets you put the right thing in front of the right buyer",
-        "Cost over time: template platforms charge monthly forever; custom code on Cloudflare Pages costs less long-term",
+        "Platform limits: template platforms decide how your pages are built and what they can do; custom code has no such ceiling",
         "AI engine citation: template platforms don't ship the engineered content blocks AI engines extract from",
         "Customization limits: eventually you hit a wall the template platform can't solve",
       ],
@@ -61,7 +61,7 @@ export const pageData: AeoPageData = {
         "DNS cutover plan with rollback option",
         "Cloudflare Pages deployment with edge CDN",
         "Launch checklist preventing migration disasters",
-        "30 days of post-launch ranking and traffic monitoring",
+        "Ongoing ranking and traffic monitoring as part of the monthly service",
       ],
     },
     {
@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a website migration cost?",
       answer:
-        "Migration pricing depends on the size of the existing site, the destination platform, and the complexity of content migration. Most projects run in the low-to-mid five figures. We provide a fixed-price proposal after a free site audit.",
+        "Migration pricing depends on the size of the existing site, the destination platform, and the complexity of content migration. After a free site audit, the proposal states your monthly price.",
     },
     {
       question: "Can you migrate my WordPress site?",
@@ -105,7 +105,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do I lose my Squarespace or Wix monthly subscription?",
       answer:
-        "Yes, that's part of the upside. After migration, you cancel the template platform subscription. New site hosts on Cloudflare Pages with significantly lower long-term costs.",
+        "Yes. After migration, you cancel the template platform subscription, and the new site hosts on Cloudflare Pages.",
     },
     {
       question: "What if my domain is locked to Wix or GoDaddy?",
@@ -144,5 +144,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Migrate off your template platform without losing rankings",
   ctaSubcopy:
-    "Free migration audit. We'll map every URL, identify the risks, and send a fixed-price proposal.",
+    "Free migration audit. We'll map every URL, identify the risks, and send a written proposal with your monthly price.",
 };

@@ -48,7 +48,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Hays is Preisser Solutions' home market. Local digital marketing context is not guesswork; it is direct knowledge.",
     "Digital marketing infrastructure built in code means no recurring platform licensing and no vendor lock-in.",
-    "Fixed-price proposals. No open-ended retainers unless you specifically request them.",
+    "A written proposal with your monthly price. Ongoing maintenance and support are part of the service.",
   ],
 
   industriesServed: [
@@ -89,7 +89,7 @@ export const locationData: LocationPageData = {
     {
       question: "How are digital marketing projects priced in Hays?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins: no surprises.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins: no surprises.",
     },
   ],
 

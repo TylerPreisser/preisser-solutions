@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Topeka's government and healthcare sector demands digital marketing that complies with accessibility and data handling requirements, built right from the start.",
     "Preisser Solutions builds digital marketing infrastructure in code, not in marketing platforms that create vendor dependency.",
-    "Fixed-price proposals with no open-ended retainers unless you request them.",
+    "A written proposal with your monthly price.",
   ],
 
   industriesServed: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How are Topeka digital marketing projects priced?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins: no surprises.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins: no surprises.",
     },
   ],
 

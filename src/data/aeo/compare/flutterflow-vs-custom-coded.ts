@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       { dimension: "Time to launch", preisser: "12-24 weeks for production-quality build", competitor: "Days to weeks for working MVP" },
       { dimension: "Performance", preisser: "Optimized for the platform: native or near-native everywhere", competitor: "Flutter performance is good but not always equivalent to true native" },
       { dimension: "Cross-platform", preisser: "React Native or Flutter for cross-platform; native for platform-specific", competitor: "Cross-platform Flutter only" },
-      { dimension: "Cost model", preisser: "One-time build + minimal hosting + app store fees", competitor: "Monthly subscription + Firebase costs + app store fees" },
+      { dimension: "Cost model", preisser: "An ongoing monthly service that covers the build and its maintenance, plus app store fees", competitor: "Monthly subscription + Firebase costs + app store fees" },
       { dimension: "Custom logic", preisser: "Any logic: code can do anything", competitor: "Visual editor + custom code blocks; complex logic hits walls" },
       { dimension: "Backend", preisser: "Custom backend (Postgres, Firebase, AWS, Cloudflare) or Firebase", competitor: "Firebase integration is default; other backends require workarounds" },
       { dimension: "Vendor lock-in", preisser: "None: code is yours; can be modified by any developer", competitor: "Code exports but FlutterFlow-specific patterns require rework to fully detach" },
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do the costs compare?",
       answer:
-        "FlutterFlow involves a monthly subscription plus build cost. Custom mobile apps are a one-time build investment. Long-term, custom is more efficient for apps that grow in scope and need maintenance. Free scoping call to get a specific proposal.",
+        "FlutterFlow involves a monthly subscription plus build cost. Custom mobile apps from us run as an ongoing monthly service that covers the build and its maintenance. Long-term, custom is more efficient for apps that grow in scope and need maintenance. Free scoping call to get a specific proposal.",
     },
     {
       question: "Should I build cross-platform or native?",

@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes Preisser Solutions suited for a smaller market like Pratt?",
       answer:
-        "Fixed-price proposals scaled to engagement complexity, full code ownership, and no ongoing platform dependency. Smaller markets get the same quality build as larger clients, scoped appropriately.",
+        "A monthly price scaled to engagement complexity, full code ownership, and no ongoing platform dependency. Smaller markets get the same quality build as larger clients, scoped appropriately.",
     },
   ],
 

@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Independence, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Independence, Kansas businesses: Kansas-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Independence, Kansas businesses: Kansas-based firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

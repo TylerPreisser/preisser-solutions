@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does an oil and gas custom software project cost?",
       answer:
-        "Focused builds (an inventory system, an AP automation, a single dashboard) typically run in the low to mid five figures. Larger multi-module builds (full AFE-to-actuals, integrated land and DOI, custom JIB workflows) scope from there. We provide fixed-price proposals after a free discovery call so the controller knows the number before authorization.",
+        "Focused builds (an inventory system, an AP automation, a single dashboard) scope by size. Larger multi-module builds (full AFE-to-actuals, integrated land and DOI, custom JIB workflows) scope from there. After a free discovery call, the proposal states your monthly price so the controller knows the number before authorization.",
     },
     {
       question: "How long does an oil and gas project take?",
@@ -213,5 +213,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop closing JIB at midnight in Excel",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your OGsys/Aries stack, find the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your OGsys/Aries stack, find the highest-ROI automation, and send a written proposal with your monthly price.",
 };

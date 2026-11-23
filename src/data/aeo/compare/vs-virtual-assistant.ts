@@ -60,8 +60,8 @@ export const pageData: AeoPageData = {
     headerNote:
       "Honest comparison. VAs are great for judgment-heavy, low-volume work. Custom AI wins for repeatable, high-volume, system-integrated work.",
     rows: [
-      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Hourly rate, scales with hours worked" },
-      { dimension: "Monthly cost", preisser: "Fixed hosting cost after build: does not scale with volume", competitor: "Scales linearly with hours: more volume means more cost" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Hourly rate, scales with hours worked" },
+      { dimension: "Monthly cost", preisser: "The monthly price in your proposal, covering the build and its maintenance", competitor: "Scales linearly with hours: more volume means more cost" },
       { dimension: "Availability", preisser: "24/7", competitor: "Working hours, vacation days, sick days" },
       { dimension: "Speed", preisser: "Seconds to minutes per task", competitor: "Minutes to hours per task" },
       { dimension: "Volume capacity", preisser: "Volume is decoupled from cost: the same build handles more work without more spend", competitor: "Scales linearly with hours" },
@@ -91,7 +91,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a price on a custom AI build?",
       answer:
-        "Free scoping call. Scope drives price: one workflow is smaller; multi-workflow builds are larger. Fixed-price proposal after the call, no obligation.",
+        "Free scoping call. Scope drives price: one workflow is smaller; multi-workflow builds are larger. A written proposal with your monthly price after the call, no obligation.",
     },
     {
       question: "Could I start with a VA and migrate to AI later?",

@@ -9,7 +9,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Custom CRM Systems for Small Businesses",
   metaDescription:
-    "Preisser Solutions builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, fixed-price builds.",
+    "Preisser Solutions builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, as a monthly service.",
   eyebrow: "Custom CRM Development",
   h1: "Build a Custom CRM When HubSpot or Salesforce Doesn't Fit",
   subheadline:
@@ -51,7 +51,7 @@ export const pageData: AeoPageData = {
         "Audit logs and activity history",
         "Cloud deployment on AWS, Cloudflare, or Vercel",
         "Comprehensive documentation",
-        "30 days of post-launch support and training",
+        "Ongoing maintenance, support and training as part of the monthly service",
       ],
     },
     {
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom CRM cost?",
       answer:
-        "Custom CRMs typically run in the mid-five to low-six figures depending on scope, integrations, and complexity. The math usually works when per-seat fees on off-the-shelf platforms become significant relative to a one-time build. We provide a fixed-price proposal after a free discovery call.",
+        "Pricing depends on scope, integrations, and complexity. The math usually works when per-seat fees on off-the-shelf platforms become significant. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does a custom CRM take to build?",
@@ -131,5 +131,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build a CRM designed around your actual workflow",
   ctaSubcopy:
-    "Free scoping call. We'll honestly assess whether custom CRM is the right answer and send a fixed-price proposal if it is.",
+    "Free scoping call. We'll honestly assess whether custom CRM is the right answer and send a written proposal with your monthly price if it is.",
 };

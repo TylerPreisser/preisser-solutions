@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web design, web applications, and AI automation for Denver's technology, energy, aerospace, and professional-services markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
-      "Preisser Solutions is a Kansas-based custom software and web development firm serving Denver, Colorado businesses remotely, with on-site travel to the Front Range for material engagements. Denver is a Denver County metro of approximately 715,000 and a regional hub for technology, aerospace, energy, and outdoor industries. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions is a Kansas-based custom software and web development firm serving Denver, Colorado businesses remotely, with on-site travel to the Front Range for material engagements. Denver is a Denver County metro of approximately 715,000 and a regional hub for technology, aerospace, energy, and outdoor industries. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -66,7 +66,7 @@ export const locationData: LocationPageData = {
     {
       question: "Why would a Denver business hire a Kansas-based development firm?",
       answer:
-        "Preisser Solutions offers custom-coded web applications and AI automation at fixed prices, with full code ownership at launch. The geographic location of the firm does not affect code quality, and the fixed-price model and code ownership terms are often more favorable than Denver-market agencies.",
+        "Preisser Solutions offers custom-coded web applications and AI automation as an ongoing monthly service, with full code ownership at launch. The geographic location of the firm does not affect code quality, and our monthly pricing and code ownership terms are often more favorable than Denver-market agencies.",
     },
     {
       question: "What industries does Preisser Solutions serve in Denver?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Denver projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

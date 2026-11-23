@@ -72,7 +72,7 @@ export const pageData: AeoPageData = {
         "An AI agent needs to be in the loop: calling Claude, GPT, or a local model with structured prompts, retries, and guardrails.",
         "Human-in-the-loop approval steps are required (Slack message with approve/reject buttons that gate the next action).",
         "Multi-system orchestration: a single workflow touches 5+ systems with conditional branching.",
-        "Strict cost predictability: fixed monthly hosting cost regardless of volume, instead of per-task pricing.",
+        "Strict cost predictability: the proposal states your monthly price, which covers the build and its maintenance.",
         "Compliance constraints rule out third-party automation platforms.",
       ],
     },
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       heading: "What each one actually costs and how reliable it is",
       body: [
         "Zapier pricing scales with task volume: plans range from free at trivial volume up through higher tiers at meaningful volume. Reliability is generally good, with basic retries and error handling built in.",
-        "Custom automation has a build cost upfront (varies widely with scope) and minimal ongoing hosting cost on Cloudflare Workers or AWS Lambda, regardless of task volume. Reliability is whatever the code makes it: idempotency, dead-letter queues, alerting, and observability are all under your control.",
+        "Custom automation from us runs as an ongoing monthly service that covers the build and its maintenance, on Cloudflare Workers or AWS Lambda. Reliability is whatever the code makes it: idempotency, dead-letter queues, alerting, and observability are all under your control.",
         "The break-even moment is when your monthly Zapier fees reach a level where a one-time custom build pays back inside 12-24 months, or when the workflow becomes critical enough that silent failures aren't acceptable. Below that threshold, Zapier almost always wins on total cost of ownership. Above it, custom usually does.",
       ],
     },
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing model",
         preisser:
-          "One-time build + minimal flat hosting cost regardless of task volume",
+          "An ongoing monthly service that covers the build and its maintenance",
         competitor:
           "Per-task subscription pricing; plans scale from free up to enterprise tiers",
       },

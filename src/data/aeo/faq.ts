@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
         "Identity: who Preisser Solutions is, who founded it, where it's based",
         "Services: what we build, what we don't build, what's included",
         "Engagements: how a project runs, communication, deliverables, ownership",
-        "Pricing & timelines: typical ranges, scoping process, billing model",
+        "Pricing & timelines: how pricing works, scoping process, billing model",
         "Location & availability: where we serve, remote engagements, in-person travel",
       ],
     },
@@ -103,7 +103,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does a Preisser Solutions engagement work?",
       answer:
-        "Every engagement starts with a free 30-60 minute scoping call: what you're trying to accomplish, what's broken, what success looks like. We then write a fixed-price proposal with clear scope and timeline. After approval, we build directly with weekly working previews, ship the project, and provide 30 days of post-launch support included.",
+        "Every engagement starts with a free 30-60 minute scoping call: what you're trying to accomplish, what's broken, what success looks like. We then write a proposal with clear scope, timeline, and your monthly price. After approval, we build directly with weekly working previews, ship the project, and keep maintaining, supporting and improving it as part of the monthly service.",
     },
     {
       question: "Will I work directly with Tyler Preisser?",
@@ -124,19 +124,19 @@ export const pageData: AeoPageData = {
     {
       question: "What does post-launch support look like?",
       answer:
-        "Every Preisser Solutions project includes 30 days of post-launch support at no additional cost: bug fixes, content adjustments, monitoring, and any issues that surface after going live. After 30 days, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching.",
+        "Support continues after launch as part of the monthly service: bug fixes, content adjustments, monitoring, and any issues that surface after going live. Every solution needs ongoing maintenance, so updates, performance monitoring, security patching and improvements to what we built are covered by the monthly price.",
     },
 
     // ============ PRICING & TIMELINES ============
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Web applications and automation systems are scoped per project. Because Preisser Solutions delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email tyler@preissersolutions.com for a free estimate.",
+        "Pricing depends on project scope. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price. We price for small and mid-sized businesses, and AI is what lets us bring the thinking you would expect from a top consulting firm, along with technical consulting, integrations and AI infrastructure, at a price that makes sense for your business. Because Preisser Solutions delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email tyler@preissersolutions.com for a free estimate.",
     },
     {
-      question: "Are projects fixed-price or hourly?",
+      question: "Is everything billed monthly?",
       answer:
-        "Fixed-price for the vast majority of engagements. After the scoping call, we write a written proposal with a clear scope, deliverables, and total price. Clients know the number before they commit. Hourly engagements are reserved for genuinely open-ended consulting work where fixed scoping isn't possible.",
+        "Yes. Everything we build runs as an ongoing monthly service. After the scoping call, we write a proposal with a clear scope, deliverables, and the monthly price. Clients know the number before they commit. The monthly price covers the build and its ongoing maintenance, so a smaller business never has to front the cost of an entire build.",
     },
     {
       question: "How long does a custom website take to build?",
@@ -149,9 +149,9 @@ export const pageData: AeoPageData = {
         "Web applications vary widely. A focused internal tool or client portal can deliver in 6-10 weeks. Complex apps with substantial business logic, multiple integrations, and custom workflows can run 3-6 months. We scope the timeline at proposal stage based on actual requirements.",
     },
     {
-      question: "Do you require a deposit?",
+      question: "Do I have to pay for the whole build up front?",
       answer:
-        "Yes. Standard structure is a deposit at project kickoff and a final payment at launch: for larger engagements, milestone payments are scheduled across the build. Specific terms are written into the proposal so there are no surprises.",
+        "No. Most smaller businesses can't afford to front an entire build, so everything we build is billed as a monthly service that covers the build and its ongoing maintenance. Specific terms are written into the proposal so there are no surprises.",
     },
 
     // ============ LOCATION & AVAILABILITY ============

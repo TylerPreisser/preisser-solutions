@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Graham County's agriculture, energy, and trades operators in northwest Kansas.",
     answerParagraph:
-      "Preisser Solutions serves Hill City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Hill City sits at the Graham County seat in northwest Kansas, about 55 miles from Hays headquarters. That proximity makes in-person scoping practical and delivery straightforward. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions serves Hill City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Hill City sits at the Graham County seat in northwest Kansas, about 55 miles from Hays headquarters. That proximity makes in-person scoping practical and delivery straightforward. Custom code, a written proposal with your monthly price, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -41,7 +41,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Hill City is 55 miles from Hays headquarters: closer than many in-market engagements. Travel for scoping and milestone meetings is a straightforward half-hour drive.",
     "Graham County's ag and energy context is deeply familiar: no onboarding required to understand your operating environment.",
-    "Custom code with full ownership at launch. No platform dependency, no recurring build fees.",
+    "Custom code with full ownership at launch. No platform dependency.",
   ],
 
   industriesServed: [
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes Preisser Solutions different for northwest Kansas businesses?",
       answer:
-        "Proximity, fixed pricing, and full code ownership. Being 55 miles away means we show up. Fixed-price proposals mean no scope creep. Full ownership at launch means you are never locked in.",
+        "Proximity, a monthly price, and full code ownership. Being 55 miles away means we show up. A written proposal states the scope before you commit. Full ownership at launch means you are never locked in.",
     },
   ],
 

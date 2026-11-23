@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Wichita's competitive digital landscape rewards firms that build infrastructure, not firms that rent marketing tools.",
     "Preisser Solutions engineers marketing systems: custom-coded sites, schema, AI automation, and citation architecture.",
-    "Fixed-price proposals. No ongoing retainers unless you want them. You own every asset we build.",
+    "A written proposal with your monthly price. You own every asset we build.",
   ],
 
   industriesServed: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price digital marketing engagements?",
       answer:
-        "All engagements use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins. No open-ended monthly retainers unless you specifically request them.",
+        "Everything we build runs as an ongoing monthly service. Scope, deliverables, and your monthly price are agreed before work begins.",
     },
   ],
 

@@ -28,7 +28,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "ROI Calculator (/roi-calculator): estimate automation payback for a specific workflow",
-        "Pricing reference (/pricing): three published commercial tiers (Audit, Sprint, Retainer) with starting prices per service line",
+        "Pricing reference (/pricing): how pricing works, from the free scoping call to a written proposal with your monthly price",
         "Integrations directory (/integrations): every system Preisser Solutions has connected to in a client engagement",
       ],
     },

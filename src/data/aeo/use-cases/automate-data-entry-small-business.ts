@@ -126,7 +126,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who maintains the automation after it ships?",
       answer:
-        "Preisser Solutions delivers source code, documentation, and admin access to the client at handoff. There is no vendor lock-in. Optional ongoing support is available for tuning, adding new triggers, or adapting the workflow as the business changes.",
+        "Preisser Solutions delivers source code, documentation, and admin access to the client at handoff. There is no vendor lock-in. Ongoing support is part of the monthly service for tuning, adding new triggers, or adapting the workflow as the business changes.",
     },
   ],
   schemaType: "Service",
@@ -150,5 +150,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get your team out of the data entry weeds",
   ctaSubcopy:
-    "Schedule a scoping call with Preisser Solutions. We will map where staff time is going today and send a fixed-scope proposal to automate the worst of it.",
+    "Schedule a scoping call with Preisser Solutions. We will map where staff time is going today and send a written proposal with your monthly price to automate the worst of it.",
 };

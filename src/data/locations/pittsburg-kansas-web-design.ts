@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Pittsburg, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Pittsburg, Kansas: built by a Kansas development firm with fixed-price proposals and full code ownership.",
+    "Custom websites, web apps, and AI automation for Pittsburg, Kansas: built by a Kansas firm as a monthly service with full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

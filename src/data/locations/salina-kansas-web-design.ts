@@ -24,7 +24,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom websites: engineered for performance, conversion, and AI search visibility.",
     answerParagraph:
-      "Preisser Solutions builds custom websites for Salina, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, an hour and a half west on I-70. No templates. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions builds custom websites for Salina, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, an hour and a half west on I-70. No templates. Custom code, a written proposal with your monthly price, full ownership at launch.",
   },
 
   nearbyAreas: [

@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom AI agent cost?",
       answer:
-        "Cost varies with scope. Focused single-purpose AI agents (invoice processing, customer reactivation, internal knowledge) typically range from low to mid five figures. Multi-agent systems with complex orchestration scale from there. We provide fixed-price proposals after a free scoping conversation.",
+        "Cost varies with scope. Focused single-purpose AI agents (invoice processing, customer reactivation, internal knowledge) are the smaller scopes. Multi-agent systems with complex orchestration scale from there. After a free scoping conversation, the proposal states your monthly price.",
     },
     {
       question: "How accurate are custom AI agents?",

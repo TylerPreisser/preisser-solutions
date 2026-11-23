@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical scope?",
       answer:
-        "Standalone automations (just BOL parsing, just driver communication) are smaller scopes that ship in 4-6 weeks. Full ops automation suites covering dispatch, document parsing, reconciliation, and profitability dashboards (Sunrise scope) are larger multi-phase projects. Fixed-price proposal after a free scoping call.",
+        "Standalone automations (just BOL parsing, just driver communication) are smaller scopes that ship in 4-6 weeks. Full ops automation suites covering dispatch, document parsing, reconciliation, and profitability dashboards (Sunrise scope) are larger multi-phase projects. A written proposal with your monthly price follows a free scoping call.",
     },
   ],
   schemaType: "BlogPosting",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a build scoped for your operation?",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your fleet, your TMS, and your back-office workflow, and quote a fixed price.",
+    "Free 30-minute call. We'll map your fleet, your TMS, and your back-office workflow, and send a written proposal with your monthly price.",
 };

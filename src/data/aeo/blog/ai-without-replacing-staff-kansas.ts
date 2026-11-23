@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions handle change management?",
       answer:
-        "Yes, every engagement includes staff training and a 30-day post-launch period to surface and fix friction. The technology is the easy part; getting the team comfortable is the work.",
+        "Yes, every engagement includes staff training, and support continues after launch as part of the monthly service, so friction gets found and fixed. The technology is the easy part; getting the team comfortable is the work.",
     },
   ],
   schemaType: "BlogPosting",

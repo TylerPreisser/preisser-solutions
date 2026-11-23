@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
         "Productized CRMs can't integrate with your existing operational systems (proprietary databases, legacy software).",
         "You need real-time data visibility the SaaS reports don't deliver.",
         "Long-run total cost matters more than upfront time-to-value, custom amortizes well over 5+ years.",
-        "One-time build cost plus modest ongoing maintenance replaces recurring SaaS subscription at meaningful scale.",
+        "A custom build with its ongoing maintenance replaces per-seat SaaS subscriptions at meaningful scale.",
       ],
       subsections: [
         {
@@ -125,7 +125,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who maintains the custom CRM after launch?",
       answer:
-        "Preisser Solutions, on retainer, for most clients. The maintenance retainer covers bug fixes, feature requests, and integration updates: scoped and priced in the proposal. Some clients eventually bring maintenance in-house.",
+        "Preisser Solutions, as part of the monthly service. The monthly price covers bug fixes, feature requests, and integration updates, and the proposal states it. Some clients eventually bring maintenance in-house.",
     },
     {
       question: "Can I see the insurance MGU build?",

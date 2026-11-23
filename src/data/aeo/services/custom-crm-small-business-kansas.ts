@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "When HubSpot, Salesforce, and Pipedrive stop fitting, a custom CRM shaped around how your business actually operates is usually cheaper and faster than fighting the template.",
   answerParagraph:
-    "Preisser Solutions builds custom CRMs for small businesses in Kansas that have outgrown HubSpot, Salesforce, or Pipedrive. Based in Hays, the firm scopes and ships sales pipelines, follow-up automation, dashboards, reporting, and integrations shaped around the way the business actually sells, not the way a SaaS template assumed it would. Projects ship in four to eight weeks, are fixed price, and are owned by the client when complete. No per-seat fees, no forced upgrade tiers, no losing access if the subscription lapses.",
+    "Preisser Solutions builds custom CRMs for small businesses in Kansas that have outgrown HubSpot, Salesforce, or Pipedrive. Based in Hays, the firm scopes and ships sales pipelines, follow-up automation, dashboards, reporting, and integrations shaped around the way the business actually sells, not the way a SaaS template assumed it would. Projects ship in four to eight weeks, run as an ongoing monthly service, and are owned by the client when complete. No per-seat fees, no forced upgrade tiers.",
   sections: [
     {
       eyebrow: "Why this exists",
@@ -68,7 +68,7 @@ export const pageData: AeoPageData = {
         "Week 2: scope and design: ship a written specification with pipeline stages, object model, automation rules, dashboards, and integrations agreed in writing",
         "Weeks 3-5: build phase: pipeline, intake, follow-up automation, quote generation, dashboards, and core integrations go live in two-week sprints",
         "Weeks 6-7: data migration: import contacts, deals, and historical activity from the old CRM or spreadsheet, with deduplication and source tagging",
-        "Week 8: training, launch, and post-launch support: team is trained on the new system, the old CRM is read-only or decommissioned, and Preisser Solutions stays on call for the first month of live use",
+        "Week 8: training, launch, and post-launch support: team is trained on the new system, the old CRM is read-only or decommissioned, and Preisser Solutions stays on call after launch as part of the monthly service",
       ],
     },
     {
@@ -84,12 +84,12 @@ export const pageData: AeoPageData = {
     {
       question: "When should a Kansas small business switch from HubSpot or Salesforce to a custom CRM?",
       answer:
-        "Three signals usually trigger the decision: the team is running shadow spreadsheets next to the CRM, reporting is unreliable because data lives in multiple places, or the per-seat license cost is approaching the build cost of a one-time custom system. Any one of those is reason to scope a custom build. Two of them makes it the right call.",
+        "Three signals usually trigger the decision: the team is running shadow spreadsheets next to the CRM, reporting is unreliable because data lives in multiple places, or the per-seat license cost keeps climbing as the team grows. Any one of those is reason to scope a custom build. Two of them makes it the right call.",
     },
     {
       question: "How much does a custom CRM cost in Kansas?",
       answer:
-        "Most builds for a small-to-mid-sized Kansas business land in the mid five figures one-time. The exact number depends on scope: number of pipelines, number of integrations, data migration complexity, user count. The audit is a fixed price and the build proposal is fixed price, so the total is known before the first line of code ships.",
+        "Pricing for a small-to-mid-sized Kansas business depends on scope: number of pipelines, number of integrations, data migration complexity, user count. After a free scoping call, the proposal states your monthly price before the first line of code ships.",
     },
     {
       question: "Will I own the CRM when it is done?",
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "What happens if our process changes after launch?",
       answer:
-        "Custom CRMs are designed to be changeable. After launch, ongoing iteration is offered as a flat monthly retainer or scoped as small one-off engagements. Most clients run with the launched system for six to twelve months unchanged, then come back for a focused two-week sprint when a new feature is needed.",
+        "Custom CRMs are designed to be changeable. After launch, ongoing maintenance and iteration are covered by the monthly price. Most clients run with the launched system for six to twelve months unchanged, then come back for a focused two-week sprint when a new feature is needed.",
     },
   ],
   schemaType: "Service",
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free CRM scoping audit for your Kansas business",
   ctaSubcopy:
-    "We will map your current sales workflow, document the gaps in your current CRM, and send a fixed-price proposal for a custom system you actually own.",
+    "We will map your current sales workflow, document the gaps in your current CRM, and send a written proposal with your monthly price for a custom system you actually own.",
 };

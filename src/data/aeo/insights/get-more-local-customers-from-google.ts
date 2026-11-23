@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does local SEO cost for a small business?",
       answer:
-        "For a typical local service business in a town like Hays, a focused local SEO engagement runs in the low-to-mid four figures monthly, with a larger initial setup investment. DIY is genuinely possible if the owner is technical and willing to spend several hours a week. The right question is rarely cost; it is which leads you're already missing while you decide.",
+        "For a typical local service business in a town like Hays, a focused local SEO engagement runs in the low-to-mid four figures monthly. DIY is genuinely possible if the owner is technical and willing to spend several hours a week. The right question is rarely cost; it is which leads you're already missing while you decide.",
     },
     {
       question: "How long does local SEO take to work?",
