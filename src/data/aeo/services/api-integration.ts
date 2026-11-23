@@ -93,7 +93,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom API integration cost?",
       answer:
-        "Focused integrations (one source, one destination, simple logic) typically run in the low five figures. Multi-system or complex integrations scope from there. Fixed-price proposal after a free discovery call.",
+        "Focused integrations (one source, one destination, simple logic) scope smaller. Multi-system or complex integrations scope from there. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does an integration take to build?",
@@ -113,7 +113,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about ongoing integration maintenance?",
       answer:
-        "APIs change. We document everything thoroughly so other developers can maintain the code, and offer ongoing maintenance retainers for clients who want us to handle API version upgrades and breaking changes as they happen.",
+        "APIs change. We document everything thoroughly so other developers can maintain the code, and handle API version upgrades and breaking changes as they happen, because ongoing maintenance is part of the monthly service.",
     },
     {
       question: "Do you serve businesses outside Kansas?",

@@ -130,7 +130,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AEO cost?",
       answer:
-        "AEO engagements typically include a one-time content build (low-to-mid five figures) plus an optional ongoing retainer for new pages and citation tracking. We provide a fixed-price proposal after a free AEO audit.",
+        "AEO engagements run as an ongoing monthly service that covers the content build plus new pages and citation tracking. After a free AEO audit, the proposal states your monthly price.",
     },
     {
       question: "Do you replace traditional SEO?",
@@ -173,7 +173,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
   ctaSubcopy:
-    "Free AEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Free AEO audit. We'll identify the highest-impact fixes and send a written proposal with your monthly price.",
   primaryCta: {
     label: "Reach out",
     href: "/contact",

@@ -144,7 +144,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does a manufacturing software project cost?",
       answer:
-        "Focused projects (a single OEE dashboard, an AP automation, a custom inventory app) typically run in the low to mid five figures. Larger multi-system builds (full shop floor data collection plus dashboard plus AP automation) scope from there. We always provide a fixed-price proposal after a free discovery call.",
+        "Focused projects (a single OEE dashboard, an AP automation, a custom inventory app) scope by size. Larger multi-system builds (full shop floor data collection plus dashboard plus AP automation) scope from there. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does a manufacturing project take?",
@@ -205,5 +205,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop closing the books before you know what the shop actually did",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your ERP and shop floor, find the highest-ROI build, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your ERP and shop floor, find the highest-ROI build, and send a written proposal with your monthly price.",
 };

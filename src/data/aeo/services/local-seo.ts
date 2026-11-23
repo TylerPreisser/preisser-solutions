@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does local SEO cost?",
       answer:
-        "Local SEO engagements typically run as monthly retainers in the low-to-mid four figures, depending on market competitiveness and number of locations. We provide a fixed-price proposal after a free local SEO audit.",
+        "Local SEO engagements typically run as monthly retainers in the low-to-mid four figures, depending on market competitiveness and number of locations. After a free local SEO audit, the proposal states your monthly price.",
     },
     {
       question: "Do you replace Google Ads?",
@@ -125,5 +125,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Win the local pack for the searches that drive your revenue",
   ctaSubcopy:
-    "Free local SEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Free local SEO audit. We'll identify the highest-impact fixes and send a written proposal with your monthly price.",
 };

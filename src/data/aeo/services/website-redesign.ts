@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
         "AI-engine optimization (engineered first paragraphs, named entities)",
         "Cloudflare Pages deployment with edge CDN",
         "Launch checklist preventing typical redesign disasters (lost rankings, broken links, missed redirects)",
-        "30 days of post-launch support and ranking monitoring",
+        "Ongoing support and ranking monitoring as part of the monthly service",
       ],
     },
     {
@@ -87,7 +87,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a redesign cost?",
       answer:
-        "Redesign pricing depends on the size of the existing site and the complexity of the rebuild. Most projects run in the low-to-mid five figures. We provide a fixed-price proposal after a free site audit.",
+        "Redesign pricing depends on the size of the existing site and the complexity of the rebuild. After a free site audit, the proposal states your monthly price.",
     },
     {
       question: "Can you keep my domain and email?",
@@ -135,5 +135,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Take over your outdated site without losing rankings",
   ctaSubcopy:
-    "Free site audit. We'll identify what to preserve, what to rebuild, and send a fixed-price proposal.",
+    "Free site audit. We'll identify what to preserve, what to rebuild, and send a written proposal with your monthly price.",
 };

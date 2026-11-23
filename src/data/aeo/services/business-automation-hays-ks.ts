@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Practical, custom automation for the manual work that eats hours every week, invoicing, follow-up, data entry, reporting, scheduling, and operations handoffs.",
   answerParagraph:
-    "Preisser Solutions builds custom business automation for Hays, KS companies that have outgrown spreadsheets and copy-paste workflows. Based in Hays, the firm scopes, builds, and supports automation for invoicing, intake forms, CRM updates, reporting, scheduling, and the operations handoffs in between. Every project starts with a paid systems audit so the work targets real bottlenecks, not theoretical ones. Fixed price, plain-English scope, no monthly software subscription disguised as a service.",
+    "Preisser Solutions builds custom business automation for Hays, KS companies that have outgrown spreadsheets and copy-paste workflows. Based in Hays, the firm scopes, builds, and supports automation for invoicing, intake forms, CRM updates, reporting, scheduling, and the operations handoffs in between. Every project starts with a paid systems audit so the work targets real bottlenecks, not theoretical ones. Plain-English scope, an ongoing monthly service, and a written proposal with your monthly price.",
   sections: [
     {
       eyebrow: "Why automation matters",
@@ -66,8 +66,8 @@ export const pageData: AeoPageData = {
       eyebrow: "How projects ship",
       heading: "How an automation engagement ships",
       body: [
-        "Every project starts with a paid systems audit. We map the current workflows, identifies the highest-leverage targets, and writes a fixed-price proposal that lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
-        "Support after launch is included for a defined period. Once the workflows are running, monthly retainer support is offered for businesses that want ongoing iteration; but it is not required. Plenty of clients get a sprint of work done, run it for a year unchanged, and come back when the next bottleneck appears.",
+        "Every project starts with a paid systems audit. We map the current workflows, identifies the highest-leverage targets, and writes a proposal that states your monthly price and lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
+        "Support after launch continues as part of the monthly service. Once the workflows are running, the maintenance, support and improvement of what we built are covered by the monthly price. Plenty of clients get a sprint of work done, run it for a year unchanged, and come back when the next bottleneck appears.",
       ],
     },
     {
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does business automation cost in Hays?",
       answer:
-        "The systems audit is a fixed price, usually in the low four figures. The automation build is scoped after the audit and is also fixed price, most projects land in the mid four figures to low five figures depending on how many workflows are in scope. There is no percentage of revenue, no monthly software lock-in, and no surprise add-on once the proposal is signed.",
+        "The automation build is scoped after the systems audit, depending on how many workflows are in scope, and the written proposal states your monthly price. There is no percentage of revenue and no surprise add-on once the proposal is signed.",
     },
     {
       question: "Is this the same as buying a SaaS automation tool?",
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you support the automation after it ships?",
       answer:
-        "Yes. Every project includes a defined post-launch support window. Beyond that, a flat monthly retainer is available for businesses that want ongoing iteration and new automation work. The retainer is optional, not a condition of the build.",
+        "Yes. Every solution needs ongoing maintenance, so support and improvement of what we built continue after launch as part of the monthly price.",
     },
   ],
   schemaType: "Service",
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free automation audit for your Hays business",
   ctaSubcopy:
-    "We will map your current workflows, identify the highest-leverage targets, and send a fixed-price proposal: no monthly software subscription required.",
+    "We will map your current workflows, identify the highest-leverage targets, and send a written proposal with your monthly price.",
 };

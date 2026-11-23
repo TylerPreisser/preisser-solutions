@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom AI receptionist cost for an HVAC company?",
       answer:
-        "Pricing is fixed up front and scoped per shop. A first custom HVAC AI receptionist typically lands in the low-to-mid five figures for build, with ongoing monthly costs for the AI usage and platform that vary based on call volume. Most shops recover the build cost in three to six months in captured after-hours revenue.",
+        "Pricing is scoped per shop. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price, with the AI usage and platform costs that vary based on call volume covered in that proposal. Most shops recover the build cost in three to six months in captured after-hours revenue.",
     },
     {
       question: "Does the AI sound like a robot?",
@@ -148,5 +148,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop letting after-hours HVAC calls go to a competitor",
   ctaSubcopy:
-    "Free scoping call. We'll review the current call workflow, scope a custom AI receptionist, and send a fixed-price proposal.",
+    "Free scoping call. We'll review the current call workflow, scope a custom AI receptionist, and send a written proposal with your monthly price.",
 };

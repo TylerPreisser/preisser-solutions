@@ -144,7 +144,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does an insurance or RIA software project cost?",
       answer:
-        "Focused builds (a custom client portal, a renewals automation, a principal dashboard) typically run in the low to mid five figures. Multi-system builds with deep custodian or carrier integration scope from there. We always provide a fixed-price proposal after a free discovery call that includes your CCO if appropriate.",
+        "Focused builds (a custom client portal, a renewals automation, a principal dashboard) scope by size. Multi-system builds with deep custodian or carrier integration scope from there. After a free discovery call that includes your CCO if appropriate, the proposal states your monthly price.",
     },
     {
       question: "How long does an insurance or RIA project take?",
@@ -204,5 +204,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop running renewals and AOR transitions out of a spreadsheet",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a compliance-aware fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a written proposal with your monthly price.",
 };

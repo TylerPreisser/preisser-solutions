@@ -113,7 +113,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much do these builds typically cost?",
       answer:
-        "Pricing varies widely by scope. Focused builds (one website, one automation engine) typically run in the low-to-mid five figures. Larger multi-system builds run mid-to-high five figures. Custom CRMs and complex platforms scope from there. Fixed-price proposal after a free scoping call.",
+        "Pricing varies widely by scope. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price.",
     },
     {
       question: "How long do these builds take?",
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your situation, identify the highest-ROI build, and send a written proposal with your monthly price.",
     },
   ],
   schemaType: "WebPage",
@@ -158,5 +158,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Become the next case study",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a written proposal with your monthly price.",
 };
