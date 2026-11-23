@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for southwest Kansas ag, energy, and operations.",
     answerParagraph:
-      "Preisser Solutions serves Garden City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly two and a half hours northeast on US-83): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
+      "Preisser Solutions serves Garden City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly two and a half hours northeast on US-83): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, a written proposal with your monthly price.",
   },
 
   nearbyAreas: [

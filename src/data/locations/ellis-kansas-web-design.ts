@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Ellis County businesses: from the same firm headquartered 15 miles east in Hays.",
     answerParagraph:
-      "Preisser Solutions serves Ellis, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Ellis is in Ellis County, the same county as the Hays headquarters. That means in-person scoping is never an issue, local market context is deeply familiar, and the firm's reference cases are built from the same regional economy. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves Ellis, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Ellis is in Ellis County, the same county as the Hays headquarters. That means in-person scoping is never an issue, local market context is deeply familiar, and the firm's reference cases are built from the same regional economy. Custom code, a written proposal with your monthly price, full ownership.",
   },
 
   nearbyAreas: [
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can a small Ellis business afford custom software?",
       answer:
-        "Fixed-price proposals are scoped to match the size and complexity of the engagement. Many Ellis-area projects are straightforward website and local-SEO builds that are priced accordingly.",
+        "The monthly price in the proposal is scoped to match the size and complexity of the engagement. Many Ellis-area projects are straightforward website and local-SEO builds that are priced accordingly.",
     },
     {
       question: "What industries does Preisser Solutions serve in Ellis County?",

@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a custom app for a Lawrence startup or KU-adjacent business?",
       answer:
-        "Yes. Startup MVP builds, internal tools, and early-stage product engineering are well within scope. Fixed-price proposals make cost predictable for pre-revenue or early-growth businesses.",
+        "Yes. Startup MVP builds, internal tools, and early-stage product engineering are well within scope. Paying by the month means a pre-revenue or early-growth business never has to front an entire build.",
     },
     {
       question: "Do you serve law firms and professional services operators in Lawrence?",

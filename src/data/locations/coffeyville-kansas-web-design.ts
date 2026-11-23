@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Coffeyville, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Coffeyville, Kansas businesses: fixed-price proposals from a Kansas-based development firm.",
+    "Custom websites, web apps, and AI automation for Coffeyville, Kansas businesses: an ongoing monthly service from a Kansas-based development firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

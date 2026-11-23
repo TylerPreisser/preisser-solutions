@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Topeka, KS Custom Software Development",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Topeka, Kansas businesses: fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Topeka, Kansas businesses: an ongoing monthly service, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Topeka's government, healthcare, insurance, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses and agencies in Topeka, Kansas, the state capital and Shawnee County seat, a metro of approximately 127,000. Topeka's economy centers on state government, healthcare, insurance, and manufacturing. Custom web applications, internal tools, dashboards, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses and agencies in Topeka, Kansas, the state capital and Shawnee County seat, a metro of approximately 127,000. Topeka's economy centers on state government, healthcare, insurance, and manufacturing. Custom web applications, internal tools, dashboards, and AI automation are the core offering. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [

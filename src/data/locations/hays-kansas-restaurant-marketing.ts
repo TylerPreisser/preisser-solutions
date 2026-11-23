@@ -130,7 +130,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price restaurant marketing?",
       answer:
-        "All projects use fixed-price proposals. Website builds and SEO infrastructure are priced as one-time projects. Ongoing retainers for monthly SEO work are optional.",
+        "Everything we build runs as an ongoing monthly service. The monthly price covers the build and the ongoing maintenance and support after it.",
     },
   ],
 

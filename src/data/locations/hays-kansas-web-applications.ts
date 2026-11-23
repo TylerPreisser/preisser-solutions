@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Dashboards, internal tools, custom CRMs: purpose-built for the way your operation actually works.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm that builds full-stack web applications for local businesses: internal tools, dashboards, custom CRMs, and ops platforms. Next.js, React, and TypeScript on modern infrastructure. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm that builds full-stack web applications for local businesses: internal tools, dashboards, custom CRMs, and ops platforms. Next.js, React, and TypeScript on modern infrastructure. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [

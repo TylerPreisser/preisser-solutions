@@ -24,7 +24,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Engineered visibility on Google AND on AI search engines: ChatGPT, Perplexity, Gemini.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for Salina, Kansas businesses. Based in Hays, an hour and a half west on I-70. The work layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites: engineered for results, not retainer-forever billing.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for Salina, Kansas businesses. Based in Hays, an hour and a half west on I-70. The work layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites: engineered for results.",
   },
 
   nearbyAreas: [
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Engineered for the AI-search era: schema, content architecture, and citation work that actually moves rankings.",
     "Custom websites and SEO from the same team: no agency hand-off, no broken implementation.",
-    "Reported on a monthly cadence; no retainer-forever billing.",
+    "Reported on a monthly cadence.",
   ],
 
   industriesServed: ["Manufacturing", "Distribution & Logistics", "Professional Services", "Trades", "Hospitality"],

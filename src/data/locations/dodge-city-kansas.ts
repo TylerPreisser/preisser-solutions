@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for southwest Kansas operators along US-50 and US-283.",
     answerParagraph:
-      "Preisser Solutions serves Dodge City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half north on US-283): we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
+      "Preisser Solutions serves Dodge City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half north on US-283): we deliver remotely and travel for projects of sufficient scope. A written proposal with your monthly price, custom code, full ownership.",
   },
 
   nearbyAreas: [

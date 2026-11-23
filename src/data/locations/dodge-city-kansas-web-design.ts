@@ -26,7 +26,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom websites: engineered for performance, conversion, and AI search visibility.",
     answerParagraph:
-      "Preisser Solutions builds custom websites for Dodge City, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour and a half north on US-283. No templates. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions builds custom websites for Dodge City, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour and a half north on US-283. No templates. Custom code, a written proposal with your monthly price, full ownership at launch.",
   },
 
   nearbyAreas: [
