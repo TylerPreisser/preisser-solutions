@@ -101,7 +101,16 @@ try {
         fs.writeFileSync(path.join(OUT_DIR, name), webp);
         const w = Math.round(box.width);
         const h = Math.round(box.height);
-        console.log(`${slug} ${dev} ${where}: { src: "/images/showcase/${name}", width: ${w}, height: ${h}, captured: "Captured ${today}" }  (${webp.length} bytes)`);
+        // edge: the per-channel median colour 24-30 css px above the bottom, which a taller frame fades the picture
+        // into and fills with (WebsiteBeat `band`; the last rows are the frame's own rounded corners).
+        const dpr = opts.deviceScaleFactor;
+        const meta = await sharp(png).metadata();
+        const rows = Math.round(6 * dpr);
+        const strip = await sharp(png).extract({ left: 0, top: meta.height - Math.round(24 * dpr) - rows, width: meta.width, height: rows }).removeAlpha().raw().toBuffer();
+        const chan = [[], [], []];
+        for (let i = 0; i < strip.length; i += 3) for (let c = 0; c < 3; c++) chan[c].push(strip[i + c]);
+        const edge = "#" + chan.map((v) => v.sort((x, y) => x - y)[v.length >> 1].toString(16).padStart(2, "0")).join("");
+        console.log(`${slug} ${dev} ${where}: { src: "/images/showcase/${name}", width: ${w}, height: ${h}, edge: "${edge}", captured: "Captured ${today}" }  (${webp.length} bytes)`);
       } finally {
         await ctx.close();
       }

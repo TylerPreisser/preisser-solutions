@@ -865,6 +865,21 @@ html.sc-sheet-open .ps-header {
   height: auto;
   user-select: none;
 }
+/* A frame taller than the picture (a 430x932 phone, a 1440x1000 window; WebsiteBeat sets data-band): the picture
+   stays width-first, so the header sits where the live page draws it, and its last 24 px (a capture ends on the
+   frame's own rounded corners) fade into the picture's bottom colour (--sc-still-edge, the median colour just above
+   them), which fills the rest of the frame. Drawn width-first alone it left a white band there. Carrying the
+   picture's last row down instead was tried and smeared buttons and text into streaks (FarmBooks). */
+.sc-web__still[data-band] {
+  background: var(--sc-still-edge);
+}
+.sc-web__still-fade {
+  position: relative;
+  display: block;
+  height: 100%;
+  margin-top: -24px;
+  background: linear-gradient(to bottom, transparent, var(--sc-still-edge) 24px);
+}
 .sc-web__still--video {
   display: flex;
   flex-direction: column;

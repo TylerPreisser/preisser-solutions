@@ -91,9 +91,9 @@ const client: ShowcaseClient = {
         height: 2099,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hays-academy
-        first: { src: "/images/showcase/hays-academy-site-desk-live-63781546.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
+        first: { src: "/images/showcase/hays-academy-site-desk-live-63781546.webp", width: 1220, height: 715, edge: "#e6cdda", captured: "Captured Nov 22, 2026" },
         // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
-        firstAt: [{ src: "/images/showcase/hays-academy-site-tablet-live-faa0bf25.webp", width: 794, height: 981, captured: "Captured Nov 22, 2026" }],
+        firstAt: [{ src: "/images/showcase/hays-academy-site-tablet-live-faa0bf25.webp", width: 794, height: 981, edge: "#e5ccd9", captured: "Captured Nov 22, 2026" }],
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_DESK_BANDS },
           { y: 860, holdMs: 1500, avoid: HAYS_DESK_BANDS },
@@ -106,9 +106,9 @@ const client: ShowcaseClient = {
         height: 2180,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hays-academy
-        first: { src: "/images/showcase/hays-academy-site-phone-live-79fcbcf6.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
+        first: { src: "/images/showcase/hays-academy-site-phone-live-79fcbcf6.webp", width: 376, height: 675, edge: "#fdfbf7", captured: "Captured Nov 22, 2026" },
         // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
-        firstAt: [{ src: "/images/showcase/hays-academy-site-phone320-live-f1902aae.webp", width: 294, height: 369, captured: "Captured Nov 22, 2026" }],
+        firstAt: [{ src: "/images/showcase/hays-academy-site-phone320-live-f1902aae.webp", width: 294, height: 369, edge: "#1c1a27", captured: "Captured Nov 22, 2026" }],
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_PHONE_BANDS },
           // "Next class starts November 10" rests at the top with the four stats under it (critique r8 N2),

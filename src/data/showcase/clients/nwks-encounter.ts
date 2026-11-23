@@ -83,9 +83,9 @@ const client: ShowcaseClient = {
         height: 900,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
-        first: { src: "/images/showcase/nwks-encounter-site-desk-live-003dc735.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
+        first: { src: "/images/showcase/nwks-encounter-site-desk-live-003dc735.webp", width: 1220, height: 715, edge: "#f3f3ec", captured: "Captured Nov 22, 2026" },
         // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
-        firstAt: [{ src: "/images/showcase/nwks-encounter-site-tablet-live-164f03ed.webp", width: 794, height: 981, captured: "Captured Nov 22, 2026" }],
+        firstAt: [{ src: "/images/showcase/nwks-encounter-site-tablet-live-164f03ed.webp", width: 794, height: 981, edge: "#f7f6ee", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 3400 }],
       },
       phone: {
@@ -94,9 +94,9 @@ const client: ShowcaseClient = {
         height: 844,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
-        first: { src: "/images/showcase/nwks-encounter-site-phone-live-a316a5ca.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
+        first: { src: "/images/showcase/nwks-encounter-site-phone-live-a316a5ca.webp", width: 376, height: 675, edge: "#fbf8f2", captured: "Captured Nov 22, 2026" },
         // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
-        firstAt: [{ src: "/images/showcase/nwks-encounter-site-phone320-live-b85361f2.webp", width: 294, height: 369, captured: "Captured Nov 22, 2026" }],
+        firstAt: [{ src: "/images/showcase/nwks-encounter-site-phone320-live-b85361f2.webp", width: 294, height: 369, edge: "#ffffff", captured: "Captured Nov 22, 2026" }],
         // Two rests, and neither edge of either one cuts a logo, a title, a date or a
         // button in half (critique r8 S6: the Women's Encounter logo was cut on every
         // phone): the men's half, then the women's half to the capture's end. Bands

@@ -18,7 +18,7 @@
  *                                  so the live frames load for real. PS_OUT_DIR picks another build.
  *   PS_TEST_BASE_URL=https://preissersolutions.com   a real URL, no interception (production).
  *   PS_TEST_ORIGIN_DELAY_MS=60     adds a wait to every answer served from out/, standing in for a CDN trip.
- * Other knobs: PS_TEST_ONLY=<words from a check name>, PS_TEST_REPS=3, PS_TEST_JSON=<file> (all numbers),
+ * Other knobs: PS_TEST_ONLY=<words from a check name, | between alternatives>, PS_TEST_REPS=3, PS_TEST_JSON=<file> (all numbers),
  * PS_TEST_FILM=<dir> (writes the cold Hays filmstrips, phone tap and desktop click, there).
  *   PS_TEST_ENGINE=chromium|webkit|firefox   which engine (default chromium). WebKit and Firefox have no CDP:
  *                                  their runs make the frame-sampler checks (a, b, e, c1, a0, f, g) at 1x only;
@@ -39,6 +39,8 @@ import { serveAsProdOrigin, PROD_ORIGIN } from "./support/serve-prod-origin.mjs"
 const req = createRequire(import.meta.url);
 const ENGINE = (process.env.PS_TEST_ENGINE || "chromium").toLowerCase();
 const engine = req("playwright")[ENGINE];
+const sharp = req("sharp");
+const STILL_SEAM_DIFF = 12; // check i: mean level difference (0-255) between the frame under the picture and the picture's bottom colour
 if (!engine || !["chromium", "webkit", "firefox"].includes(ENGINE)) throw new Error(`PS_TEST_ENGINE must be chromium, webkit or firefox, not ${ENGINE}`);
 const CDP = ENGINE === "chromium"; // screencast, CPU throttle and raw touch events need the Chrome DevTools Protocol
 
@@ -105,7 +107,7 @@ let pass = 0;
 let fail = 0;
 
 async function check(name, contextOptions, fn) {
-  if (ONLY && !name.toLowerCase().includes(ONLY)) return;
+  if (ONLY && !ONLY.split("|").some((w) => name.toLowerCase().includes(w))) return;
   try {
     const detail = await fn(contextOptions);
     pass++;
@@ -848,6 +850,90 @@ for (const [kind, slug] of PICS) {
       return `${t1}; ${t2}`;
     });
   }
+}
+
+// i. the loading still fills its frame. The client site is held back (its document never answers), so the window
+// stays on "Loading" over the still. The picture the still actually DRAWS (its box run through its own object-fit /
+// object-position, not the box) must reach the view's top, left and right. Under it, a frame taller than the picture
+// must not show the view's white: the pixels just under the picture's bottom edge must be the picture's own bottom
+// colour, read from a screenshot. A taller phone (430x932, 414x896) or a taller desktop window
+// showed a white band there (lead, 2026-11-22). PS_TEST_SHOTS=<dir> also writes the page as a PNG. Any engine.
+for (const [kind, slug] of [["phone", "hays"], ["phone", "farm"], ["click", "hays"], ["click", "farm"]]) {
+  const dev = kind === "phone" ? DEVICES.phone : DEVICES.desk;
+  await check(`${tag(kind, slug, "loading", 1).replace(" · 1x CPU", "")} i. the loading still covers its whole frame (no band under it)`, dev, async () => {
+    const S = await newSession(kind, slug);
+    try {
+      await S.ctx.route((u) => u.origin !== ORIGIN, (route) => (route.request().frame() !== S.page.mainFrame() && route.request().resourceType() === "document" ? new Promise(() => {}) : route.fallback()));
+      await actOpen(S, kind);
+      await S.page.waitForSelector(".sc-root:not([data-shell]) .sc-web__still[data-ready]", { timeout: 15000 });
+      await S.page.waitForTimeout(1200);
+      const g = await S.page.evaluate(() => {
+        const web = document.querySelector(".sc-root:not([data-shell]) .sc-web");
+        const view = web.querySelector(".sc-web__view").getBoundingClientRect();
+        const img = web.querySelector(".sc-web__still > img:not(.sc-web__still-ext)");
+        const b = img.getBoundingClientRect();
+        const cs = getComputedStyle(img);
+        let { left, top, width, height } = b;
+        const nw = img.naturalWidth;
+        const nh = img.naturalHeight;
+        if (cs.objectFit === "cover" || cs.objectFit === "contain") {
+          const s = cs.objectFit === "cover" ? Math.max(b.width / nw, b.height / nh) : Math.min(b.width / nw, b.height / nh);
+          width = nw * s;
+          height = nh * s;
+          const [px, py] = cs.objectPosition.split(" ").map((v, k) => (v.endsWith("%") ? (parseFloat(v) / 100) * ((k ? b.height : b.width) - (k ? height : width)) : parseFloat(v)));
+          left = b.left + px;
+          top = b.top + py;
+        }
+        const r = (x) => Math.round(x * 10) / 10;
+        return {
+          state: web.dataset.state,
+          src: img.currentSrc.split("/").pop(),
+          view: [r(view.left), r(view.top), r(view.width), r(view.height)],
+          drawn: [r(left), r(top), r(width), r(height)],
+          gaps: { top: r(top - view.top), bottom: r(view.bottom - (top + height)), left: r(left - view.left), right: r(view.right - (left + width)) },
+        };
+      });
+      if (process.env.PS_TEST_SHOTS) {
+        const dir = path.resolve(process.env.PS_TEST_SHOTS);
+        fs.mkdirSync(dir, { recursive: true });
+        const vp = dev.viewport;
+        const file = path.join(dir, `still-${kind}-${slug}-${ENGINE}-${vp.width}x${vp.height}-${BUILD ? "build" : "prod"}.png`);
+        await S.page.screenshot({ path: file });
+        console.log(`        shot: ${file}`);
+      }
+      let t = `still ${g.src} (window says ${g.state}): view ${g.view.join(",")}, picture drawn ${g.drawn.join(",")}; uncovered px top ${g.gaps.top}, left ${g.gaps.left}, right ${g.gaps.right} (limit 1), below the picture ${g.gaps.bottom}`;
+      assert.equal(g.state, "loading", `the window was not still loading: ${t}`);
+      assert.ok(Math.max(g.gaps.top, g.gaps.left, g.gaps.right) <= 1, t);
+      if (g.gaps.bottom > 1) {
+        // The picture's own colour 24-30 css px above its bottom edge (above the capture's rounded corners: the
+        // per-channel median, so a button or a line of text there does not decide it) vs the frame just under the
+        // edge, from the same screenshot: it must be that colour, not the view's white.
+        const edgeY = g.drawn[1] + g.drawn[3];
+        const band = (y, h) => S.page.screenshot({ clip: { x: g.view[0] + 2, y, width: g.view[2] - 4, height: h } });
+        const raw = async (png) => (await sharp(png).removeAlpha().raw().toBuffer({ resolveWithObject: true })).data;
+        const A = await raw(await band(edgeY - 30, 6));
+        const B = await raw(await band(edgeY + 1, Math.min(3, g.gaps.bottom - 1)));
+        const ch = [[], [], []];
+        for (let i = 0; i < A.length; i += 3) for (let c = 0; c < 3; c++) ch[c].push(A[i + c]);
+        const ref = ch.map((v) => v.sort((x, y) => x - y)[v.length >> 1]);
+        const refWhite = ref.every((v) => v >= 253);
+        let d = 0;
+        let white = 0;
+        const n = B.length / 3;
+        for (let i = 0; i < B.length; i += 3) {
+          d += (Math.abs(B[i] - ref[0]) + Math.abs(B[i + 1] - ref[1]) + Math.abs(B[i + 2] - ref[2])) / 3;
+          if (!refWhite && B[i] >= 253 && B[i + 1] >= 253 && B[i + 2] >= 253) white++;
+        }
+        const diff = Math.round((d / n) * 10) / 10;
+        const whitePct = Math.round((white / n) * 1000) / 10;
+        t += `; under the picture vs its own bottom colour rgb(${ref.join(",")}): mean difference ${diff} levels (limit ${STILL_SEAM_DIFF}), ${whitePct}% of pixels white where the picture is not (limit 2%)`;
+        assert.ok(diff <= STILL_SEAM_DIFF && whitePct <= 2, t);
+      }
+      return t;
+    } finally {
+      await endSession(S);
+    }
+  });
 }
 
 // f. closing.

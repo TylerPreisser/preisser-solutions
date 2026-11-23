@@ -132,6 +132,9 @@ export interface LoadingStill {
   /** css px: the frame's render width when it was captured, and its height. */
   width: number;
   height: number;
+  /** The picture's bottom colour (#rrggbb: the per-channel median 24-30 css px above its bottom). A frame taller
+   *  than the picture (a 430x932 phone, a tall desktop window) fades the picture into it and fills with it. */
+  edge?: string;
   captured?: string;
 }
 
