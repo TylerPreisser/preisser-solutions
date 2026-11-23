@@ -23,7 +23,7 @@ import { useEffect, useMemo, useRef, useState, type ComponentType, type CSSPrope
 import type { CursorTarget, Still } from "@/data/showcase/types";
 import type { Rect, WalkCue, WalkData } from "@/data/showcase/scenes/duffer-cc";
 import type { FluidSceneProps } from "./HgCoiScene";
-import { closeOpts, frameClose, frameView, viewPlan, wantsClose, type Box, type Frame, type PlanView } from "./walkFrame";
+import { closeOpts, frameClose, frameView, viewPlan, wantsClose, withLines, CARD, ART, type Box, type Frame, type PlanView } from "./walkFrame";
 import "./stills.css";
 
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
@@ -128,7 +128,7 @@ function useWordBoxes(stills: readonly Still[], srcs: readonly string[], enabled
       want.map((src) =>
         fetch(src.replace(/\.webp$/, ".words.json"))
           .then((r) => (r.ok ? r.json() : null))
-          .then((j) => [src, (j?.boxes ?? []) as Box[]] as const)
+          .then((j) => [src, [...((j?.boxes ?? []) as Box[]), ...((j?.cards ?? []) as number[][]).map(([x, y, w, h]) => [x, y, w, h, CARD] as const), ...((j?.art ?? []) as number[][]).map(([x, y, w, h]) => [x, y, w, h, ART] as const)] as Box[]] as const)
           .catch(() => [src, [] as Box[]] as const),
       ),
     ).then((all) => live && setBoxes(new Map(all)));
@@ -194,8 +194,8 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
       const st = data.stills[v.still];
       const p = pic(st);
       // The still's word boxes, and its form controls whose text the capture did not record (each one word).
-      const all: Box[] = [...(framing.get(p.src) ?? []), ...(data.solids?.[st.id] ?? []).map((r) => [r.x, r.y, r.w, r.h, ""] as const)];
-      f = close && v.framed ? frameClose(p.width, p.height, v.framed, box.w, box.h, all, closeOpts(phone, box.w, box.h)) : frameView(p.width, p.height, v.cam, box.w, box.h, all);
+      const all: Box[] = [...(framing.get(p.src) ?? []), ...(data.solids?.[st.id] ?? []).map((r) => [r.x, r.y, r.w, r.h, "[control]"] as const)];
+      f = close && v.framed ? frameClose(p.width, p.height, v.framed, box.w, box.h, withLines(all), closeOpts(phone, box.w, box.h)) : frameView(p.width, p.height, v.cam, box.w, box.h, all.filter((b) => b[4] !== CARD && b[4] !== ART));
       cache.set(key, f);
     }
     return f;

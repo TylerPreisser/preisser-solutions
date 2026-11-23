@@ -43,6 +43,8 @@ const DESK = {
 };
 type Units = readonly (readonly Rect[])[];
 const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
+/** A unit framed for a camera pass (see Rect.pass). */
+const P = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h, pass: true });
 const CLOSE: Record<string, Units> = {
   // Dashboard: the first four figures (attendees, servers, first-timers, dropped) on a tablet; on a phone the first
   // two with the payment card under them, then the next two.
@@ -51,9 +53,10 @@ const CLOSE: Record<string, Units> = {
   // The sidebar's groups: THE PEOPLE (Attendees) and THE WEEKEND (Cabins ... Badges & Tags).
   people: [[R(8, 298, 208, 132)]],
   weekend: [[R(8, 636, 208, 166)]],
+  weekendPass: [[P(8, 636, 208, 166)]],
   // Cabins before the plan: the men waiting in the pool, then the Rerun button with the empty cabins under it.
   pool: [[R(249, 165, 727, 600)], [R(686, 180, 290, 575)], [R(686, 180, 290, 300)], [R(695, 245, 200, 230)]],
-  rerun: [[R(248, 20, 560, 100), R(249, 165, 423, 390)], [R(248, 85, 233, 35), R(249, 165, 423, 190)], [R(248, 85, 233, 35), R(249, 165, 222, 190)], [R(248, 85, 233, 35)]],
+  rerun: [[R(248, 20, 560, 100), R(249, 165, 423, 390)], [P(248, 85, 233, 35), R(249, 165, 423, 190)], [P(248, 85, 233, 35), R(249, 165, 222, 190)], [P(248, 85, 233, 35)]],
   // After the plan: the rooms the men landed in (Cabin 1 and Cabin 3, where the drag goes), names and counts.
   board: [[R(249, 165, 727, 590)], [R(258, 170, 206, 180), R(258, 372, 206, 180)], [R(258, 170, 206, 180)]],
   // Attendees: the list with its names; the filter that narrows it; the narrowed list with its count.
@@ -62,16 +65,18 @@ const CLOSE: Record<string, Units> = {
   // phone numbers (x ~621-628, the first row's runs past it), so the list starts at the second row, names at the edge.
   // (A 320 phone: rows 4 to 6, whose emails all end before x 517 and whose phones start after it.)
   names: [[R(248, 20, 560, 540)], [R(313, 275, 200, 380)], [R(313, 275, 200, 220)], [R(313, 425, 200, 190)]],
-  filter: [[R(915, 143, 110, 37)]],
+  filter: [[P(915, 143, 110, 37)]],
   unpaid: [[R(248, 20, 560, 540)], [R(248, 198, 406, 20), R(313, 237, 200, 300)], [R(313, 237, 200, 300)], [R(313, 237, 200, 220)]],
   // Badges & Tags: one badge, both faces (the payoff, large type), else its front face; the Luggage labels job card.
-  badge: [[R(849, 314, 490, 216)], [R(849, 314, 212, 216)]],
+  // (Above the badge card is empty page and the job cards; under it, the sheet's select and the card's empty bottom: a
+  // stage too tall for the faces to fill shows the unit alone, its window held between the card's top and the select.)
+  badge: [[{ ...R(849, 314, 490, 216), above: 4, grow: 45 }], [{ ...R(849, 314, 212, 216), above: 4, grow: 45 }]],
   // (The click on Luggage labels is a pass: the camera pulls back to the job cards over the badge, the pointer clicks.)
-  jobs: [[R(849, 157, 550, 373)]],
-  // Luggage labels: the label itself.
-  // (Above the label: the selected job card, and over it the page's intro line, of which a window this narrow
-  // catches only a fragment; the window stops under that line where the stage lets it fill (a short phone).)
-  label: [[{ ...R(849, 314, 241, 134), above: 182 }], [R(849, 314, 241, 134)]],
+  jobs: [[P(849, 157, 550, 373)]],
+  // Luggage labels, the last view: the label card whole, the label with the sheet it prints on ("Avery 5160 ..."), else
+  // (a phone, where that select alone is wider than the stage can show readably) the label itself. Either way the
+  // window is held to the card: above it are empty page and the job cards, under it the card's empty bottom.
+  label: [[{ ...R(849, 314, 534, 210), above: 4, grow: 8 }], [{ ...R(849, 314, 250, 134), above: 4, grow: 18 }]],
 };
 // The sidebar is the same on every still, so a click on a page's name is a click on the real nav item: the word
 // boxes in each still's .words.json put "Dashboard", "Attendees", "Cabins" and "Badges & Tags" at x 48 and these y.
@@ -108,7 +113,7 @@ const cues: WalkCue[] = [
   // Narrowed: the frame comes back to the men it left.
   { at: 22000, still: I["attendees-unpaid"], step: 3, cursor: dot(340, 266), closeCursor: dot(360, 266), cam: DESK.list, close: CLOSE.unpaid },
   // Click "Badges & Tags": a pass (no window on a portrait tablet holds the sidebar and this list's ragged rows cleanly).
-  { at: 24700, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges, true), cam: navDesk(NAV.badges), close: CLOSE.weekend },
+  { at: 24700, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges, true), cam: navDesk(NAV.badges), close: CLOSE.weekendPass },
   { at: 25700, still: I.badges, step: 4, cursor: dot(330, 188), closeCursor: dot(1010, 470), cam: DESK.badges, close: CLOSE.badge },
   // The job cards sit in the same place on both stills; click "Luggage labels".
   { at: 28500, still: I.badges, step: 4, cursor: at(T("labels", "labels"), true), close: CLOSE.jobs },
