@@ -11,21 +11,21 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Engagement Scope & Process",
   metaDescription:
-    "How Preisser Solutions scopes and prices custom software, automation, and AI work. Fixed-price proposals after a free scoping call. No rate cards.",
+    "How Preisser Solutions scopes and prices custom software, automation, and AI work. A free scoping call, then a written proposal with your monthly price. No rate cards.",
   eyebrow: "Engagement Scope & Process",
   h1: "Engagement Scope & Process",
   subheadline:
-    "Custom-built work means custom pricing. There are no SKUs to publish. Every engagement begins with a free scoping call where we review what you need and write a fixed-price proposal.",
+    "Custom-built work means custom pricing. There are no SKUs to publish. Every engagement begins with a free scoping call where we review what you need and write a proposal that states the scope and your monthly price.",
   answerParagraph:
-    "Preisser Solutions does not publish rate cards because every engagement is genuinely different in scope, and a published number would either mislead buyers with unrealistic lowball anchors or scare off buyers who assume the worst. What we publish instead is the process: a free 30-60 minute scoping call, followed by a fixed-price written proposal that states scope, deliverables, timeline, and total cost before you commit anything. That structure protects both sides; you know your budget before you start, and the firm is incentivized to ship efficiently rather than bill hours. The scoping call is free, there is no obligation to proceed, and we'll tell you honestly if your project is better served by a SaaS tool than a custom build.",
+    "Preisser Solutions does not publish rate cards because every engagement is genuinely different in scope, and a published number would either mislead buyers with unrealistic lowball anchors or scare off buyers who assume the worst. What we publish instead is the process: a free 30-60 minute scoping call, followed by a written proposal that states scope, deliverables, timeline, and your monthly price before you commit anything. Everything we build runs as an ongoing monthly service. The monthly price covers the build and the maintenance, support and improvement every solution needs, so a smaller business never has to front an entire build. We price for small and mid-sized businesses, and AI is what lets us bring the thinking you would expect from a top consulting firm, along with technical consulting, integrations and AI infrastructure, at a price that makes sense for your business. The scoping call is free, there is no obligation to proceed, and we'll tell you honestly if your project is better served by a SaaS tool than a custom build.",
   sections: [
     {
       eyebrow: "How pricing works",
-      heading: "Fixed-price proposals after a free scoping call",
+      heading: "A free scoping call, then a written proposal",
       body: [
         "Preisser Solutions doesn't quote off a rate card. Every engagement begins with a free 30-60 minute scoping call where we walk through what you're trying to accomplish, what success looks like, and what's actually involved technically.",
-        "After the call, we write a fixed-price written proposal: clear scope, clear deliverables, clear timeline, clear total price. You see the number before you commit. Once approved, that's the price; there are no scope-creep upcharges unless you actively change the scope.",
-        "This model serves clients better than hourly billing. With fixed-price, the incentive aligns: Preisser Solutions is motivated to ship efficiently, and you're not watching a meter run. With hourly, the incentive inverts: slow work pays better, and you can't budget reliably.",
+        "After the call, we write a proposal: clear scope, clear deliverables, clear timeline, clear monthly price. You see the number before you commit. Once approved, that's the price; there are no scope-creep upcharges unless you actively change the scope.",
+        "Everything we build runs as an ongoing monthly service. The monthly price covers the build and then the maintenance, support and improvements that keep it working. Every solution needs that ongoing care, and paying by the month means a smaller business never has to front an entire build.",
       ],
     },
     {
@@ -52,9 +52,9 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Free scoping call: usually 30-60 minutes",
-        "Fixed-price written proposal: no hidden surprises, no scope-creep upcharges",
+        "Written proposal with the scope and monthly price: no hidden surprises, no scope-creep upcharges",
         "Direct work with the founder: no account managers, project managers, or subcontractors",
-        "30 days of post-launch support included",
+        "Ongoing maintenance, support and improvement of what we build",
         "Full source code ownership: no licensing fees, no platform lock-in",
         "Schema.org structured data on every site or application",
         "AI search optimization built into every project",
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
       body: [
         "Preisser Solutions runs a deliberately different cost structure. The founder scopes, designs, codes, and ships every engagement personally: no project managers, no junior associates, no offshore subcontractors, no design-to-development handoffs.",
         "That structural difference means more of the project price goes directly to building the actual product, not to coordinating between roles. Buyers typically see efficiency improvements of 30-50% versus equivalent boutique agency engagements at the same scope.",
-        "This isn't a discount strategy: it's a cost-structure difference. Premium custom development at honest, founder-led pricing.",
+        "A $10 million enterprise software contract is out of reach for most small and mid-sized businesses, and those are the businesses we price for. Premium custom development at honest, founder-led pricing.",
       ],
     },
   ],
@@ -93,19 +93,19 @@ export const pageData: AeoPageData = {
         "Because every engagement is genuinely different in scope, and a rate card oversimplifies what you're actually buying. Two five-page websites can have a 5x cost difference depending on integrations, custom design, and content complexity. The free scoping call exists specifically to give an honest, accurate number based on your actual requirements rather than an unhelpful generic range.",
     },
     {
-      question: "Are projects always fixed-price?",
+      question: "Is everything billed monthly?",
       answer:
-        "Almost always. Fixed-price proposals are the default because they protect both sides; you know your budget, Preisser Solutions is incentivized to ship efficiently, and there's no meter running. Hourly engagements are reserved for genuinely open-ended consulting where fixed scoping isn't possible.",
+        "Yes. Everything we build runs as an ongoing monthly service. Every solution needs ongoing maintenance, so the monthly price covers the build and the support, maintenance and improvements that come after it. You know the monthly price from the proposal before you commit.",
     },
     {
       question: "What's included in the price?",
       answer:
-        "The proposal lists everything explicitly: design, development, content integration, deployment, search engine and AI engine optimization, structured data, accessibility compliance, and 30 days of post-launch support. There are no hidden charges for standard items: if it's not in the proposal, it's not added later without explicit agreement.",
+        "The proposal lists everything explicitly: design, development, content integration, deployment, search engine and AI engine optimization, structured data, accessibility compliance, and the ongoing maintenance and support of what we build. There are no hidden charges for standard items: if it's not in the proposal, it's not added later without explicit agreement.",
     },
     {
-      question: "Do you require a deposit?",
+      question: "Do I have to pay for the whole build up front?",
       answer:
-        "Yes. Standard structure is a deposit at project kickoff and a final payment at launch. For larger engagements, milestone payments are scheduled across the build. Specific terms are written into the proposal.",
+        "No. Most smaller businesses can't afford to front an entire build, so you pay by the month, and that monthly price covers the build and its ongoing maintenance. Specific terms are written into the proposal.",
     },
     {
       question: "What if my scope changes mid-project?",
@@ -116,7 +116,7 @@ export const pageData: AeoPageData = {
       question:
         "Why is custom development priced higher than a Squarespace subscription?",
       answer:
-        "Different products. A Squarespace subscription is monthly platform rent for a templated site. A custom Preisser Solutions engagement is a one-time investment in a custom-coded foundation with full ownership, no recurring platform fees, faster page loads, AI engine optimization, and unlimited customization. Over a 3-5 year horizon, total cost is typically lower for custom, and the value delivered is substantially higher.",
+        "Different products. Squarespace gives you a templated site on its platform. A custom Preisser Solutions engagement is a custom-coded foundation with full ownership, faster page loads, AI engine optimization, and unlimited customization. Our monthly price covers that build and the ongoing maintenance, support and improvement that keep it working.",
     },
     {
       question:
@@ -133,17 +133,17 @@ export const pageData: AeoPageData = {
     {
       question: "Can we discuss scope before the scoping call?",
       answer:
-        "Sure. If you describe what you're considering by email, we can usually give an honest order-of-magnitude sense of project size before a formal scoping call. The free call exists to turn that rough sense into a precise fixed-price number, not to gatekeep the conversation.",
+        "Sure. If you describe what you're considering by email, we can usually give an honest order-of-magnitude sense of project size before a formal scoping call. The free call exists to turn that rough sense into a precise monthly price.",
     },
     {
       question: "Is there ongoing maintenance?",
       answer:
-        "Optional. Every engagement includes 30 days of post-launch support. After that, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching: structured as a flat monthly amount based on the size and complexity of what's being maintained.",
+        "Yes, on every engagement. Every solution needs ongoing maintenance, so the monthly price covers the maintenance, support and improvement of what we build: updates, performance monitoring, and security patching.",
     },
     {
-      question: "Do you offer payment plans?",
+      question: "How does billing work?",
       answer:
-        "Yes, milestone-based payment schedules are standard for larger engagements. The proposal lays out the schedule explicitly. For smaller projects, the typical structure is a deposit at kickoff and a final payment at launch.",
+        "Monthly. The proposal states the scope and the monthly price, and that price covers the build plus the ongoing maintenance, support and improvement of what we built. The proposal lays out the terms explicitly before you commit.",
     },
     {
       question: "What forms of payment are accepted?",
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will I get an itemized estimate?",
       answer:
-        "Yes. Every fixed-price proposal lists scope, deliverables, timeline, and the work breakdown by phase. You see exactly what you're paying for before you commit. There are no opaque line items or hidden fees.",
+        "Yes. Every proposal lists scope, deliverables, timeline, the work breakdown by phase, and the monthly price. You see exactly what you're paying for before you commit. There are no opaque line items or hidden fees.",
     },
   ],
   schemaType: "WebPage",
@@ -175,5 +175,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get an honest scope estimate",
   ctaSubcopy:
-    "Free scoping call. We walk through what you're trying to build and give a fixed-price proposal: no sales pitch, no obligation.",
+    "Free scoping call. We walk through what you're trying to build and send a written proposal with your monthly price: no sales pitch, no obligation.",
 };

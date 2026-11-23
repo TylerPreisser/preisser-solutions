@@ -516,8 +516,8 @@ export default function SiteMapPage() {
               margin: "0 0 24px",
             }}
           >
-            Email Tyler directly. Free 30-minute scoping call. Fixed-price
-            proposal within a week.
+            Email Tyler directly. Free 30-minute scoping call. Written proposal
+            and monthly price within a week.
           </p>
           <Link
             href="/contact"
