@@ -98,11 +98,7 @@ const client: ShowcaseClient = {
       live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake", revealMs: 150 },
       tab: "Website",
       caption: "The bay folds away so the car still fits, and every model shows its price.",
-      captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/duffer-golf-site-desk-e28191de.webp",
-        width: 1280,
-        height: 1788,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
         first: { src: "/images/showcase/duffer-golf-site-desk-live-eae07fe0.webp", width: 1220, height: 715, edge: "#13331c", captured: "Captured Nov 22, 2026" },
@@ -115,9 +111,6 @@ const client: ShowcaseClient = {
         ],
       },
       phone: {
-        src: "/images/showcase/duffer-golf-site-phone-7ed25c02.webp",
-        width: 390,
-        height: 1700,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
         first: { src: "/images/showcase/duffer-golf-site-phone-live-85927f95.webp", width: 376, height: 675, edge: "#111111", captured: "Captured Nov 22, 2026" },

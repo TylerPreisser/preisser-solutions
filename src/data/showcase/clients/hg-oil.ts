@@ -97,49 +97,21 @@ const client: ShowcaseClient = {
       live: { src: "https://www.hgoilholdings.com/", origins: ["https://www.hgoilholdings.com", "https://hgoilholdings.com"], frame: "handshake", revealMs: 350 },
       tab: "Website",
       caption: "HG Oil's site opens on a pumpjack working at dusk.",
-      captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/hg-oil-site-desk-head-2fb3472a.webp",
-        width: 1440,
-        height: 157,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
         first: { src: "/images/showcase/hg-oil-site-desk-live-325b9f88.webp", width: 1220, height: 715, edge: "#060606", captured: "Captured Nov 22, 2026" },
         // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
         firstAt: [{ src: "/images/showcase/hg-oil-site-tablet-live-df1a38a9.webp", width: 794, height: 981, edge: "#050605", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
-        video: {
-          webm: "/images/showcase/hg-oil-hero-desk-97e5697b.webm",
-          mp4: "/images/showcase/hg-oil-hero-desk-fc835b45.mp4",
-          poster: "/images/showcase/hg-oil-hero-desk-78a31ece.webp",
-          width: 1280,
-          height: 720,
-          fit: "cover",
-          sky: "#788c9a",
-          ground: "#050504",
-        },
       },
       phone: {
-        src: "/images/showcase/hg-oil-site-phone-head-098f7029.webp",
-        width: 390,
-        height: 91,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
         first: { src: "/images/showcase/hg-oil-site-phone-live-20c51093.webp", width: 376, height: 675, edge: "#050505", captured: "Captured Nov 22, 2026" },
         // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
         firstAt: [{ src: "/images/showcase/hg-oil-site-phone320-live-685f6cf5.webp", width: 294, height: 369, edge: "#060605", captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
-        // The whole frame shows: a taller phone gets more of the clip's own sky and ground around it.
-        video: {
-          webm: "/images/showcase/hg-oil-hero-phone-d493f65c.webm",
-          mp4: "/images/showcase/hg-oil-hero-phone-b58f82bb.mp4",
-          poster: "/images/showcase/hg-oil-hero-phone-c7c4e216.webp",
-          width: 1170,
-          height: 942,
-          fit: "width",
-          sky: "#7b8f9d",
-          ground: "#050505",
-        },
       },
     },
     vendor,

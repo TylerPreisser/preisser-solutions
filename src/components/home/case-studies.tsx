@@ -6,14 +6,15 @@ import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
 import { ShowcaseShell } from "../showcase/ShowcaseShell";
 
-// What the shell needs before the client's data is here: the window's title and the Website tab's domain
-// (the same words the window then shows, from src/data/showcase/clients/<slug>.ts `short` and `live.src`).
-const SHELL: Record<string, { name: string; domain: string }> = {
-  farmbooks: { name: "FarmBooks", domain: "farm-books.com" },
-  "nwks-encounter": { name: "NWKS Encounter", domain: "nwksencounter.com" },
-  "hays-academy": { name: "Hays Academy", domain: "haysacademy.edu" },
-  "duffer-golf": { name: "Duffer Golf", domain: "duffergolf.net" },
-  "hg-oil": { name: "HG Oil", domain: "hgoilholdings.com" },
+// What the shell needs before the client's data is here: the window's title, the Website tab's domain and the
+// site's ground colour under the picture area (the same the window then shows, from src/data/showcase/clients/
+// <slug>.ts `short`, `live.src` and the website still's `edge`, desk and phone), so even this window is never white.
+const SHELL: Record<string, { name: string; domain: string; ground: { desk: string; phone: string } }> = {
+  farmbooks: { name: "FarmBooks", domain: "farm-books.com", ground: { desk: "#ede0bc", phone: "#ece1c0" } },
+  "nwks-encounter": { name: "NWKS Encounter", domain: "nwksencounter.com", ground: { desk: "#f3f3ec", phone: "#fbf8f2" } },
+  "hays-academy": { name: "Hays Academy", domain: "haysacademy.edu", ground: { desk: "#e6cdda", phone: "#fdfbf7" } },
+  "duffer-golf": { name: "Duffer Golf", domain: "duffergolf.net", ground: { desk: "#13331c", phone: "#111111" } },
+  "hg-oil": { name: "HG Oil", domain: "hgoilholdings.com", ground: { desk: "#060606", phone: "#050505" } },
 };
 
 // The showcase window (ADR-0020) is its own chunk, fetched on the first sign of
@@ -800,7 +801,9 @@ export function CaseStudies() {
         io.disconnect();
         const fetchAll = () => {
           loadShowcaseLayer().then((m) => setShowcaseLayer(() => m.default), () => {});
-          slugs.forEach((slug) => loadShowcase(slug).catch(() => {}));
+          // each client's website still too, fetched and decoded, so the window grows already holding it (~250 kB for
+          // the five at one width)
+          slugs.forEach((slug) => warmShowcase(slug));
         };
         idle = window.requestIdleCallback ? window.requestIdleCallback(fetchAll, { timeout: 1500 }) : window.setTimeout(fetchAll, 200);
       },
@@ -814,9 +817,9 @@ export function CaseStudies() {
     };
   }, []);
 
-  const warm = useCallback((slug: ShowcaseSlug, wide: boolean) => {
+  const warm = useCallback((slug: ShowcaseSlug) => {
     loadShowcaseLayer().then((m) => setShowcaseLayer(() => m.default), () => {});
-    warmShowcase(slug, wide);
+    warmShowcase(slug);
     // Warm the connection to the client's live site (spec §3.3 idle): a preconnect only, no frame yet.
     loadShowcase(slug)
       .then((c) => {
@@ -838,7 +841,7 @@ export function CaseStudies() {
     if (performance.now() - lastScroll.current < 400) return;
     if (!handMoved()) return;
     if (intentTimer.current !== undefined) return;
-    warm(slug, true);
+    warm(slug);
     setShowcase((cur) => cur ?? { slug, anchor: el, mode: "hover", armed: true });
     intentTimer.current = window.setTimeout(() => {
       intentTimer.current = undefined;
@@ -859,7 +862,7 @@ export function CaseStudies() {
   function showcaseActivate(slug: ShowcaseSlug, el: HTMLElement) {
     window.clearTimeout(intentTimer.current);
     intentTimer.current = undefined;
-    warm(slug, window.innerWidth >= 600);
+    warm(slug);
     // Code and data here (the usual case): the window itself opens. Not yet: the shell answers now.
     const ready = !!showcaseLayerModule && !!peekShowcase(slug) && !!SHELL[slug];
     const next = { slug, anchor: el, mode: "pinned" as const, ...(ready || !SHELL[slug] ? {} : { shell: true }) };
@@ -1000,7 +1003,7 @@ export function CaseStudies() {
               onMouseMove={hoverOpens && study.showcase ? (e) => showcaseMove(study.showcase!, e.currentTarget) : undefined}
               onMouseEnter={hoverOpens ? (e) => {
                 if (study.showcase) {
-                  warm(study.showcase, true);
+                  warm(study.showcase);
                   return;
                 }
                 scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
@@ -1069,7 +1072,7 @@ export function CaseStudies() {
                   aria-expanded={showcase?.slug === study.showcase && !showcase.armed}
                   aria-label={`${study.title}: see their website and what we built them`}
                   onPointerEnter={(e) => {
-                    if (e.pointerType !== "mouse") warm(study.showcase!, window.innerWidth >= 600);
+                    if (e.pointerType !== "mouse") warm(study.showcase!);
                   }}
                   // The card gives under the finger at once (a frame, before anything else has to happen).
                   onPointerDown={(e) => {
@@ -1181,6 +1184,7 @@ export function CaseStudies() {
           key={`shell:${showcase.slug}`}
           name={SHELL[showcase.slug].name}
           domain={SHELL[showcase.slug].domain}
+          ground={SHELL[showcase.slug].ground}
           anchor={showcase.anchor}
           onClose={() => setShowcase(null)}
           onEntered={() => setShellIn(true)}

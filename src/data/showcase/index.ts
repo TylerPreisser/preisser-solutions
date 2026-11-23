@@ -49,30 +49,42 @@ export function estimateViewWidth(innerWidth: number, sheet: boolean) {
 }
 
 /** The loading still for a frame rendering this wide: the capture whose width is closest. */
-export function loadingStill(cap: SiteCapture, renderW: number): LoadingStill | undefined {
-  const all = [...(cap.first ? [cap.first] : []), ...(cap.firstAt ?? [])];
-  if (!all.length) return undefined;
-  if (!(renderW > 0)) return cap.first ?? all[0];
+export function loadingStill(cap: SiteCapture, renderW: number): LoadingStill {
+  const all = [cap.first, ...(cap.firstAt ?? [])];
+  if (!(renderW > 0)) return cap.first;
   return all.reduce((best, c) => (Math.abs(c.width - renderW) < Math.abs(best.width - renderW) ? c : best), all[0]);
 }
 
-/** Fetch the client's data and its first website capture, so the window opens on a painted site. */
-export function warmShowcase(slug: ShowcaseSlug, wide: boolean) {
+/** The window's layout at this width, as ShowcaseLayer picks it: the sheet, and the phone variant under 600. */
+function layoutNow() {
+  const sheet = !window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900;
+  return { sheet, phone: sheet && window.innerWidth < 600 };
+}
+
+/** The still this window would show for the client, at this width. */
+export function stillFor(client: ShowcaseClient): LoadingStill | undefined {
+  const web = client.beats.find((b) => b.kind === "website");
+  if (!web || web.kind !== "website") return undefined;
+  const { sheet, phone } = layoutNow();
+  const view = estimateViewWidth(window.innerWidth, sheet);
+  return phone ? loadingStill(web.phone, view) : loadingStill(web.desk, frameScale(view).w);
+}
+
+// Decoded stills, kept referenced so the browser keeps their pixels: the window then paints its picture in its
+// first frame, while it grows, instead of decoding a 1220 px picture mid-grow (critic 2026-11-22 MUST 3).
+const decoded = new Map<string, HTMLImageElement>();
+
+/** Fetch AND decode the client's still for this width, ahead of the tap (with the data prefetch, and on intent). */
+export function warmShowcase(slug: ShowcaseSlug) {
   loadShowcase(slug)
     .then((c) => {
-      const web = c.beats.find((b) => b.kind === "website");
-      if (!web || web.kind !== "website") return;
-      const cap = wide ? web.desk : web.phone;
-      // The loading still for this window's frame width shows first and the dated full page is the fallback, so
-      // both are warmed; a video hero's poster too.
-      const sheet = !window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900;
-      const view = estimateViewWidth(window.innerWidth, sheet);
-      const first = loadingStill(cap, wide ? frameScale(view).w : view);
-      for (const src of [...(first ? [first.src] : []), cap.src, ...(cap.video ? [cap.video.poster] : [])]) {
-        const img = new Image();
-        img.decoding = "async";
-        img.src = src;
-      }
+      const first = stillFor(c);
+      if (!first || decoded.has(first.src)) return;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = first.src;
+      decoded.set(first.src, img);
+      img.decode().catch(() => decoded.delete(first.src));
     })
     .catch(() => {});
 }

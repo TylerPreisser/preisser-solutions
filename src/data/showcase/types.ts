@@ -66,64 +66,23 @@ interface BeatBase {
 /** [x, y, width, height] in a capture's css pixels. */
 export type Rect = readonly [number, number, number, number];
 
-/**
- * A site whose hero is its own video: a short muted loop cut from the real
- * file, played under the site's header bar (the capture, `SiteCapture.src`).
- */
-export interface SiteVideo {
-  webm: string;
-  mp4: string;
-  /** The clip's first frame: its poster, and the whole picture under reduced motion. */
-  poster: string;
-  /** The clip's pixel size. */
-  width: number;
-  height: number;
-  /**
-   * "width": the clip's full width, centred top to bottom; a taller view shows
-   * the clip's own sky above it and its own ground below (colours measured from
-   * its top and bottom rows), a shorter one loses a sliver of each. "cover": it
-   * fills the view.
-   */
-  fit: "width" | "cover";
-  sky: string;
-  ground: string;
-}
-
 export interface SiteCapture {
-  /** The page capture; with `video`, only the site's header bar above it. */
-  src: string;
-  /** css px; the file is drawn at 2x (phone) or 1.25x (desk). */
-  width: number;
-  height: number;
-  /** Where the frame scrolls, in order, and how long each holds. The first is the hero. */
+  /** Where the old capture panned, in order, and how long each held: now only the beat's length (beatMs). */
   stops: readonly {
     y: number;
     holdMs: number;
-    /** Never show past the capture's end: the view ends on its last row instead of going on into empty space. */
     toEnd?: boolean;
-    /**
-     * Bands of the capture (y from, y to) that an edge of the view must never cut,
-     * such as a logo or a button: the stop moves to the nearest top (within 160 px)
-     * where neither the top nor the bottom edge falls inside one.
-     */
     avoid?: readonly (readonly [number, number])[];
-    /**
-     * A band of the capture (y from, y to) the stop must show whole, such as a
-     * price row the caption promises: the stop takes the nearest top that holds
-     * it and cuts no `avoid` band. Taller than the view: the view centres on it.
-     */
     keep?: readonly [number, number];
   }[];
-  video?: SiteVideo;
   /**
-   * The loading still: the top of the live page exactly as the window's frame shows it once the site has
-   * settled (its own preloader and entrance done), captured framed at the frame's own size. Shown ONLY
-   * while the frame is loading, under the loading animation, and the live frame then cross-fades in over
-   * it, so the two must match. Every other moment (a refused frame, the "Open <domain>" fallback) shows
-   * `src`, the dated full page. `captured` is the alt text's date for this picture.
+   * The website still: the top of the live page exactly as the window's frame shows it once the site has
+   * settled (its own preloader and entrance done), captured framed at the frame's own size. It is the only
+   * picture the Website tab shows: under the loading animation, under the live frame's cross-fade, and in
+   * the fallback state when a frame is refused or never says ready (no other, dated picture to swap to).
    */
-  first?: LoadingStill;
-  /** The same loading still at other frame widths (a 320 phone, a tablet sheet), where the site reflows. */
+  first: LoadingStill;
+  /** The same still at other frame widths (a 320 phone, a tablet sheet), where the site reflows. */
   firstAt?: readonly LoadingStill[];
 }
 
@@ -169,8 +128,6 @@ export interface WebsiteLive {
 export interface WebsiteBeat extends BeatBase {
   kind: "website";
   live: WebsiteLive;
-  /** "Captured Nov 1, 2026": the Preview chip's title attribute and the still's alt text, not on screen. */
-  captured: string;
   /** The still under (and instead of) the frame on desk windows: its first stop, or the video's poster under the header image. */
   desk: SiteCapture;
   /** The still for the phone sheet. `stops` and the pan are no longer played. */
