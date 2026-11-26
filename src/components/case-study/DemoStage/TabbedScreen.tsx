@@ -168,7 +168,20 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
       if (isScrollGesture(e, g.touchY)) g.gesture = g.input;
     };
     const onScroll = () => {
-      if (g.own && g.follow && g.gesture > g.ownAt) {
+      const now = performance.now();
+      // A scroll gesture made inside the tour's own scroll window, or just
+      // BEFORE it opened, is the visitor's: its movement can still be arriving
+      // inside the window, mixed with the tour's (isScrollGesture). WebKit
+      // moved the page for a PageDown pressed just after the tour's panel
+      // landed ~600ms late, or 81px and then the rest after a ~230ms stall,
+      // both inside the own window of the step that followed; the guard took
+      // the visitor's 675px for the tour's, re-based on it, and a later step
+      // carried the page on (+423px; traces in
+      // tests/e2e/regression/tour-guard-delayed-pagedown.json). No stillness
+      // tells the visitor's movement is over, so within USER_INPUT_MS of the
+      // gesture any movement in the window may be theirs: the tour lets go.
+      const visitorRecent = now - g.gesture <= USER_INPUT_MS;
+      if (g.own && g.follow && (g.gesture > g.ownAt || visitorRecent)) {
         // The visitor scrolled while the tour's own scroll was travelling:
         // the page is theirs for the rest of the tour (isScrollGesture).
         g.follow = false;
@@ -186,7 +199,7 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
         }, OWN_SCROLL_IDLE_MS);
         return;
       }
-      if (performance.now() - g.input > USER_INPUT_MS) {
+      if (now - g.input > USER_INPUT_MS) {
         g.base = window.scrollY; // moved by layout, not by the visitor
         return;
       }
