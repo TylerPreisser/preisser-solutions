@@ -243,6 +243,9 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
     guard.current.touring = true;
     guard.current.follow = true;
     guard.current.base = window.scrollY;
+    // A gesture from before this tour (a restart within USER_INPUT_MS) is not a
+    // scroll made during it.
+    guard.current.gesture = -Infinity;
     setInteracted(true);
     setTouring(true);
     setActive(0);
