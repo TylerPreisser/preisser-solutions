@@ -645,86 +645,95 @@ for (const m of MANIFESTS) {
         test.setTimeout(120_000);
         const { context, page } = await open(browser, browserName, vp);
         try {
-          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
-          await hydrated(page);
+          // The replay stages the captured order with page timers. On a loaded machine a timer can fire late and the
+          // movement lands outside the step's window: that run never tested the guard, so it is staged again on a fresh
+          // load (up to 3 times). The order itself is still asserted below; only a miss on every attempt fails.
+          let r = { keyAt: 0, stepAt: 0, arrivedAt: 0 };
           const tabbed = page.locator(".demo-tabs").first();
-          if ((await tabbed.count()) === 0) {
-            test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
-          }
-          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-          await page.evaluate((p: Replay) => {
-            type Seen = { keyAt: number | null; firstAt: number | null; stepAt: number | null; movedAt: number | null; arrivedAt: number | null; steps: number };
-            const w = window as unknown as { __replay: Seen; __replayGo: () => void };
-            const r: Seen = { keyAt: null, firstAt: null, stepAt: null, movedAt: null, arrivedAt: null, steps: 0 };
-            w.__replay = r;
-            const press = () => {
-              document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "PageDown", bubbles: true }));
-              r.keyAt = performance.now();
-              if (p.beforeStepPx > 0) {
-                window.scrollBy({ top: p.beforeStepPx, behavior: "instant" });
-                r.firstAt = performance.now();
-              }
-            };
-            // The key: keyAfterStep 0 = as the tour's first followed step
-            // reveals, after the panel's own scroll has landed and been let go
-            // (the tour reveals a followed step only then) and BEFORE that
-            // step's own scroll opens its window (React runs the step's scroll
-            // effect in a later task than the reveal's DOM change); or
-            // keyDelayMs after the tour's step keyAfterStep scrolled, its own
-            // window long over.
-            w.__replayGo = () => {
-              if (p.keyAfterStep !== 0) return;
-              const panel = document.querySelector<HTMLElement>('.demo-tabs [role="tabpanel"]:not([hidden])');
-              if (!panel) return;
-              const mo = new MutationObserver((recs) => {
-                const revealed = recs.some((m) => m.target instanceof HTMLElement && m.target.matches("[data-stage-step]") && !m.target.hasAttribute("data-pending"));
-                if (!revealed || r.keyAt !== null) return;
-                mo.disconnect();
-                press();
-              });
-              mo.observe(panel, { subtree: true, attributes: true, attributeFilter: ["data-pending"] });
-            };
-            // The tour's next followed step after the key opens its own window,
-            // and the visitor's movement arrives afterStepScrollMs into it.
-            const orig = Element.prototype.scrollIntoView;
-            Element.prototype.scrollIntoView = function (this: Element, arg?: boolean | ScrollIntoViewOptions) {
-              orig.call(this, arg);
-              if (!this.matches("[data-stage-step]")) return;
-              r.steps += 1;
-              if (r.keyAt === null) {
-                if (p.keyAfterStep > 0 && r.steps === p.keyAfterStep) window.setTimeout(press, p.keyDelayMs);
-                return;
-              }
-              if (r.stepAt !== null) return;
-              r.stepAt = performance.now();
-              window.setTimeout(() => {
-                window.addEventListener(
-                  "scroll",
-                  () => {
-                    r.arrivedAt = performance.now();
-                  },
-                  { once: true, passive: true },
-                );
-                window.scrollBy({ top: p.visitorScrollPx, behavior: "instant" });
-                r.movedAt = performance.now();
-              }, p.afterStepScrollMs);
-            };
-          }, rc.replay);
           const tourBtn = tabbed.locator(".demo-tabs__tour");
-          await tourBtn.evaluate((el) => {
-            (el as HTMLButtonElement).click();
-            (window as unknown as { __replayGo: () => void }).__replayGo();
-          });
-          await expect
-            .poll(() => page.evaluate(() => (window as unknown as { __replay: { arrivedAt: number | null } }).__replay.arrivedAt !== null), {
-              timeout: 15_000,
-              message: "the replay never reached the captured order (key, then the tour's step scroll, then the visitor's movement)",
-            })
-            .toBe(true);
-          const r = await page.evaluate(() => (window as unknown as { __replay: { keyAt: number; stepAt: number; arrivedAt: number } }).__replay);
-          // The captured order: the key BEFORE the step's own scroll, the movement's
-          // scroll event inside that step's window (OWN_SCROLL_START_MS, 400ms) and
-          // within USER_INPUT_MS (1500ms) of the key, the visitor's by the kit's own rule.
+          for (let attempt = 1; attempt <= 3; attempt += 1) {
+            await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+            await hydrated(page);
+            if ((await tabbed.count()) === 0) {
+              test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
+            }
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+            await page.evaluate((p: Replay) => {
+              type Seen = { keyAt: number | null; firstAt: number | null; stepAt: number | null; movedAt: number | null; arrivedAt: number | null; steps: number };
+              const w = window as unknown as { __replay: Seen; __replayGo: () => void };
+              const r: Seen = { keyAt: null, firstAt: null, stepAt: null, movedAt: null, arrivedAt: null, steps: 0 };
+              w.__replay = r;
+              const press = () => {
+                document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "PageDown", bubbles: true }));
+                r.keyAt = performance.now();
+                if (p.beforeStepPx > 0) {
+                  window.scrollBy({ top: p.beforeStepPx, behavior: "instant" });
+                  r.firstAt = performance.now();
+                }
+              };
+              // The key: keyAfterStep 0 = as the tour's first followed step
+              // reveals, after the panel's own scroll has landed and been let go
+              // (the tour reveals a followed step only then) and BEFORE that
+              // step's own scroll opens its window (React runs the step's scroll
+              // effect in a later task than the reveal's DOM change); or
+              // keyDelayMs after the tour's step keyAfterStep scrolled, its own
+              // window long over.
+              w.__replayGo = () => {
+                if (p.keyAfterStep !== 0) return;
+                const panel = document.querySelector<HTMLElement>('.demo-tabs [role="tabpanel"]:not([hidden])');
+                if (!panel) return;
+                const mo = new MutationObserver((recs) => {
+                  const revealed = recs.some((m) => m.target instanceof HTMLElement && m.target.matches("[data-stage-step]") && !m.target.hasAttribute("data-pending"));
+                  if (!revealed || r.keyAt !== null) return;
+                  mo.disconnect();
+                  press();
+                });
+                mo.observe(panel, { subtree: true, attributes: true, attributeFilter: ["data-pending"] });
+              };
+              // The tour's next followed step after the key opens its own window,
+              // and the visitor's movement arrives afterStepScrollMs into it.
+              const orig = Element.prototype.scrollIntoView;
+              Element.prototype.scrollIntoView = function (this: Element, arg?: boolean | ScrollIntoViewOptions) {
+                orig.call(this, arg);
+                if (!this.matches("[data-stage-step]")) return;
+                r.steps += 1;
+                if (r.keyAt === null) {
+                  if (p.keyAfterStep > 0 && r.steps === p.keyAfterStep) window.setTimeout(press, p.keyDelayMs);
+                  return;
+                }
+                if (r.stepAt !== null) return;
+                r.stepAt = performance.now();
+                window.setTimeout(() => {
+                  window.addEventListener(
+                    "scroll",
+                    () => {
+                      r.arrivedAt = performance.now();
+                    },
+                    { once: true, passive: true },
+                  );
+                  window.scrollBy({ top: p.visitorScrollPx, behavior: "instant" });
+                  r.movedAt = performance.now();
+                }, p.afterStepScrollMs);
+              };
+            }, rc.replay);
+            await tourBtn.evaluate((el) => {
+              (el as HTMLButtonElement).click();
+              (window as unknown as { __replayGo: () => void }).__replayGo();
+            });
+            await expect
+              .poll(() => page.evaluate(() => (window as unknown as { __replay: { arrivedAt: number | null } }).__replay.arrivedAt !== null), {
+                timeout: 15_000,
+                message: "the replay never reached the captured order (key, then the tour's step scroll, then the visitor's movement)",
+              })
+              .toBe(true);
+            r = await page.evaluate(() => (window as unknown as { __replay: { keyAt: number; stepAt: number; arrivedAt: number } }).__replay);
+            // The captured order: the key BEFORE the step's own scroll, the movement's
+            // scroll event inside that step's window (OWN_SCROLL_START_MS, 400ms) and
+            // within USER_INPUT_MS (1500ms) of the key, the visitor's by the kit's own rule.
+            const staged = r.keyAt < r.stepAt && r.arrivedAt - r.stepAt < 400 && r.arrivedAt - r.keyAt <= 1500;
+            if (staged) break;
+            console.log(`[replay] ${browserName} ${rc.name}: attempt ${attempt} missed the captured order (movement ${(r.arrivedAt - r.stepAt).toFixed(0)}ms into the window), staging again`);
+          }
           console.log(`[replay] ${browserName} ${rc.name}: key ${(r.stepAt - r.keyAt).toFixed(0)}ms before the step's scroll, movement ${(r.arrivedAt - r.stepAt).toFixed(0)}ms into its window, ${(r.arrivedAt - r.keyAt).toFixed(0)}ms after the key`);
           expect(r.keyAt, "the replayed key did not come before the tour's step scroll").toBeLessThan(r.stepAt);
           expect(r.arrivedAt - r.stepAt, "the replayed movement landed outside the step's own-scroll window").toBeLessThan(400);
