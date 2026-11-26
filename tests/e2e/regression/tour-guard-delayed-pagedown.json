@@ -1,0 +1,887 @@
+{
+ "what": "The tour guard (TabbedScreen.tsx) took a visitor's PageDown for the tour's own scroll and kept carrying the page. NWKS admin-panel tour, 390x844, Playwright WebKit.",
+ "oracle": "The behaviour tests/e2e/demo-stage.spec.ts already demands of the tour (its 'a visitor's scroll during the tour's own scroll also takes the page back' and 'own scroll of more than 300px' tests): a visitor's own scroll takes the page back, and the tour then never moves the page again (|y2 - y1| <= 1 over the next 6s). The spec's rule, which both captures broke; not Claude's judgement.",
+ "trace_fields": "t = performance.now() ms; y = scrollY; own/follow/held/gesture/ownAt/input/base = the guard's state at that event (moving = a later trace field, see case 'stalled'); -inf/inf = never set. Recorded by scratch instrumentation that ran only when the test set window.__psTourTrace; it is not in the shipped code.",
+ "cases": [
+  {
+   "name": "delayed",
+   "input": {
+    "captured": "2026-11-26T08:17:18.578Z",
+    "from": "demo-stage.spec.ts 'a visitor's scroll during the tour's own scroll also takes the page back', --project=webkit --repeat-each 10 --retries 0, repeat r5; code = main befbb70 + trace; raw t556-webkit-r5-1795681038578.json",
+    "sha256_of_raw_capture": "7229a753810408fae40a6e079eed013472a1b31a0926ba30052c767cfdf99522",
+    "spec_result": "failed, 'the tour moved the page 1098px' (y1 8902 was read before the delayed PageDown moved the page; the tour's own share is 10000 - 9577 = 423, the number the gate reported in 3 of 9 runs)"
+   },
+   "order": [
+    "281 the panel's own scroll lands at 8902; the guard releases it (own false, base 8902)",
+    "314 the visitor presses PageDown (a scroll gesture); WebKit does not move the page yet",
+    "520 step 1 follows: markOwnScroll opens a NEW own window (ownAt 520 > gesture 314); its scrollIntoView moves nothing",
+    "914 the PageDown moves the page 8902 -> 9577, inside that window (394ms after it opened, 6ms before OWN_SCROLL_START_MS): counted as the tour's",
+    "1114 the window idles out and re-bases on the visitor's position (base 9577); follow stays true",
+    "5933 step 4 follows and carries the page 9577 -> 10000 (+423)"
+   ],
+   "replay": {
+    "keyAfterStep": 0,
+    "keyDelayMs": 0,
+    "beforeStepPx": 0,
+    "visitorScrollPx": 675,
+    "afterStepScrollMs": 150
+   },
+   "trace": [
+    {
+     "t": 1935,
+     "ev": "hold:before",
+     "y": 0,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": "-inf",
+     "ownAt": "inf",
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 1935,
+     "ev": "hold:after",
+     "y": 0,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 1936,
+     "ev": "panel:scrollIntoView",
+     "y": 0,
+     "tab": "dashboard",
+     "margin": 140,
+     "panelTop": 9042
+    },
+    {
+     "t": 1938,
+     "ev": "guard:attach",
+     "y": 0,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 2068,
+     "ev": "scroll",
+     "y": 8113,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 2213,
+     "ev": "scroll",
+     "y": 8902,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 2216,
+     "ev": "panel:watch-end",
+     "y": 8902,
+     "tab": "dashboard",
+     "arrived": true,
+     "mayScroll": true,
+     "off": 0
+    },
+    {
+     "t": 2216,
+     "ev": "release",
+     "y": 8902,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 2216,
+     "ev": "land",
+     "y": 8902,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": "-inf",
+     "ownAt": 1935,
+     "input": "-inf",
+     "base": 8902
+    },
+    {
+     "t": 2245,
+     "ev": "TEST:press",
+     "y": 8902
+    },
+    {
+     "t": 2249,
+     "ev": "input",
+     "y": 8902,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 1935,
+     "input": 2249,
+     "base": 8902,
+     "type": "keydown",
+     "key": "PageDown",
+     "scrolls": true
+    },
+    {
+     "t": 2295,
+     "ev": "tick:defer",
+     "y": 8902,
+     "ready": true,
+     "sinceScroll": 82
+    },
+    {
+     "t": 2445,
+     "ev": "tick:followed",
+     "y": 8902
+    },
+    {
+     "t": 2454,
+     "ev": "markOwn:before",
+     "y": 8902,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 1935,
+     "input": 2249,
+     "base": 8902
+    },
+    {
+     "t": 2455,
+     "ev": "markOwn:after",
+     "y": 8902,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 2455,
+     "input": 2249,
+     "base": 8902
+    },
+    {
+     "t": 2455,
+     "ev": "step:scrollIntoView",
+     "y": 8902,
+     "step": 1,
+     "top": 308,
+     "bottom": 356
+    },
+    {
+     "t": 2849,
+     "ev": "scroll",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 2455,
+     "input": 2249,
+     "base": 8902
+    },
+    {
+     "t": 3049,
+     "ev": "idle-rebase",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 2455,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 4251,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 4257,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 2455,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 4258,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 4258,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 4258,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 2,
+     "top": 629,
+     "bottom": 682
+    },
+    {
+     "t": 4658,
+     "ev": "land",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 4258,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 6056,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 6062,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 4258,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 6063,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 6063,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 6063,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 3,
+     "top": 367,
+     "bottom": 416
+    },
+    {
+     "t": 6463,
+     "ev": "land",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 6063,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 7860,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 7868,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 6063,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 7868,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 7868,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 4,
+     "top": 1111,
+     "bottom": 1184
+    },
+    {
+     "t": 7876,
+     "ev": "scroll",
+     "y": 9584,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 7941,
+     "ev": "scroll",
+     "y": 9840,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 8009,
+     "ev": "scroll",
+     "y": 9974,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 8076,
+     "ev": "scroll",
+     "y": 10000,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 9577
+    },
+    {
+     "t": 8276,
+     "ev": "idle-rebase",
+     "y": 10000,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "gesture": 2249,
+     "ownAt": 7868,
+     "input": 2249,
+     "base": 10000
+    }
+   ]
+  },
+  {
+   "name": "stalled",
+   "input": {
+    "captured": "2026-11-26T08:37:20.708Z",
+    "from": "same test, --repeat-each 40 --workers 6 --retries 0, repeat r31; code = a first fix (the visitor's gesture counted until the page had been still 200ms) + trace; raw t556-webkit-r31-1795682240708.json",
+    "sha256_of_raw_capture": "75b639359d30978fc01ad8acca7d3236f8737fd9ba62689aa57100a2cd955d1a",
+    "spec_result": "failed, 'the tour moved the page 423px'"
+   },
+   "order": [
+    "215 the panel's own scroll lands at 8902; the guard releases it",
+    "447 the visitor presses PageDown",
+    "472 the PageDown moves the page 81px (8902 -> 8983), then WebKit stalls ~230ms",
+    "666 step 1 follows: a new own window opens (ownAt 666 > gesture 447)",
+    "673 the first fix counts the visitor's movement as at rest (200ms still)",
+    "702 the rest of the PageDown arrives (8983 -> 9577) inside the window: counted as the tour's",
+    "903 re-based on 9577, follow stays true; 6090 step 4 carries the page 9577 -> 10000 (+423)"
+   ],
+   "replay": {
+    "keyAfterStep": 1,
+    "keyDelayMs": 900,
+    "beforeStepPx": 81,
+    "visitorScrollPx": 594,
+    "afterStepScrollMs": 150
+   },
+   "trace": [
+    {
+     "t": 3205,
+     "ev": "hold:before",
+     "y": 0,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": "inf",
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 3205,
+     "ev": "hold:after",
+     "y": 0,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": 3205,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 3208,
+     "ev": "panel:scrollIntoView",
+     "y": 0,
+     "tab": "dashboard",
+     "margin": 140,
+     "panelTop": 9042
+    },
+    {
+     "t": 3209,
+     "ev": "guard:attach",
+     "y": 0,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": 3205,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 3419,
+     "ev": "scroll",
+     "y": 8902,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": 3205,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 3420,
+     "ev": "panel:watch-end",
+     "y": 8902,
+     "tab": "dashboard",
+     "arrived": true,
+     "mayScroll": true,
+     "off": 0
+    },
+    {
+     "t": 3420,
+     "ev": "release",
+     "y": 8902,
+     "own": true,
+     "follow": true,
+     "held": true,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": 3205,
+     "input": "-inf",
+     "base": 0
+    },
+    {
+     "t": 3420,
+     "ev": "land",
+     "y": 8902,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": "-inf",
+     "ownAt": 3205,
+     "input": "-inf",
+     "base": 8902
+    },
+    {
+     "t": 3563,
+     "ev": "tick:defer",
+     "y": 8902,
+     "ready": true,
+     "sinceScroll": 144
+    },
+    {
+     "t": 3640,
+     "ev": "TEST:press",
+     "y": 8902
+    },
+    {
+     "t": 3652,
+     "ev": "input",
+     "y": 8902,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": true,
+     "gesture": 3652,
+     "ownAt": 3205,
+     "input": 3652,
+     "base": 8902,
+     "type": "keydown",
+     "key": "PageDown",
+     "scrolls": true
+    },
+    {
+     "t": 3677,
+     "ev": "scroll",
+     "y": 8983,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": true,
+     "gesture": 3652,
+     "ownAt": 3205,
+     "input": 3652,
+     "base": 8902
+    },
+    {
+     "t": 3716,
+     "ev": "tick:defer",
+     "y": 8983,
+     "ready": true,
+     "sinceScroll": 39
+    },
+    {
+     "t": 3866,
+     "ev": "tick:followed",
+     "y": 8983
+    },
+    {
+     "t": 3871,
+     "ev": "markOwn:before",
+     "y": 8983,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": true,
+     "gesture": 3652,
+     "ownAt": 3205,
+     "input": 3652,
+     "base": 8902
+    },
+    {
+     "t": 3871,
+     "ev": "markOwn:after",
+     "y": 8983,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": true,
+     "gesture": 3652,
+     "ownAt": 3871,
+     "input": 3652,
+     "base": 8902
+    },
+    {
+     "t": 3871,
+     "ev": "step:scrollIntoView",
+     "y": 8983,
+     "step": 1,
+     "top": 227,
+     "bottom": 275
+    },
+    {
+     "t": 3878,
+     "ev": "visitor-rest",
+     "y": 8983,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 3871,
+     "input": 3652,
+     "base": 8902
+    },
+    {
+     "t": 3907,
+     "ev": "scroll",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 3871,
+     "input": 3652,
+     "base": 8902
+    },
+    {
+     "t": 4108,
+     "ev": "idle-rebase",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 3871,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 5670,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 5684,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 3871,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 5685,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 5685,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 5685,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 2,
+     "top": 629,
+     "bottom": 682
+    },
+    {
+     "t": 6087,
+     "ev": "land",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 5685,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 7483,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 7490,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 5685,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 7491,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 7491,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 7491,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 3,
+     "top": 367,
+     "bottom": 416
+    },
+    {
+     "t": 7892,
+     "ev": "land",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 7491,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9288,
+     "ev": "tick:followed",
+     "y": 9577
+    },
+    {
+     "t": 9295,
+     "ev": "markOwn:before",
+     "y": 9577,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 7491,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9295,
+     "ev": "markOwn:after",
+     "y": 9577,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9295,
+     "ev": "step:scrollIntoView",
+     "y": 9577,
+     "step": 4,
+     "top": 1111,
+     "bottom": 1184
+    },
+    {
+     "t": 9303,
+     "ev": "scroll",
+     "y": 9585,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9373,
+     "ev": "scroll",
+     "y": 9854,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9422,
+     "ev": "scroll",
+     "y": 9959,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9468,
+     "ev": "scroll",
+     "y": 9995,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9515,
+     "ev": "scroll",
+     "y": 10000,
+     "own": true,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 9577
+    },
+    {
+     "t": 9715,
+     "ev": "idle-rebase",
+     "y": 10000,
+     "own": false,
+     "follow": true,
+     "held": false,
+     "moving": false,
+     "gesture": 3652,
+     "ownAt": 9295,
+     "input": 3652,
+     "base": 10000
+    }
+   ]
+  }
+ ],
+ "replay_note": "A synthetic keydown (it moves nothing itself) stands for the PageDown, and window.scrollBy moves the page the captured distances. delayed: the key once the tour's panel has landed; all 675px 150ms after the tour's next step calls scrollIntoView, inside that step's own window (OWN_SCROLL_START_MS 400ms; the capture's arrived at 394ms). stalled: the key and the first 81px 900ms after step 1 scrolled (its own window over, so the 81px is seen as the visitor's, as in the capture), then the other 594px 150ms into step 2's own window. The stall is ~1.2s instead of the capture's ~230ms: the replay cannot place a piece between the panel's release and step 1 in WebKit (its frames run ~180ms apart under load), and a longer stall defeats any 'the visitor is at rest after N ms of stillness' rule just the same. Both replays assert the movement lands inside the step's window and within USER_INPUT_MS (1500ms) of the key."
+}

@@ -38,6 +38,8 @@ const MANIFESTS: Manifest[] = (() => {
 
 const SHOTS = path.resolve("test-results/demo-stage-shots");
 const GROUND = { dark: [10, 22, 40], light: [255, 255, 255] } as const; // --theme-section-alt, globals.css:155, :215
+/** A replayed capture's moves (tests/e2e/regression/tour-guard-delayed-pagedown.json). */
+type Replay = { keyAfterStep: number; keyDelayMs: number; beforeStepPx: number; visitorScrollPx: number; afterStepScrollMs: number };
 const byName = (w: number, h: number) => VIEWPORTS.find((v) => v.w === w && v.h === h) as Vp;
 
 async function open(browser: Browser, browserName: string, vp: Vp, o: { js?: boolean; reduced?: boolean } = {}) {
@@ -569,13 +571,31 @@ for (const m of MANIFESTS) {
           // The tour's own panel scroll has started and is still travelling.
           await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5_000, intervals: [25] }).toBeGreaterThan(0);
           await page.waitForTimeout(150);
+          const y0 = await page.evaluate(() => window.scrollY);
           if (browserName === "webkit") {
             await page.keyboard.press("PageDown");
           } else {
             await page.mouse.move(vp.w / 2, vp.h / 2);
             await page.mouse.wheel(0, 400);
           }
-          // Wait for the page to come to rest after the visitor's scroll.
+          // Wait for the page to come to rest after the visitor's scroll: first
+          // for the scroll itself, then for rest. WebKit applied a PageDown
+          // pressed just after the tour's panel landed ~600ms late; the rest
+          // check alone then read the page still BEFORE the visitor's scroll
+          // and charged the visitor's own 675px to the tour (trace 2026-11-26,
+          // tests/e2e/regression/tour-guard-delayed-pagedown.json). Every
+          // engine's visitor scroll moves the page past 300px from here
+          // (measured: webkit 675-904, chromium 8164-8253, firefox 1987-2474).
+          let reached = y0;
+          await expect
+            .poll(
+              async () => {
+                reached = Math.max(reached, await page.evaluate(() => window.scrollY));
+                return reached - y0;
+              },
+              { timeout: 10_000, intervals: [100], message: "the visitor's scroll did not move the page more than 300px" },
+            )
+            .toBeGreaterThan(300);
           let lastY = Number.NaN;
           await expect
             .poll(
@@ -596,6 +616,117 @@ for (const m of MANIFESTS) {
           expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped instead of letting go of the scroll").toBe("true");
           const y2 = await page.evaluate(() => window.scrollY);
           expect(Math.abs(y2 - y1), `the tour moved the page ${(y2 - y1).toFixed(0)}px after the visitor scrolled during its own scroll`).toBeLessThanOrEqual(1);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
+    // The captured orders that broke the rule above, replayed every run
+    // (tests/e2e/regression/tour-guard-delayed-pagedown.json). The visitor
+    // presses a scroll key while the tour follows; the tour's next step then
+    // opens its own scroll window, and the visitor's movement arrives inside
+    // it: all of it ("delayed"), or the rest of it after a first piece and a
+    // stall ("stalled"). It is still the visitor's: the tour lets go. A
+    // synthetic key moves nothing itself, so the replay moves the page the
+    // captured distances at those points, the same way in every engine.
+    const replays = (
+      JSON.parse(fs.readFileSync(path.resolve("tests/e2e/regression/tour-guard-delayed-pagedown.json"), "utf8")) as {
+        cases: Array<{ name: string; replay: Replay }>;
+      }
+    ).cases;
+    for (const vp of [byName(390, 844)]) for (const rc of replays) {
+      test(`${vpName(vp)} a visitor's scroll that lands inside the tour's next own scroll still takes the page back (replayed capture: ${rc.name})`, async ({ browser, browserName }) => {
+        test.setTimeout(120_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          const tabbed = page.locator(".demo-tabs").first();
+          if ((await tabbed.count()) === 0) {
+            test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
+          }
+          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+          await page.evaluate((p: Replay) => {
+            type Seen = { keyAt: number | null; firstAt: number | null; stepAt: number | null; movedAt: number | null; steps: number };
+            const w = window as unknown as { __replay: Seen; __replayGo: () => void };
+            const r: Seen = { keyAt: null, firstAt: null, stepAt: null, movedAt: null, steps: 0 };
+            w.__replay = r;
+            const press = () => {
+              document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "PageDown", bubbles: true }));
+              r.keyAt = performance.now();
+              if (p.beforeStepPx > 0) {
+                window.scrollBy({ top: p.beforeStepPx, behavior: "instant" });
+                r.firstAt = performance.now();
+              }
+            };
+            // The key: once the tour's panel has landed under the tab bar
+            // (keyAfterStep 0), or keyDelayMs after the tour's step keyAfterStep
+            // scrolled (its own window long over).
+            const land = () => {
+              const panel = document.querySelector<HTMLElement>('.demo-tabs [role="tabpanel"]:not([hidden])');
+              const margin = parseFloat(panel?.style.scrollMarginTop ?? "");
+              if (panel && Number.isFinite(margin) && window.scrollY > 0 && Math.abs(panel.getBoundingClientRect().top - margin) <= 1) {
+                press();
+                return;
+              }
+              requestAnimationFrame(land);
+            };
+            w.__replayGo = () => {
+              if (p.keyAfterStep === 0) requestAnimationFrame(land);
+            };
+            // The tour's next followed step after the key opens its own window,
+            // and the visitor's movement arrives afterStepScrollMs into it.
+            const orig = Element.prototype.scrollIntoView;
+            Element.prototype.scrollIntoView = function (this: Element, arg?: boolean | ScrollIntoViewOptions) {
+              orig.call(this, arg);
+              if (!this.matches("[data-stage-step]")) return;
+              r.steps += 1;
+              if (r.keyAt === null) {
+                if (p.keyAfterStep > 0 && r.steps === p.keyAfterStep) window.setTimeout(press, p.keyDelayMs);
+                return;
+              }
+              if (r.stepAt !== null) return;
+              r.stepAt = performance.now();
+              window.setTimeout(() => {
+                window.scrollBy({ top: p.visitorScrollPx, behavior: "instant" });
+                r.movedAt = performance.now();
+              }, p.afterStepScrollMs);
+            };
+          }, rc.replay);
+          const tourBtn = tabbed.locator(".demo-tabs__tour");
+          await tourBtn.evaluate((el) => {
+            (el as HTMLButtonElement).click();
+            (window as unknown as { __replayGo: () => void }).__replayGo();
+          });
+          await expect
+            .poll(() => page.evaluate(() => (window as unknown as { __replay: { movedAt: number | null } }).__replay.movedAt !== null), {
+              timeout: 15_000,
+              message: "the replay never reached the captured order (key, then the tour's step scroll, then the visitor's movement)",
+            })
+            .toBe(true);
+          const r = await page.evaluate(() => (window as unknown as { __replay: { keyAt: number; stepAt: number; movedAt: number } }).__replay);
+          // Inside the step's own window (OWN_SCROLL_START_MS, 400ms), as in the captures...
+          expect(r.movedAt - r.stepAt, "the replayed movement landed outside the step's own-scroll window").toBeLessThan(400);
+          // ...and within USER_INPUT_MS (1500ms) of the key, so it is the visitor's by the kit's own rule.
+          expect(r.movedAt - r.keyAt, "the replayed movement came too long after the key to be the visitor's").toBeLessThanOrEqual(1500);
+          let lastY = Number.NaN;
+          await expect
+            .poll(
+              async () => {
+                const y = await page.evaluate(() => window.scrollY);
+                const still = y === lastY;
+                lastY = y;
+                return still;
+              },
+              { timeout: 8_000, intervals: [400], message: "the page never came to rest" },
+            )
+            .toBe(true);
+          const y1 = await page.evaluate(() => window.scrollY);
+          await page.waitForTimeout(6_000);
+          expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped instead of letting go of the scroll").toBe("true");
+          const y2 = await page.evaluate(() => window.scrollY);
+          expect(Math.abs(y2 - y1), `the tour moved the page ${(y2 - y1).toFixed(0)}px after the visitor's scroll landed inside its own`).toBeLessThanOrEqual(1);
         } finally {
           await context.close();
         }
