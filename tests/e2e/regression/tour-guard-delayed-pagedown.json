@@ -432,7 +432,7 @@
    ],
    "replay": {
     "keyAfterStep": 1,
-    "keyDelayMs": 900,
+    "keyDelayMs": 1200,
     "beforeStepPx": 81,
     "visitorScrollPx": 594,
     "afterStepScrollMs": 150
@@ -883,5 +883,5 @@
    ]
   }
  ],
- "replay_note": "A synthetic keydown (it moves nothing itself) stands for the PageDown, and window.scrollBy moves the page the captured distances. delayed: the key once the tour's panel has landed; all 675px 150ms after the tour's next step calls scrollIntoView, inside that step's own window (OWN_SCROLL_START_MS 400ms; the capture's arrived at 394ms). stalled: the key and the first 81px 900ms after step 1 scrolled (its own window over, so the 81px is seen as the visitor's, as in the capture), then the other 594px 150ms into step 2's own window. The stall is ~1.2s instead of the capture's ~230ms: the replay cannot place a piece between the panel's release and step 1 in WebKit (its frames run ~180ms apart under load), and a longer stall defeats any 'the visitor is at rest after N ms of stillness' rule just the same. Both replays assert the movement lands inside the step's window and within USER_INPUT_MS (1500ms) of the key."
+ "replay_note": "A synthetic keydown (it moves nothing itself) stands for the PageDown, and window.scrollBy moves the page the captured distances. delayed: the key as the tour's step 1 reveals (after the panel's own scroll has landed and been released, before step 1's scroll opens its own window), then all 675px 150ms after step 1 calls scrollIntoView, inside that step's own window (OWN_SCROLL_START_MS 400ms; the capture's arrived at 394ms, the key arrives a few ms before the window opens, where the capture's came 206ms before it (520-314)). stalled: the key and the first 81px 1200ms after step 1 scrolled (its own window over, so the 81px is seen as the visitor's, as in the capture), then the other 594px 150ms into step 2's own window. The stall is longer than the capture's ~230ms: the replay cannot place a piece between the panel's release and step 1 in WebKit (its frames ran ~180ms apart under load), and a longer stall defeats any 'the visitor is at rest after N ms of stillness' rule just the same. Both replays assert the key came before the step's scroll and that the movement's scroll event arrived inside the step's window and within USER_INPUT_MS (1500ms) of the key."
 }

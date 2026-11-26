@@ -578,24 +578,29 @@ for (const m of MANIFESTS) {
             await page.mouse.move(vp.w / 2, vp.h / 2);
             await page.mouse.wheel(0, 400);
           }
+          const pressed = Date.now();
           // Wait for the page to come to rest after the visitor's scroll: first
           // for the scroll itself, then for rest. WebKit applied a PageDown
-          // pressed just after the tour's panel landed ~600ms late; the rest
-          // check alone then read the page still BEFORE the visitor's scroll
-          // and charged the visitor's own 675px to the tour (trace 2026-11-26,
-          // tests/e2e/regression/tour-guard-delayed-pagedown.json). Every
-          // engine's visitor scroll moves the page past 300px from here
-          // (measured: webkit 675-904, chromium 8164-8253, firefox 1987-2474).
+          // pressed just after the tour's panel landed up to ~650ms late; the
+          // rest check alone then read the page still BEFORE the visitor's
+          // scroll and charged the visitor's own 675px to the tour (trace
+          // 2026-11-26, tests/e2e/regression/tour-guard-delayed-pagedown.json).
+          // So wait until the visitor's scroll has moved the page past 300px
+          // (measured: webkit 675-904, chromium 8164-8253, firefox 1987-2474),
+          // or USER_INPUT_MS (1500ms, TabbedScreen.tsx) has passed since the
+          // press: after that the kit no longer counts movement as the
+          // visitor's, and WebKit can swallow a PageDown pressed during the
+          // tour's smooth scroll altogether (237px, all the tour's own).
           let reached = y0;
           await expect
             .poll(
               async () => {
                 reached = Math.max(reached, await page.evaluate(() => window.scrollY));
-                return reached - y0;
+                return reached - y0 > 300 || Date.now() - pressed >= 1500;
               },
-              { timeout: 10_000, intervals: [100], message: "the visitor's scroll did not move the page more than 300px" },
+              { timeout: 10_000, intervals: [100], message: "the visitor's scroll neither moved the page nor timed out" },
             )
-            .toBeGreaterThan(300);
+            .toBe(true);
           let lastY = Number.NaN;
           await expect
             .poll(
@@ -648,9 +653,9 @@ for (const m of MANIFESTS) {
           }
           await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
           await page.evaluate((p: Replay) => {
-            type Seen = { keyAt: number | null; firstAt: number | null; stepAt: number | null; movedAt: number | null; steps: number };
+            type Seen = { keyAt: number | null; firstAt: number | null; stepAt: number | null; movedAt: number | null; arrivedAt: number | null; steps: number };
             const w = window as unknown as { __replay: Seen; __replayGo: () => void };
-            const r: Seen = { keyAt: null, firstAt: null, stepAt: null, movedAt: null, steps: 0 };
+            const r: Seen = { keyAt: null, firstAt: null, stepAt: null, movedAt: null, arrivedAt: null, steps: 0 };
             w.__replay = r;
             const press = () => {
               document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "PageDown", bubbles: true }));
@@ -660,20 +665,24 @@ for (const m of MANIFESTS) {
                 r.firstAt = performance.now();
               }
             };
-            // The key: once the tour's panel has landed under the tab bar
-            // (keyAfterStep 0), or keyDelayMs after the tour's step keyAfterStep
-            // scrolled (its own window long over).
-            const land = () => {
-              const panel = document.querySelector<HTMLElement>('.demo-tabs [role="tabpanel"]:not([hidden])');
-              const margin = parseFloat(panel?.style.scrollMarginTop ?? "");
-              if (panel && Number.isFinite(margin) && window.scrollY > 0 && Math.abs(panel.getBoundingClientRect().top - margin) <= 1) {
-                press();
-                return;
-              }
-              requestAnimationFrame(land);
-            };
+            // The key: keyAfterStep 0 = as the tour's first followed step
+            // reveals, after the panel's own scroll has landed and been let go
+            // (the tour reveals a followed step only then) and BEFORE that
+            // step's own scroll opens its window (React runs the step's scroll
+            // effect in a later task than the reveal's DOM change); or
+            // keyDelayMs after the tour's step keyAfterStep scrolled, its own
+            // window long over.
             w.__replayGo = () => {
-              if (p.keyAfterStep === 0) requestAnimationFrame(land);
+              if (p.keyAfterStep !== 0) return;
+              const panel = document.querySelector<HTMLElement>('.demo-tabs [role="tabpanel"]:not([hidden])');
+              if (!panel) return;
+              const mo = new MutationObserver((recs) => {
+                const revealed = recs.some((m) => m.target instanceof HTMLElement && m.target.matches("[data-stage-step]") && !m.target.hasAttribute("data-pending"));
+                if (!revealed || r.keyAt !== null) return;
+                mo.disconnect();
+                press();
+              });
+              mo.observe(panel, { subtree: true, attributes: true, attributeFilter: ["data-pending"] });
             };
             // The tour's next followed step after the key opens its own window,
             // and the visitor's movement arrives afterStepScrollMs into it.
@@ -689,6 +698,13 @@ for (const m of MANIFESTS) {
               if (r.stepAt !== null) return;
               r.stepAt = performance.now();
               window.setTimeout(() => {
+                window.addEventListener(
+                  "scroll",
+                  () => {
+                    r.arrivedAt = performance.now();
+                  },
+                  { once: true, passive: true },
+                );
                 window.scrollBy({ top: p.visitorScrollPx, behavior: "instant" });
                 r.movedAt = performance.now();
               }, p.afterStepScrollMs);
@@ -700,16 +716,19 @@ for (const m of MANIFESTS) {
             (window as unknown as { __replayGo: () => void }).__replayGo();
           });
           await expect
-            .poll(() => page.evaluate(() => (window as unknown as { __replay: { movedAt: number | null } }).__replay.movedAt !== null), {
+            .poll(() => page.evaluate(() => (window as unknown as { __replay: { arrivedAt: number | null } }).__replay.arrivedAt !== null), {
               timeout: 15_000,
               message: "the replay never reached the captured order (key, then the tour's step scroll, then the visitor's movement)",
             })
             .toBe(true);
-          const r = await page.evaluate(() => (window as unknown as { __replay: { keyAt: number; stepAt: number; movedAt: number } }).__replay);
-          // Inside the step's own window (OWN_SCROLL_START_MS, 400ms), as in the captures...
-          expect(r.movedAt - r.stepAt, "the replayed movement landed outside the step's own-scroll window").toBeLessThan(400);
-          // ...and within USER_INPUT_MS (1500ms) of the key, so it is the visitor's by the kit's own rule.
-          expect(r.movedAt - r.keyAt, "the replayed movement came too long after the key to be the visitor's").toBeLessThanOrEqual(1500);
+          const r = await page.evaluate(() => (window as unknown as { __replay: { keyAt: number; stepAt: number; arrivedAt: number } }).__replay);
+          // The captured order: the key BEFORE the step's own scroll, the movement's
+          // scroll event inside that step's window (OWN_SCROLL_START_MS, 400ms) and
+          // within USER_INPUT_MS (1500ms) of the key, the visitor's by the kit's own rule.
+          console.log(`[replay] ${browserName} ${rc.name}: key ${(r.stepAt - r.keyAt).toFixed(0)}ms before the step's scroll, movement ${(r.arrivedAt - r.stepAt).toFixed(0)}ms into its window, ${(r.arrivedAt - r.keyAt).toFixed(0)}ms after the key`);
+          expect(r.keyAt, "the replayed key did not come before the tour's step scroll").toBeLessThan(r.stepAt);
+          expect(r.arrivedAt - r.stepAt, "the replayed movement landed outside the step's own-scroll window").toBeLessThan(400);
+          expect(r.arrivedAt - r.keyAt, "the replayed movement came too long after the key to be the visitor's").toBeLessThanOrEqual(1500);
           let lastY = Number.NaN;
           await expect
             .poll(
