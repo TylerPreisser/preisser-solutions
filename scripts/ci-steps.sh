@@ -27,11 +27,9 @@ ci_steps() {
     for _ in $(seq 1 30); do curl -sf -o /dev/null "http://127.0.0.1:$PORT/privacy" && break; sleep 1; done
     # Hard assert the bind: a probe pointed at nothing must not pass as a probe that passed.
     curl -sf -o /dev/null "http://127.0.0.1:$PORT/privacy"
-    # The four probes only read the static export and each launches its own browser: run them side by side
-    # (npm run test:e2e runs them one after another). Any failing probe fails the step.
-    export PS_TEST_BASE_URL="http://127.0.0.1:$PORT"; PIDS=""
-    for P in footer how-we-work marcommand-card cta-blend; do node "tests/$P.probe.mjs" & PIDS="$PIDS $!"; done
-    FAIL=0; for PID in $PIDS; do wait "$PID" || FAIL=1; done; exit $FAIL'
+    # One after another on purpose: run side by side (2026-11-26) the webkit paint-timing probes went red under load
+    # ("sampled too late", "ink share 0.01"). Make them load-tolerant before running them concurrently.
+    PS_TEST_BASE_URL="http://127.0.0.1:$PORT" npm run test:e2e'
   # Proof Stage (ADR-0016). The privacy guard proves it can fail before it is trusted, then scans
   # out/. The real run reads the deny list at PS_DEMO_DENYLIST or ~/.config/preisser/demo-denylist.txt
   # and FAILS CLOSED when it is missing.
